@@ -25,8 +25,8 @@ module.exports = {
 
     path: path.resolve(__dirname, "build"),
     filename: "ckeditor.js",
-    libraryTarget: "umd",
     libraryExport: "default",
+    libraryTarget: "umd",
   },
 
   optimization: {
@@ -84,5 +84,10 @@ module.exports = {
         ],
       },
     ],
+  },
+
+  externals: {
+    react: "react",
+    "react-dom": "react-dom",
   },
 };

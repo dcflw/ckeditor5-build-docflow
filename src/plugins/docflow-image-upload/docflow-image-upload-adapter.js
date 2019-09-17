@@ -2,9 +2,31 @@ import DocflowDirectUpload from "./docflow-direct-upload";
 
 export default class DocflowImageUploadAdapter {
   /**
+   * @typedef {Object} DirectUpload
+   * @property {number} byte_size
+   * @property {string} checksum
+   * @property {string} content_type
+   * @property {string} created_at
+   * @property {string} filename
+   * @property {string} id
+   * @property {string} key
+   * @property {string} signed_id
+   */
+  /**
+   * @typedef {Object} DocumentImage
+   * @property {string} id
+   * @property {string} document_id
+   * @property {string} template_id
+   * @property {string} image_url
+   */
+  /**
    * @typedef {Object} Options
    * @property {string} directUploadsPath
+   * @property {string} documentImagesPath
+   * @property {string} documentId
+   * @property {string} templateId
    */
+
   /**
    * @param {Object} loader
    * @param {Options} options
@@ -16,36 +38,38 @@ export default class DocflowImageUploadAdapter {
 
   // Starts the upload process.
   upload() {
-    return this.loader.file.then(
-      file =>
-        new Promise((resolve, reject) => {
-          // this._initRequest();
-          // this._initListeners(resolve, reject, file);
-          // this._sendRequest(file);
-
-          const directUpload = new DocflowDirectUpload(
-            file,
-            this.getDirectUploadOptions(),
-          );
-
-          directUpload.upload().then(result => {
-            console.log(result);
-            resolve({ default: "http://placekitten.com/400/300" });
-          });
-
-          // @TODO Create DocumentImage and return that URL with `resolve()`
-        }),
-    );
+    return this.loader.file.then(this.uploadFile.bind(this));
   }
 
   // Aborts the upload process.
   abort() {
     // @TODO Cancel the DirectUpload
     // @TODO Delete the DocumentImage
+  }
 
-    if (this.xhr) {
-      this.xhr.abort();
-    }
+  /**
+   * @param {File} file
+   */
+  uploadFile(file) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const directUpload = await this.createDirectUpload(file);
+
+        console.log(directUpload);
+
+        const documentImage = await this.createDocumentImage(
+          directUpload.signed_id,
+        );
+
+        console.log(documentImage);
+
+        resolve({
+          default: documentImage.image_url,
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   /**
@@ -69,9 +93,46 @@ export default class DocflowImageUploadAdapter {
   }
 
   /**
-   * @param {string} signedId
+   * @param file
+   * @returns {Promise<DirectUpload>}
    */
-  createDocumentImage(signedId) {}
+  async createDirectUpload(file) {
+    const directUpload = new DocflowDirectUpload(
+      file,
+      this.getDirectUploadOptions(),
+    );
+
+    this.directUploadPromise = directUpload.upload();
+
+    return this.directUploadPromise;
+  }
+
+  /**
+   * @param {string} signedId
+   * @returns {Promise<DocumentImage>}
+   */
+  async createDocumentImage(signedId) {
+    const data = {
+      document_id: this.options.documentId,
+      template_id: this.options.templateId,
+      image_signed_id: signedId,
+    };
+    const url = this.options.documentImagesPath || "/api/v1/document_images";
+    const config = {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+
+    this.documentImagePromise = fetch(url, config)
+      .then(response => response.json())
+      .then(response => response.document_image);
+
+    return this.documentImagePromise;
+  }
 
   /**
    * @TODO remove everything under here
