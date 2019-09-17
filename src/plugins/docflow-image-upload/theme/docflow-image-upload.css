@@ -1,0 +1,11 @@
+.ck-content .image-style-align-left {
+  margin-top: 0;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+.ck-content .image-style-align-right {
+  margin-top: 0;
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
