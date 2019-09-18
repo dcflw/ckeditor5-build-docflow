@@ -22,23 +22,26 @@ export default class DocflowPlaceholderUi extends Plugin {
 
   init() {
     const editor = this.editor;
-    const config = editor.config._config;
-    const formComponent =
-      config[CONFIG_NAMESPACE] && config[CONFIG_NAMESPACE].formComponent;
-    const formComponentProps = editor.config.get(
-      `${CONFIG_NAMESPACE}.formComponentProps`,
-    );
 
-    this.balloon = editor.plugins.get(ContextualBalloon);
-    this.isBalloonVisible = false;
-    this.reactView = new ReactView(editor.locale, formComponent, {
-      ...formComponentProps,
-      onInsertPlaceholder: this.handleInsertPlaceholder.bind(this),
-      onInsertVariable: this.handleInsertVariable.bind(this),
-    });
+    if (editor.config.get(`${CONFIG_NAMESPACE}.enabled`)) {
+      const config = editor.config._config;
+      const formComponent =
+        config[CONFIG_NAMESPACE] && config[CONFIG_NAMESPACE].formComponent;
+      const formComponentProps = editor.config.get(
+        `${CONFIG_NAMESPACE}.formComponentProps`,
+      );
 
-    this.addToolbarButton();
-    this.enableUserBalloonInteractions();
+      this.balloon = editor.plugins.get(ContextualBalloon);
+      this.isBalloonVisible = false;
+      this.reactView = new ReactView(editor.locale, formComponent, {
+        ...formComponentProps,
+        onSelectPlaceholder: this.handleInsertPlaceholder.bind(this),
+        onSelectVariable: this.handleInsertVariable.bind(this),
+      });
+
+      this.addToolbarButton();
+      this.enableUserBalloonInteractions();
+    }
   }
 
   handleInsertPlaceholder(id, name) {
@@ -82,6 +85,7 @@ export default class DocflowPlaceholderUi extends Plugin {
 
     this.reactView.updateProps(props);
     this.balloon.add({
+      singleViewModel: true,
       view: this.reactView,
       position: this.getBalloonPositionData(),
     });

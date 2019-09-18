@@ -36,15 +36,20 @@ export default class DocflowImageUploadAdapter {
     this.options = options;
   }
 
-  // Starts the upload process.
+  /**
+   * Starts the upload process.
+   */
   upload() {
     return this.loader.file.then(this.uploadFile.bind(this));
   }
 
-  // Aborts the upload process.
+  /**
+   * Aborts the upload process.
+   */
   abort() {
-    // @TODO Cancel the DirectUpload
-    // @TODO Delete the DocumentImage
+    if (this.directUpload) {
+      this.directUpload.abort();
+    }
   }
 
   /**
@@ -54,17 +59,12 @@ export default class DocflowImageUploadAdapter {
     return new Promise(async (resolve, reject) => {
       try {
         const directUpload = await this.createDirectUpload(file);
-
-        console.log(directUpload);
-
         const documentImage = await this.createDocumentImage(
           directUpload.signed_id,
         );
 
-        console.log(documentImage);
-
         resolve({
-          default: documentImage.image_url,
+          default: `/document_images/${documentImage.id}`,
         });
       } catch (error) {
         reject(error);
@@ -97,12 +97,11 @@ export default class DocflowImageUploadAdapter {
    * @returns {Promise<DirectUpload>}
    */
   async createDirectUpload(file) {
-    const directUpload = new DocflowDirectUpload(
+    this.directUpload = new DocflowDirectUpload(
       file,
       this.getDirectUploadOptions(),
     );
-
-    this.directUploadPromise = directUpload.upload();
+    this.directUploadPromise = this.directUpload.upload();
 
     return this.directUploadPromise;
   }
@@ -127,6 +126,9 @@ export default class DocflowImageUploadAdapter {
       body: JSON.stringify(data),
     };
 
+    /**
+     * @type {Promise<DocumentImage>}
+     */
     this.documentImagePromise = fetch(url, config)
       .then(response => response.json())
       .then(response => response.document_image);

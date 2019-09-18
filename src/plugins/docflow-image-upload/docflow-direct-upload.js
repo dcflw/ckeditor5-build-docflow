@@ -42,10 +42,18 @@ export default class DocflowDirectUpload {
     });
   }
 
+  abort() {
+    if (this.xhr) {
+      this.xhr.abort();
+    }
+  }
+
   /**
    * @param {XMLHttpRequest} xhr
    */
   directUploadWillStoreFileWithXHR(xhr) {
+    this.xhr = xhr;
+
     if (this.options.onProgress) {
       xhr.upload.addEventListener("progress", this.options.onProgress);
     }

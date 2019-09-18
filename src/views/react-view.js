@@ -13,7 +13,7 @@ export default class ReactView extends View {
     this.setTemplate({
       tag: "div",
       attributes: {
-        class: ["ck", "ck-reset_all"],
+        class: ["ck", "ck-react-view"],
       },
     });
   }
@@ -51,7 +51,7 @@ export default class ReactView extends View {
   updateProps(props = {}) {
     this.reactComponentProps = {
       ...this.reactComponentProps,
-      ...props,
+      ...props
     };
 
     this.renderReactComponent();
