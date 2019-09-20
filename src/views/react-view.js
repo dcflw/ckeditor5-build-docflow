@@ -14,6 +14,7 @@ export default class ReactView extends View {
       tag: "div",
       attributes: {
         class: ["ck", "ck-react-view"],
+        style: "min-width: 300px;",
       },
     });
   }

@@ -90,12 +90,16 @@ export default class DocflowPlaceholderUi extends Plugin {
       position: this.getBalloonPositionData(),
     });
     this.isBalloonVisible = true;
+
+    this.removeClassCkResetAll();
   }
 
   hideBalloon() {
     if (this.isBalloonVisible) {
       this.balloon.remove(this.reactView);
       this.isBalloonVisible = false;
+
+      this.addClassCkResetAll();
     }
   }
 
@@ -182,5 +186,21 @@ export default class DocflowPlaceholderUi extends Plugin {
     }
 
     return results.join(" ");
+  }
+
+  addClassCkResetAll() {
+    const bodyContainer = document.querySelector("body > .ck-body");
+
+    if (bodyContainer && !bodyContainer.classList.contains("ck-reset_all")) {
+      bodyContainer.classList.add("ck-reset_all");
+    }
+  }
+
+  removeClassCkResetAll() {
+    const bodyContainer = document.querySelector("body > .ck-body");
+
+    if (bodyContainer && bodyContainer.classList.contains("ck-reset_all")) {
+      bodyContainer.classList.remove("ck-reset_all");
+    }
   }
 }
