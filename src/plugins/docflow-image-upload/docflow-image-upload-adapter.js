@@ -21,9 +21,11 @@ export default class DocflowImageUploadAdapter {
    */
   /**
    * @typedef {Object} Options
-   * @property {string} directUploadsPath
-   * @property {string} documentImagesPath
    * @property {string} documentId
+   * @property {string} pathApiDirectUploads
+   * @property {string} pathApiImages
+   * @property {string} pathImages
+   * @property {string} resourceName
    * @property {string} templateId
    */
 
@@ -62,11 +64,14 @@ export default class DocflowImageUploadAdapter {
         const documentImage = await this.createDocumentImage(
           directUpload.signed_id,
         );
+        const pathImages = this.options.pathImages || "/images";
 
         resolve({
-          default: `/document_images/${documentImage.id}`,
+          default: `${pathImages}/${documentImage.id}`,
         });
       } catch (error) {
+        console.error(error);
+
         reject(error);
       }
     });
@@ -116,7 +121,8 @@ export default class DocflowImageUploadAdapter {
       template_id: this.options.templateId,
       image_signed_id: signedId,
     };
-    const url = this.options.documentImagesPath || "/api/v1/document_images";
+    const url = this.options.pathApiImages || "/api/v1/images";
+    const resourceName = this.options.resourceName || "image";
     const config = {
       method: "POST",
       mode: "cors",
@@ -131,7 +137,7 @@ export default class DocflowImageUploadAdapter {
      */
     this.documentImagePromise = fetch(url, config)
       .then(response => response.json())
-      .then(response => response.document_image);
+      .then(response => response[resourceName]);
 
     return this.documentImagePromise;
   }

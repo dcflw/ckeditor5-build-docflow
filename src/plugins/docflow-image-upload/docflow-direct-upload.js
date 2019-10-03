@@ -21,7 +21,7 @@ export default class DocflowDirectUpload {
    */
   getDirectUploadsPath() {
     if (this.options.directUploadsPath) {
-      return this.options.directUploadsPath;
+      return this.options.pathApiDirectUploads;
     } else {
       return CONVENTIONAL_DIRECT_UPLOADS_PATH;
     }
