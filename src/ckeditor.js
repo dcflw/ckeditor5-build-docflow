@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-import ClassicEditorBase from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
+import InlineEditorBase from "@ckeditor/ckeditor5-editor-inline/src/inlineeditor";
 
 import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
 import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
@@ -23,7 +23,7 @@ import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 import DocflowImageUpload from "./plugins/docflow-image-upload/docflow-image-upload";
 import DocflowPlaceholder from "./plugins/docflow-placeholder/docflow-placeholder";
 
-export default class DocflowEditor extends ClassicEditorBase {}
+export default class DocflowEditor extends InlineEditorBase {}
 
 // Plugins to include in the build.
 DocflowEditor.builtinPlugins = [
@@ -49,22 +49,24 @@ DocflowEditor.builtinPlugins = [
 DocflowEditor.defaultConfig = {
   // This value must be kept in sync with the language defined in webpack.config.js.
   language: "en",
-  toolbar: [
-    "bold",
-    "italic",
-    "underline",
-    "strikethrough",
-    "|",
-    "bulletedList",
-    "numberedList",
-    "insertTable",
-    "insertPlaceholder",
-    "link",
-    "imageUpload",
-    "|",
-    "undo",
-    "redo",
-  ],
+  toolbar: {
+    items: [
+      "bold",
+      "italic",
+      "underline",
+      "strikethrough",
+      "|",
+      "bulletedList",
+      "numberedList",
+      "insertTable",
+      "insertPlaceholder",
+      "link",
+      "imageUpload",
+      "|",
+      "undo",
+      "redo",
+    ],
+  },
   image: {
     styles: ["alignLeft", "alignRight", "full"],
     toolbar: [
