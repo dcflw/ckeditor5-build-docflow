@@ -1,28 +1,29 @@
 {
   "name": "@docflow/ckeditor5-build-docflow",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Docflow build of CKEditor 5",
   "main": "./build/ckeditor.js",
   "files": [
     "build"
   ],
   "devDependencies": {
-    "@ckeditor/ckeditor5-basic-styles": "^11.1.4",
-    "@ckeditor/ckeditor5-core": "^12.3.0",
+    "@ckeditor/ckeditor5-basic-styles": "^15.0.0",
+    "@ckeditor/ckeditor5-core": "^15.0.0",
     "@ckeditor/ckeditor5-dev-utils": "^12.0.0",
     "@ckeditor/ckeditor5-dev-webpack-plugin": "^8.0.0",
-    "@ckeditor/ckeditor5-editor-classic": "^12.1.4",
-    "@ckeditor/ckeditor5-essentials": "^11.0.5",
-    "@ckeditor/ckeditor5-image": "^14.0.0",
-    "@ckeditor/ckeditor5-link": "^11.1.2",
-    "@ckeditor/ckeditor5-list": "^12.1.0",
-    "@ckeditor/ckeditor5-paragraph": "^11.0.5",
-    "@ckeditor/ckeditor5-paste-from-office": "^11.1.0",
-    "@ckeditor/ckeditor5-table": "^14.0.0",
-    "@ckeditor/ckeditor5-theme-lark": "^14.2.0",
-    "@ckeditor/ckeditor5-ui": "^14.0.0",
-    "@ckeditor/ckeditor5-utils": "^14.0.0",
-    "@ckeditor/ckeditor5-widget": "^11.1.0",
+    "@ckeditor/ckeditor5-editor-classic": "^15.0.0",
+    "@ckeditor/ckeditor5-editor-inline": "^15.0.0",
+    "@ckeditor/ckeditor5-essentials": "^15.0.0",
+    "@ckeditor/ckeditor5-image": "^15.0.0",
+    "@ckeditor/ckeditor5-link": "^15.0.0",
+    "@ckeditor/ckeditor5-list": "^15.0.0",
+    "@ckeditor/ckeditor5-paragraph": "^15.0.0",
+    "@ckeditor/ckeditor5-paste-from-office": "^15.0.0",
+    "@ckeditor/ckeditor5-table": "^15.0.0",
+    "@ckeditor/ckeditor5-theme-lark": "^15.0.0",
+    "@ckeditor/ckeditor5-ui": "^15.0.0",
+    "@ckeditor/ckeditor5-utils": "^15.0.0",
+    "@ckeditor/ckeditor5-widget": "^15.0.0",
     "@rails/activestorage": "^6.0.0",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.18.2",
@@ -42,7 +43,7 @@
   "license": "GPL-2.0-or-later",
   "repository": {
     "type": "git",
-    "url": "https://github.com/martijnpieters/ckeditor5-build-docflow.git"
+    "url": "https://github.com/TimStuart/ckeditor5-build-docflow.git"
   },
   "scripts": {
     "build": "webpack --mode production",
