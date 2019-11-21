@@ -189,7 +189,7 @@ export default class DocflowPlaceholderUi extends Plugin {
   }
 
   addClassCkResetAll() {
-    const bodyContainer = document.querySelector("body > .ck-body");
+    const bodyContainer = this.editor.ui.view.body._parentElement;
 
     if (bodyContainer && !bodyContainer.classList.contains("ck-reset_all")) {
       bodyContainer.classList.add("ck-reset_all");
@@ -197,7 +197,7 @@ export default class DocflowPlaceholderUi extends Plugin {
   }
 
   removeClassCkResetAll() {
-    const bodyContainer = document.querySelector("body > .ck-body");
+    const bodyContainer = this.editor.ui.view.body._parentElement;
 
     if (bodyContainer && bodyContainer.classList.contains("ck-reset_all")) {
       bodyContainer.classList.remove("ck-reset_all");
