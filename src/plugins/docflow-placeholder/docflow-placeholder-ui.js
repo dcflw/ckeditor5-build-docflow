@@ -185,7 +185,7 @@ export default class DocflowPlaceholderUi extends Plugin {
       }
     }
 
-    return results.join(" ");
+    return results.join(" ").trim();
   }
 
   addClassCkResetAll() {
