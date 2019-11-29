@@ -161,7 +161,7 @@ export default class DocflowPlaceholderEditing extends Plugin {
     const innerText = viewWriter.createText(name);
 
     viewWriter.insert(viewWriter.createPositionAt(view, 0), innerText);
-    viewWriter.setCustomProperty(CUSTOM_PROPERTY_TYPE, TYPE_VARIABLE, view);
+    viewWriter.setCustomProperty(CUSTOM_PROPERTY_TYPE, TYPE_PLACEHOLDER, view);
     viewWriter.setCustomProperty(CUSTOM_PROPERTY_NAME, name, view);
     viewWriter.setCustomProperty(CUSTOM_PROPERTY_ID, id, view);
 
