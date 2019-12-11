@@ -44,7 +44,7 @@
 
     <script src="../build/ckeditor.js"></script>
     <script>
-      DocflowEditor.create(document.querySelector("#editor"), {
+      CKEDITOR.InlineEditor.create(document.querySelector("#editor"), {
         docflowImageUpload: {
           directUploadsPath:
             "http://localhost:3000/rails/active_storage/direct_uploads",

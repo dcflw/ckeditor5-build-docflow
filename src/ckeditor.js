@@ -3,6 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
+import DecoupledEditorBase from "@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor";
 import InlineEditorBase from "@ckeditor/ckeditor5-editor-inline/src/inlineeditor";
 
 import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
@@ -23,10 +24,10 @@ import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 import DocflowImageUpload from "./plugins/docflow-image-upload/docflow-image-upload";
 import DocflowPlaceholder from "./plugins/docflow-placeholder/docflow-placeholder";
 
-export default class DocflowEditor extends InlineEditorBase {}
+class DecoupledEditor extends DecoupledEditorBase {}
+class InlineEditor extends InlineEditorBase {}
 
-// Plugins to include in the build.
-DocflowEditor.builtinPlugins = [
+const plugins = [
   Essentials,
   Bold,
   DocflowImageUpload,
@@ -45,8 +46,10 @@ DocflowEditor.builtinPlugins = [
   Underline,
 ];
 
-// Editor configuration.
-DocflowEditor.defaultConfig = {
+DecoupledEditor.builtinPlugins = plugins;
+InlineEditor.builtinPlugins = plugins;
+
+const config = {
   // This value must be kept in sync with the language defined in webpack.config.js.
   language: "en",
   toolbar: {
@@ -79,3 +82,8 @@ DocflowEditor.defaultConfig = {
     contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
   },
 };
+
+DecoupledEditor.defaultConfig = config;
+InlineEditor.defaultConfig = config;
+
+export default { DecoupledEditor, InlineEditor };
