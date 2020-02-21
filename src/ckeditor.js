@@ -19,10 +19,13 @@ import List from "@ckeditor/ckeditor5-list/src/list";
 import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
 import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
 import Table from "@ckeditor/ckeditor5-table/src/table";
+import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties";
+import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
 import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 
 import DocflowImageUpload from "./plugins/docflow-image-upload/docflow-image-upload";
 import DocflowPlaceholder from "./plugins/docflow-placeholder/docflow-placeholder";
+import "./ckeditor.css";
 
 class DecoupledEditor extends DecoupledEditorBase {}
 class InlineEditor extends InlineEditorBase {}
@@ -42,6 +45,8 @@ const plugins = [
   PasteFromOffice,
   Strikethrough,
   Table,
+  TableCellProperties,
+  TableProperties,
   TableToolbar,
   Underline,
 ];
@@ -79,7 +84,13 @@ const config = {
     ],
   },
   table: {
-    contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
+    contentToolbar: [
+      "tableColumn",
+      "tableRow",
+      "mergeTableCells",
+      "tableProperties",
+      "tableCellProperties",
+    ],
   },
 };
 
