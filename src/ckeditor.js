@@ -23,6 +23,7 @@ import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperti
 import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
 import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 
+import MultirootEditor from "./editors/multiroot-editor";
 import DocflowImageUpload from "./plugins/docflow-image-upload/docflow-image-upload";
 import DocflowPlaceholder from "./plugins/docflow-placeholder/docflow-placeholder";
 import "./ckeditor.css";
@@ -53,6 +54,7 @@ const plugins = [
 
 DecoupledEditor.builtinPlugins = plugins;
 InlineEditor.builtinPlugins = plugins;
+MultirootEditor.builtinPlugins = plugins;
 
 const config = {
   // This value must be kept in sync with the language defined in webpack.config.js.
@@ -88,13 +90,14 @@ const config = {
       "tableColumn",
       "tableRow",
       "mergeTableCells",
-      "tableProperties",
-      "tableCellProperties",
+      // "tableProperties",
+      // "tableCellProperties",
     ],
   },
 };
 
 DecoupledEditor.defaultConfig = config;
 InlineEditor.defaultConfig = config;
+MultirootEditor.defaultConfig = config;
 
-export default { DecoupledEditor, InlineEditor };
+export default { DecoupledEditor, InlineEditor, MultirootEditor };
