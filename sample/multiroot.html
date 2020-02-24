@@ -17,7 +17,7 @@
   <body>
     <h1>CKEditor 5 – Docflow build (Multiroot)</h1>
 
-    <div id="editor">
+    <div id="editors">
       <div id="toolbar"></div>
 
       <header id="header">
@@ -33,7 +33,7 @@
         <figure class="image image-style-align-right">
           <img
             alt="Picture of a sunlit facade of a Maltan building."
-            src="../../../../assets/img/malta.jpg"
+            src="https://ckeditor5.github.io/docs/nightly/ckeditor5/latest/assets/img/malta.jpg"
           />
           <figcaption>It's siesta time in Valletta.</figcaption>
         </figure>
@@ -54,22 +54,13 @@
         </p>
       </div>
 
-      <div class="demo-row">
-        <div class="demo-row__half">
-          <div id="footer-left">
-            <h3>The three greatest things you learn from traveling</h3>
-            <p><a href="#">Find out more</a></p>
-          </div>
-        </div>
-
-        <div class="demo-row__half">
-          <div id="footer-right">
-            <h3>Walking the capitals of Europe: Warsaw</h3>
-            <p><a href="#">Find out more</a></p>
-          </div>
-        </div>
+      <div id="footer">
+        <h3>The three greatest things you learn from traveling</h3>
+        <p><a href="#">Find out more</a></p>
       </div>
     </div>
+
+    <button id="button-new-editor" type="button">Add new editor</button>
 
     <script src="../build/ckeditor.js"></script>
     <script>
@@ -77,8 +68,7 @@
         {
           header: document.querySelector("#header"),
           content: document.querySelector("#content"),
-          footerleft: document.querySelector("#footer-left"),
-          footerright: document.querySelector("#footer-right"),
+          footer: document.querySelector("#footer"),
         },
         {
           docflowImageUpload: {
@@ -90,12 +80,7 @@
             formComponentProps: {},
             variableLabels: {},
           },
-          placeholder: {
-            header: "Header text goes here",
-            content: "Type content here",
-            footerleft: "Left footer content",
-            footerright: "Right footer content",
-          },
+          placeholder: {},
         },
       )
         .then(editor => {
@@ -107,6 +92,18 @@
         })
         .catch(err => {
           console.error(err, err.stack);
+        });
+
+      document
+        .querySelector("#button-new-editor")
+        .addEventListener("click", () => {
+          const editors = document.querySelector("#editors");
+          const newEditor = document.createElement("div");
+
+          newEditor.innerHTML = "<p><strong>I am a new editor.</strong> 👷</p>";
+
+          editors.appendChild(newEditor);
+          window.editor.addRoot(`node-${Date.now()}`, newEditor);
         });
     </script>
   </body>
