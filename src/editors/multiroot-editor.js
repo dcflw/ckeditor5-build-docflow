@@ -41,12 +41,10 @@ class MultirootEditor extends Editor {
       this.model.document.createRoot("$root", rootName);
     }
 
-    this.uiView = new MultirootEditorUIView(
-      this.locale,
-      this.editing.view,
-      sourceElements,
+    this.ui = new MultirootEditorUI(
+      this,
+      new MultirootEditorUIView(this.locale, this.editing.view, sourceElements),
     );
-    this.ui = new MultirootEditorUI(this, this.uiView);
   }
 
   /**
@@ -77,9 +75,19 @@ class MultirootEditor extends Editor {
   addRoot(rootName, sourceElement) {
     this.model.document.createRoot("$root", rootName);
     this.ui.createEditableView(rootName, sourceElement);
-    this.data.set({
+    this.setData({
       [rootName]: getDataFromElement(sourceElement),
     });
+  }
+
+  removeRoot(rootName) {
+    const data = this.getData({ rootName });
+    const editableElement = this.ui.getEditableElement(rootName);
+
+    this.ui.removeEditableView(rootName);
+    this.model.document.roots.remove(rootName);
+
+    setDataInElement(editableElement, data);
   }
 
   /**

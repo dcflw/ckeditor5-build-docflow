@@ -42,10 +42,7 @@ export default class MultirootEditorUIView extends EditorUIView {
 
     // Create InlineEditableUIView instance for each editable.
     for (const editableName of Object.keys(editableElements)) {
-      this.createEditableUIView(
-        editableName,
-        editableElements[editableName],
-      );
+      this.createEditableUIView(editableName, editableElements[editableName]);
     }
 
     // This toolbar may be placed anywhere in the page so things like font size need to be reset in it.
@@ -60,19 +57,31 @@ export default class MultirootEditorUIView extends EditorUIView {
     });
   }
 
-  createEditableUIView(name, element) {
+  createEditableUIView(rootName, sourceElement) {
     const editable = new InlineEditableUIView(
       this.locale,
       this.editingView,
-      element,
+      sourceElement,
     );
 
-    editable.name = name;
+    editable.name = rootName;
 
     this.editables.push(editable);
     this.registerChild(editable);
 
     return editable;
+  }
+
+  removeEditable(rootName) {
+    const editable = this.editables.find(e => e.name === rootName);
+
+    if (editable) {
+      const index = this.editables.indexOf(editable);
+
+      this.deregisterChild(editable);
+      this.editables.splice(index, 1);
+      editable.destroy();
+    }
   }
 
   /**

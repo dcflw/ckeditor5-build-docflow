@@ -106,6 +106,18 @@ export default class MultirootEditorUI extends EditorUI {
     this.initEditableView(editableUIView);
   }
 
+  removeEditableView(rootName) {
+    const editingView = this.editor.editing.view;
+    const editableElement = this.getEditableElement(rootName);
+
+    editingView.detachDomRoot(rootName);
+    this.view.removeEditable(rootName);
+    this.focusTracker.remove(editableElement);
+    this._editableElementsMap.delete(rootName);
+
+    editableElement.ckeditorInstance = null;
+  }
+
   initEditableView(editable) {
     const editingView = this.editor.editing.view;
 
