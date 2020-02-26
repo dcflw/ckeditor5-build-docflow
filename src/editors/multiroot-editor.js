@@ -73,10 +73,15 @@ class MultirootEditor extends Editor {
   }
 
   addRoot(rootName, sourceElement) {
+    const data = getDataFromElement(sourceElement);
+
     this.model.document.createRoot("$root", rootName);
     this.ui.createEditableView(rootName, sourceElement);
-    this.setData({
-      [rootName]: getDataFromElement(sourceElement),
+    this.model.enqueueChange("transparent", writer => {
+      const modelRoot = this.model.document.getRoot(rootName);
+
+      writer.remove(writer.createRangeIn(modelRoot));
+      writer.insert(this.data.parse(data, modelRoot), modelRoot, 0);
     });
   }
 
@@ -88,6 +93,10 @@ class MultirootEditor extends Editor {
     this.model.document.roots.remove(rootName);
 
     setDataInElement(editableElement, data);
+  }
+
+  setPlaceholder(rootName, placeholderText) {
+    this.ui.setPlaceholder(rootName, placeholderText);
   }
 
   /**

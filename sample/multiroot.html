@@ -61,6 +61,7 @@
     </div>
 
     <button id="button-new-editor" type="button">Add new editor</button>
+    <button id="button-new-editor-delayed" type="button">Add new editor (after 3s)</button>
 
     <script src="../build/ckeditor.js"></script>
     <script>
@@ -70,17 +71,7 @@
           content: document.querySelector("#content"),
           footer: document.querySelector("#footer"),
         },
-        {
-          docflowImageUpload: {
-            directUploadsPath:
-              "http://localhost:3000/rails/active_storage/direct_uploads",
-          },
-          docflowPlaceholder: {
-            formComponent: null,
-            formComponentProps: {},
-            variableLabels: {},
-          },
-        },
+        {},
       )
         .then(editor => {
           document
@@ -93,16 +84,23 @@
           console.error(err, err.stack);
         });
 
+      const addNewRoot = () => {
+        const editors = document.querySelector("#editors");
+        const newEditor = document.createElement("div");
+
+        newEditor.innerHTML = "<p><strong>I am a new editor.</strong> 👷</p>";
+
+        editors.appendChild(newEditor);
+        window.editor.addRoot(`node-${Date.now()}`, newEditor);
+      };
+
       document
         .querySelector("#button-new-editor")
+        .addEventListener("click", addNewRoot);
+      document
+        .querySelector("#button-new-editor-delayed")
         .addEventListener("click", () => {
-          const editors = document.querySelector("#editors");
-          const newEditor = document.createElement("div");
-
-          newEditor.innerHTML = "<p><strong>I am a new editor.</strong> 👷</p>";
-
-          editors.appendChild(newEditor);
-          window.editor.addRoot(`node-${Date.now()}`, newEditor);
+          setTimeout(addNewRoot, 3000);
         });
     </script>
   </body>

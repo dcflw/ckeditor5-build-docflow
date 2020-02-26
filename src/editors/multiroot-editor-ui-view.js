@@ -72,8 +72,12 @@ export default class MultirootEditorUIView extends EditorUIView {
     return editable;
   }
 
+  getEditable(rootName) {
+    return this.editables.find(e => e.name === rootName);
+  }
+
   removeEditable(rootName) {
-    const editable = this.editables.find(e => e.name === rootName);
+    const editable = this.getEditable(rootName);
 
     if (editable) {
       const index = this.editables.indexOf(editable);

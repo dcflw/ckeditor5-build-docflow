@@ -47,7 +47,7 @@
   },
   "scripts": {
     "build": "webpack --mode production",
-    "watch": "webpack --mode production --watch --info-verbosity verbose",
+    "watch": "webpack --mode development --watch --info-verbosity verbose",
     "preversion": "npm run build; if [ -n \"$(git status src/ckeditor.js build/ --porcelain)\" ]; then git add -u src/ckeditor.js build/ && git commit -m 'Internal: Build.'; fi"
   },
   "prettier": {

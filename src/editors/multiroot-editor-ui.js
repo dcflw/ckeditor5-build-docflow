@@ -118,6 +118,21 @@ export default class MultirootEditorUI extends EditorUI {
     editableElement.ckeditorInstance = null;
   }
 
+  setPlaceholder(rootName, placeholderText) {
+    const editor = this.editor;
+    const editingView = editor.editing.view;
+    const editingRoot = editingView.document.getRoot(rootName);
+
+    if (placeholderText) {
+      enablePlaceholder({
+        view: editingView,
+        element: editingRoot,
+        text: placeholderText,
+        isDirectHost: false,
+      });
+    }
+  }
+
   initEditableView(editable) {
     const editingView = this.editor.editing.view;
 
@@ -182,8 +197,6 @@ export default class MultirootEditorUI extends EditorUI {
    */
   initPlaceholder(editable) {
     const editor = this.editor;
-    const editingView = editor.editing.view;
-    const editingRoot = editingView.document.getRoot(editable.name);
     const sourceElement = this.getEditableElement(editable.name);
 
     const placeholderText =
@@ -193,14 +206,7 @@ export default class MultirootEditorUI extends EditorUI {
         sourceElement.tagName.toLowerCase() === "textarea" &&
         sourceElement.getAttribute("placeholder"));
 
-    if (placeholderText) {
-      enablePlaceholder({
-        view: editingView,
-        element: editingRoot,
-        text: placeholderText,
-        isDirectHost: false,
-      });
-    }
+    this.setPlaceholder(editable.name, placeholderText);
   }
 
   /**
