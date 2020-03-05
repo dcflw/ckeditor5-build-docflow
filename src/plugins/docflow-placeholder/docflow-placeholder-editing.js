@@ -89,8 +89,6 @@ export default class DocflowPlaceholderEditing extends Plugin {
           const name = viewElement.getChild(0).data;
           const id = viewElement.getAttribute("data-uuid");
 
-          console.log("view-to-model converter", name);
-
           return modelWriter.createElement(TYPE_PLACEHOLDER, { name, id });
         },
       })
@@ -160,8 +158,6 @@ export default class DocflowPlaceholderEditing extends Plugin {
     if (editorView) {
       attributes["class"] = "placeholder";
     }
-
-    console.log("createViewPlaceholder", name);
 
     const view = viewWriter.createContainerElement("span", attributes);
     const innerText = viewWriter.createText(name);
