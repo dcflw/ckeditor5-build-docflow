@@ -57,12 +57,14 @@ export default class DocflowPlaceholderEditing extends Plugin {
     const schema = this.editor.model.schema;
 
     schema.register(TYPE_PLACEHOLDER, {
+      allowIn: "tableCell",
       allowWhere: "$text",
       isInline: true,
       isObject: true,
       allowAttributes: [ATTRIBUTE_ID, ATTRIBUTE_NAME],
     });
     schema.register(TYPE_VARIABLE, {
+      allowIn: "tableCell",
       allowWhere: "$text",
       isInline: true,
       isObject: true,
@@ -86,6 +88,8 @@ export default class DocflowPlaceholderEditing extends Plugin {
         model: (viewElement, modelWriter) => {
           const name = viewElement.getChild(0).data;
           const id = viewElement.getAttribute("data-uuid");
+
+          console.log("view-to-model converter", name);
 
           return modelWriter.createElement(TYPE_PLACEHOLDER, { name, id });
         },
@@ -156,6 +160,8 @@ export default class DocflowPlaceholderEditing extends Plugin {
     if (editorView) {
       attributes["class"] = "placeholder";
     }
+
+    console.log("createViewPlaceholder", name);
 
     const view = viewWriter.createContainerElement("span", attributes);
     const innerText = viewWriter.createText(name);
