@@ -32,7 +32,6 @@ export default class DocflowPlaceholderUi extends Plugin {
       );
 
       this.balloon = editor.plugins.get(ContextualBalloon);
-      this.isBalloonVisible = false;
       this.reactView = new ReactView(editor.locale, formComponent, {
         ...formComponentProps,
         onSelectPlaceholder: this.handleInsertPlaceholder.bind(this),
@@ -84,23 +83,30 @@ export default class DocflowPlaceholderUi extends Plugin {
     }
 
     this.reactView.updateProps(props);
+
+    if (this.balloon.hasView(this.reactView)) {
+      this.balloon.remove(this.reactView);
+    }
+
     this.balloon.add({
       singleViewModel: true,
       view: this.reactView,
       position: this.getBalloonPositionData(),
-    });
-    this.isBalloonVisible = true;
+    })
 
     this.removeClassCkResetAll();
+    this.balloon.updatePosition();
   }
 
   hideBalloon() {
-    if (this.isBalloonVisible) {
+    if (this.isBalloonVisible()) {
       this.balloon.remove(this.reactView);
-      this.isBalloonVisible = false;
-
       this.addClassCkResetAll();
     }
+  }
+
+  isBalloonVisible() {
+    return this.balloon.visibleView === this.reactView;
   }
 
   addToolbarButton() {
@@ -121,22 +127,17 @@ export default class DocflowPlaceholderUi extends Plugin {
 
   enableUserBalloonInteractions() {
     const hideBalloonIfNotSelected = () => {
-      if (this.isBalloonVisible && !this.getSelectedPlaceholderElement()) {
+      if (this.isBalloonVisible() && !this.getSelectedPlaceholderElement()) {
         this.hideBalloon();
       }
     };
 
     this.editor.keystrokes.set("esc", (data, cancel) => {
-      if (this.isBalloonVisible) {
+      if (this.isBalloonVisible()) {
         this.hideBalloon();
         cancel();
       }
     });
-
-    this.editor.keystrokes.set("arrowleft", hideBalloonIfNotSelected);
-    this.editor.keystrokes.set("arrowup", hideBalloonIfNotSelected);
-    this.editor.keystrokes.set("arrowright", hideBalloonIfNotSelected);
-    this.editor.keystrokes.set("arrowdown", hideBalloonIfNotSelected);
 
     this.editor.editing.view.document.on("click", () => {
       const element = this.getSelectedPlaceholderElement();
@@ -145,14 +146,14 @@ export default class DocflowPlaceholderUi extends Plugin {
         this.showBalloon(element);
       }
     });
-    this.editor.editing.view.document.selection.on(
-      "change",
-      hideBalloonIfNotSelected,
+
+    this.editor.editing.view.document.selection.on("change", () =>
+      setTimeout(hideBalloonIfNotSelected),
     );
 
     clickOutsideHandler({
       emitter: this.reactView,
-      activator: () => this.isBalloonVisible,
+      activator: () => this.isBalloonVisible(),
       contextElements: [this.balloon.view.element],
       callback: () => this.hideBalloon(),
     });

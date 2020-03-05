@@ -10,8 +10,10 @@ export default class DocflowVariableCommand extends Command {
       const variable = writer.createElement(COMMAND_VARIABLE, params);
 
       editor.model.insertContent(variable);
-      writer.setSelection(variable, "on");
+      writer.setSelectionFocus(variable, "after");
     });
+
+    setTimeout(() => editor.editing.view.focus());
   }
 
   refresh() {
@@ -22,7 +24,6 @@ export default class DocflowVariableCommand extends Command {
       "placeholder",
     );
 
-    // this.isEnabled = isAllowed;
     this.set("isEnabled", isAllowed);
   }
 }
