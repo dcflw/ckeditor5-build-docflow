@@ -57,12 +57,14 @@ export default class DocflowPlaceholderEditing extends Plugin {
     const schema = this.editor.model.schema;
 
     schema.register(TYPE_PLACEHOLDER, {
+      allowIn: "tableCell",
       allowWhere: "$text",
       isInline: true,
       isObject: true,
       allowAttributes: [ATTRIBUTE_ID, ATTRIBUTE_NAME],
     });
     schema.register(TYPE_VARIABLE, {
+      allowIn: "tableCell",
       allowWhere: "$text",
       isInline: true,
       isObject: true,

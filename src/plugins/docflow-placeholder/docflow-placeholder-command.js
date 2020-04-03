@@ -10,8 +10,10 @@ export default class DocflowPlaceholderCommand extends Command {
       const placeholder = writer.createElement(COMMAND_PLACEHOLDER, params);
 
       editor.model.insertContent(placeholder);
-      writer.setSelection(placeholder, "on");
+      writer.setSelectionFocus(placeholder, "after");
     });
+
+    setTimeout(() => editor.editing.view.focus());
   }
 
   refresh() {
@@ -22,7 +24,6 @@ export default class DocflowPlaceholderCommand extends Command {
       "placeholder",
     );
 
-    // this.isEnabled = isAllowed;
     this.set("isEnabled", isAllowed);
   }
 }
