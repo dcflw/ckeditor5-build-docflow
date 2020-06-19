@@ -86,8 +86,12 @@ export default class DocflowPlaceholderEditing extends Plugin {
           },
         },
         model: (viewElement, modelWriter) => {
-          const name = viewElement.getChild(0).data;
           const id = viewElement.getAttribute("data-uuid");
+          let name = "";
+
+          if (viewElement.childCount === 1) {
+            name = viewElement.getChild(0).data;
+          }
 
           return modelWriter.createElement(TYPE_PLACEHOLDER, { name, id });
         },
@@ -100,7 +104,11 @@ export default class DocflowPlaceholderEditing extends Plugin {
           },
         },
         model: (viewElement, modelWriter) => {
-          const name = viewElement.getChild(0).data;
+          let name = "ERROR";
+
+          if (viewElement.childCount === 1) {
+            name = viewElement.getChild(0).data;
+          }
 
           return modelWriter.createElement(TYPE_VARIABLE, { name });
         },
