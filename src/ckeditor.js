@@ -20,6 +20,7 @@ import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
 import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
 import Table from "@ckeditor/ckeditor5-table/src/table";
 import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties";
+import TableKeyboard from "@ckeditor/ckeditor5-table/src/tablekeyboard";
 import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
 import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 
@@ -46,8 +47,9 @@ const plugins = [
   PasteFromOffice,
   Strikethrough,
   Table,
-  TableCellProperties,
-  TableProperties,
+  // TableCellProperties,
+  TableKeyboard,
+  // TableProperties,
   TableToolbar,
   Underline,
 ];
