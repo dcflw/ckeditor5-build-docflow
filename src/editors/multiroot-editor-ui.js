@@ -42,7 +42,6 @@ export default class MultirootEditorUI extends EditorUI {
    */
   init() {
     const view = this.view;
-    const editor = this.editor;
 
     view.render();
 
