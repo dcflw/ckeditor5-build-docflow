@@ -26,6 +26,7 @@ import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 
 import MultirootEditor from "./editors/multiroot-editor";
 import DocflowImageUpload from "./plugins/docflow-image-upload/docflow-image-upload";
+import DocflowLink from "./plugins/docflow-link/docflow-link";
 import DocflowPlaceholder from "./plugins/docflow-placeholder/docflow-placeholder";
 import "./ckeditor.css";
 
@@ -37,6 +38,7 @@ const plugins = [
   Bold,
   DocflowImageUpload,
   DocflowPlaceholder,
+  DocflowLink,
   Image,
   ImageStyle,
   ImageToolbar,
@@ -72,7 +74,7 @@ const config = {
       "numberedList",
       "insertTable",
       "insertPlaceholder",
-      "link",
+      "docflowLink",
       "imageUpload",
       "|",
       "undo",
