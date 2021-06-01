@@ -1,0 +1,17 @@
+.ck-content .internalLink {
+  color: #2c5fd1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: none !important;
+}
+
+.ck-content .internalLink:hover {
+  color: #1f4292;
+  text-decoration: underline;
+  outline: none !important;
+
+}
+
+.ck-content .internalLink::selection {
+  display: none;
+}

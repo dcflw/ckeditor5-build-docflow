@@ -8,6 +8,7 @@ import Widget from "@ckeditor/ckeditor5-widget/src/widget";
 import DocflowLinkCommand, {
 	COMMAND_INTERNAL_LINK,
 } from "./docflow-link-command";
+import "./theme/docflow-link.css";
 
 export const ATTRIBUTE_ID = "id";
 export const ATTRIBUTE_NAME = "name";
