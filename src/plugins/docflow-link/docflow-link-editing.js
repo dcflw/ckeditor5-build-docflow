@@ -18,7 +18,7 @@ export const CUSTOM_PROPERTY_ID = "id";
 export const CUSTOM_PROPERTY_NAME = "name";
 export const CUSTOM_PROPERTY_REFERENCE = "reference";
 export const CUSTOM_PROPERTY_TYPE = "type";
-export const TYPE_INTERNAL_LINK = "internalLink"
+export const TYPE_INTERNAL_LINK = "InternalLink"
 
 export default class DocflowLinkEditing extends Plugin {
 	static get requires() {
@@ -72,7 +72,7 @@ export default class DocflowLinkEditing extends Plugin {
 					},
 				},
 				model: (viewElement, modelWriter) => {
-					const id = viewElement.getAttribute("data-reference-id");
+					const id = viewElement.getAttribute("data-reference-uuid");
 					const reference = viewElement.getAttribute("data-reference-type");
 					let name = "";
 
@@ -116,7 +116,7 @@ export default class DocflowLinkEditing extends Plugin {
 
 		const attributes = {
 			"data-docflow-type": TYPE_INTERNAL_LINK,
-			"data-reference-id": id,
+			"data-reference-uuid": id,
 			"data-reference-type": reference,
 		};
 

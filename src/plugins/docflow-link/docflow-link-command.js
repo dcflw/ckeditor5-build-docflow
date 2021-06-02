@@ -1,6 +1,6 @@
 import Command from "@ckeditor/ckeditor5-core/src/command";
 
-export const COMMAND_INTERNAL_LINK = "internalLink";
+export const COMMAND_INTERNAL_LINK = "InternalLink";
 
 export default class DocflowLinkCommand extends Command {
   execute(params) {
@@ -21,7 +21,7 @@ export default class DocflowLinkCommand extends Command {
     const selection = model.document.selection;
     const isAllowed = model.schema.checkChild(
       selection.focus.parent,
-      "internalLink",
+      "InternalLink",
     );
 
     this.set("isEnabled", isAllowed);
