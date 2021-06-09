@@ -46,6 +46,10 @@ export default class DocflowLinkUI extends Plugin {
         tooltip: true,
       });
 
+      const labels = this.editor.config.get(
+        `${CONFIG_NAMESPACE}.labels`,
+      );
+
       const items = new Collection();
 
       items.add({
@@ -53,7 +57,7 @@ export default class DocflowLinkUI extends Plugin {
         model: new Model({
           id: 'internal-link',
           withText: true,
-          label: 'Internal link'
+          label: labels['internal_link']
         })
       });
       items.add({
@@ -61,7 +65,7 @@ export default class DocflowLinkUI extends Plugin {
         model: new Model({
           id: 'external-link',
           withText: true,
-          label: 'External link'
+          label: labels['external_link']
         })
       });
 
