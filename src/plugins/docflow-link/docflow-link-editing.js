@@ -37,7 +37,7 @@ export default class DocflowLinkEditing extends Plugin {
     this.editor.editing.mapper.on(
       "viewToModelPosition",
       viewToModelPositionOutsideModelElement(this.editor.model, viewElement =>
-        viewElement.hasClass(TYPE_INTERNAL_LINK),
+        viewElement.hasClass("internalLink"),
       ),
     );
     this.editor.config.define(CONFIG_NAMESPACE, {
