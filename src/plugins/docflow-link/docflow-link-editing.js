@@ -19,6 +19,7 @@ export const CUSTOM_PROPERTY_NAME = "name";
 export const CUSTOM_PROPERTY_REFERENCE = "reference";
 export const CUSTOM_PROPERTY_TYPE = "type";
 export const TYPE_INTERNAL_LINK = "InternalLink"
+export const TYPE_MISSING_REFERENCE = "MissingReference"
 
 export default class DocflowLinkEditing extends Plugin {
   static get requires() {
@@ -50,6 +51,14 @@ export default class DocflowLinkEditing extends Plugin {
     const schema = this.editor.model.schema;
 
     schema.register(TYPE_INTERNAL_LINK, {
+      allowIn: "tableCell",
+      allowWhere: "$text",
+      isInline: true,
+      isObject: true,
+      allowAttributes: [ATTRIBUTE_ID, ATTRIBUTE_NAME, ATTRIBUTE_REFERENCE],
+    });
+
+    schema.register(TYPE_MISSING_REFERENCE, {
       allowIn: "tableCell",
       allowWhere: "$text",
       isInline: true,
@@ -107,6 +116,37 @@ export default class DocflowLinkEditing extends Plugin {
         model: TYPE_INTERNAL_LINK,
         view: this.createViewInternalLink,
       });
+
+    // view-to-model converter (Missing Reference)
+    conversion
+      .for("upcast")
+      .elementToElement({
+        view: {
+          name: "span",
+          class: "missing-reference"
+        },
+        model: (viewElement, modelWriter) => {
+          let name = "";
+
+          if (viewElement.childCount === 1) {
+            name = viewElement.getChild(0).data;
+          }
+
+          return modelWriter.createElement(TYPE_MISSING_REFERENCE, { name });
+        },
+      });
+
+    // model-to-view converter (Missing Reference)
+    conversion
+      .for("editingDowncast")
+    .elementToElement({
+        model: TYPE_MISSING_REFERENCE,
+        view: (modelItem, viewWriter) => {
+          const widgetElement = this.createMissingReference(modelItem, viewWriter);
+
+          return toWidget(widgetElement, viewWriter);
+        },
+      });
   }
 
   createViewInternalLink(modelItem, viewWriter, editorView = false) {
@@ -132,6 +172,23 @@ export default class DocflowLinkEditing extends Plugin {
     viewWriter.setCustomProperty(CUSTOM_PROPERTY_NAME, name, view);
     viewWriter.setCustomProperty(CUSTOM_PROPERTY_ID, id, view);
     viewWriter.setCustomProperty(CUSTOM_PROPERTY_REFERENCE, reference, view);
+
+    return view;
+  }
+
+  createMissingReference(modelItem, viewWriter) {
+    const name = modelItem.getAttribute("name");
+
+    const attributes = {
+      class: "missing-reference"
+    };
+
+    const view = viewWriter.createContainerElement("span", attributes);
+    const innerText = viewWriter.createText(name);
+
+    viewWriter.insert(viewWriter.createPositionAt(view, 0), innerText);
+    viewWriter.setCustomProperty(CUSTOM_PROPERTY_TYPE, TYPE_MISSING_REFERENCE, view);
+    viewWriter.setCustomProperty(CUSTOM_PROPERTY_NAME, name, view);
 
     return view;
   }
