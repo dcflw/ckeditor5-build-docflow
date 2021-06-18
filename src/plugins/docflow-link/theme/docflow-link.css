@@ -15,3 +15,9 @@
 .ck-content .internalLink::selection {
   display: none;
 }
+
+.missing-reference {
+  color: #c6002a;
+  outline: none !important;
+  font-weight: bold;
+}
