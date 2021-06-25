@@ -19,6 +19,7 @@ export const CONFIG_NAMESPACE = "docflowPlaceholder";
 export const CUSTOM_PROPERTY_ID = "id";
 export const CUSTOM_PROPERTY_NAME = "name";
 export const CUSTOM_PROPERTY_TYPE = "type";
+export const CUSTOM_PROPERTY_PLACEHOLDER_TYPE = "placeholderType";
 export const TYPE_PLACEHOLDER = "placeholder";
 export const TYPE_VARIABLE = "variable";
 
@@ -87,13 +88,13 @@ export default class DocflowPlaceholderEditing extends Plugin {
         },
         model: (viewElement, modelWriter) => {
           const id = viewElement.getAttribute("data-uuid");
+          const placeholderType = viewElement.getAttribute("data-placeholder-type")
           let name = "";
 
           if (viewElement.childCount === 1) {
             name = viewElement.getChild(0).data;
           }
-
-          return modelWriter.createElement(TYPE_PLACEHOLDER, { name, id });
+          return modelWriter.createElement(TYPE_PLACEHOLDER, { name, id, placeholderType });
         },
       })
       .elementToElement({
@@ -158,15 +159,16 @@ export default class DocflowPlaceholderEditing extends Plugin {
   createViewPlaceholder(modelItem, viewWriter, editorView = false) {
     const name = modelItem.getAttribute("name");
     const id = modelItem.getAttribute("id");
+    const placeholderType = modelItem.getAttribute("placeholderType");
     const attributes = {
       "data-redactor-type": TYPE_PLACEHOLDER,
       "data-uuid": id,
+      "data-placeholder-type": placeholderType
     };
 
     if (editorView) {
       attributes["class"] = "placeholder";
     }
-
     const view = viewWriter.createContainerElement("span", attributes);
     const innerText = viewWriter.createText(name);
 
@@ -174,6 +176,7 @@ export default class DocflowPlaceholderEditing extends Plugin {
     viewWriter.setCustomProperty(CUSTOM_PROPERTY_TYPE, TYPE_PLACEHOLDER, view);
     viewWriter.setCustomProperty(CUSTOM_PROPERTY_NAME, name, view);
     viewWriter.setCustomProperty(CUSTOM_PROPERTY_ID, id, view);
+    viewWriter.setCustomProperty(CUSTOM_PROPERTY_PLACEHOLDER_TYPE, placeholderType, view);
 
     return view;
   }
