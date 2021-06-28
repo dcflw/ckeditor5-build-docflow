@@ -147,6 +147,14 @@ export default class DocflowLinkEditing extends Plugin {
           return toWidget(widgetElement, viewWriter);
         },
       });
+
+    conversion
+      .for("dataDowncast")
+      .elementToElement({
+        model: TYPE_MISSING_REFERENCE,
+        view: this.createMissingReference,
+      });
+
   }
 
   createViewInternalLink(modelItem, viewWriter, editorView = false) {
@@ -180,7 +188,8 @@ export default class DocflowLinkEditing extends Plugin {
     const name = modelItem.getAttribute("name");
 
     const attributes = {
-      class: "missing-reference"
+      class: "missing-reference",
+      "data-docflow-type": TYPE_MISSING_REFERENCE,
     };
 
     const view = viewWriter.createContainerElement("span", attributes);
