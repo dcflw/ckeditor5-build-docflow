@@ -21,19 +21,29 @@ yarn build
 And run the sample website `sample/index.html`.
 
 ## Use the package (locally) without publishing to NPM
+### Link package using yalc
 Install [yalc](https://www.npmjs.com/package/yalc):
 ```sh
 npm i yalc -g
 ```
 
-Publish the package to the local repository:
+Build and publish the package to the local repository:
 ```sh
-yalc publish
+yarn build && yalc publish
 ```
 
 Go to the project folder where you want to use the package and run:
 ```sh
 yalc link @docflow/ckeditor5-build-docflow
+```
+### Update linked package
+Build and publish the package to the local repository:
+```sh
+yarn build && yalc publish
+```
+Go to the project folder where you are using the package and run:
+```sh
+yalc update
 ```
 
 ## Publish the package to NPM
