@@ -123,7 +123,7 @@ export default class DocflowLinkEditing extends Plugin {
 			.elementToElement( {
 				view: {
 					name: 'span',
-					class: 'missing-reference'
+					classes: [ 'missing-reference' ]
 				},
 				model: ( viewElement, modelWriter ) => {
 					let name = '';
