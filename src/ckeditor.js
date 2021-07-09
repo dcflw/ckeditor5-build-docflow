@@ -26,6 +26,7 @@ import MultirootEditor from './editors/multiroot-editor';
 import DocflowImageUpload from './plugins/docflow-image-upload/docflow-image-upload';
 import DocflowLink from './plugins/docflow-link/docflow-link';
 import DocflowPlaceholder from './plugins/docflow-placeholder/docflow-placeholder';
+import DocflowSanitizePaste from './plugins/docflow-sanitize-paste/docflow-sanitize-paste';
 import './ckeditor.css';
 
 class DecoupledEditor extends DecoupledEditorBase { }
@@ -37,6 +38,7 @@ const plugins = [
 	DocflowImageUpload,
 	DocflowPlaceholder,
 	DocflowLink,
+	DocflowSanitizePaste,
 	Image,
 	ImageStyle,
 	ImageToolbar,
