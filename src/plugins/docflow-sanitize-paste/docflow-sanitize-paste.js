@@ -23,13 +23,15 @@ export default class DocflowSanitizePaste extends Plugin {
 	}
 
 	sanitizeHtml( html ) {
-		const dom = document.createElement( 'div' );
-		dom.innerHTML = html;
-		if ( dom.querySelector( 'google-sheets-html-origin' ) !== null ) {
-			const style = dom.querySelector( 'style[type=\'text/css\'], style:not([type])' );
-			style.parentNode.removeChild( style );
-		}
-
-		return dom.innerHTML;
+		let randomCodes = [
+			'<!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->',
+			'<!--br {mso-data-placement:same-cell;}-->',
+		  ];
+	  
+		  for (let code of randomCodes) {
+			html = html.replace(`<p>${code}</p>`, '').replace(code, '');
+		  }
+	  
+		  return html;
 	}
 }
