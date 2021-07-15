@@ -23,15 +23,14 @@ export default class DocflowSanitizePaste extends Plugin {
 	}
 
 	sanitizeHtml( html ) {
-		let randomCodes = [
+		const randomCodes = [
 			'<!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->',
-			'<!--br {mso-data-placement:same-cell;}-->',
-		  ];
-	  
-		  for (let code of randomCodes) {
-			html = html.replace(`<p>${code}</p>`, '').replace(code, '');
-		  }
-	  
-		  return html;
+			'<!--br {mso-data-placement:same-cell;}-->'
+		];
+		for ( const code of randomCodes ) {
+			html = html.replace( `<p>${ code }</p>`, '' ).replace( code, '' );
+		}
+
+		return html;
 	}
 }
