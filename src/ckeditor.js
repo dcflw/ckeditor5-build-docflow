@@ -6,11 +6,13 @@
 import DecoupledEditorBase from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 import InlineEditorBase from '@ckeditor/ckeditor5-editor-inline/src/inlineeditor';
 
+import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
+import Font from '@ckeditor/ckeditor5-font/src/font';
 import Image from '@ckeditor/ckeditor5-image/src/image';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
@@ -18,6 +20,7 @@ import Link from '@ckeditor/ckeditor5-link/src/link';
 import List from '@ckeditor/ckeditor5-list/src/list';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
+import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableKeyboard from '@ckeditor/ckeditor5-table/src/tablekeyboard';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
@@ -34,11 +37,13 @@ class InlineEditor extends InlineEditorBase { }
 
 const plugins = [
 	Essentials,
+	Alignment,
 	Bold,
 	DocflowImageUpload,
 	DocflowPlaceholder,
 	DocflowLink,
 	DocflowSanitizePaste,
+	Font,
 	Image,
 	ImageStyle,
 	ImageToolbar,
@@ -47,6 +52,7 @@ const plugins = [
 	List,
 	Paragraph,
 	PasteFromOffice,
+	RemoveFormat,
 	Strikethrough,
 	Table,
 	// TableCellProperties,

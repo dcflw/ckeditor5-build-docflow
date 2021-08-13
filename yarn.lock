@@ -773,6 +773,14 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@ckeditor/ckeditor5-alignment@^20.0.0":
+  version "20.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-alignment/-/ckeditor5-alignment-20.0.0.tgz#504927ba5fb59d0a822e9a4bc8d4601a70f0e1c8"
+  integrity sha512-LWDRsp1RWAl/qGS2hjYpxTzbX4H3I11eOm1pUB1y0GuweuUzsj1GSGY7nLsKHyKq4eUqM4CTpZfHhKrFCCBEGA==
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^20.0.0"
+    "@ckeditor/ckeditor5-ui" "^20.0.0"
+
 "@ckeditor/ckeditor5-basic-styles@^20.0.0":
   version "20.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-basic-styles/-/ckeditor5-basic-styles-20.0.0.tgz#0d645cbce0d5b4a0f4c983e8c6e8bbc9e268afcf"
@@ -881,6 +889,15 @@
     "@ckeditor/ckeditor5-typing" "^20.0.0"
     "@ckeditor/ckeditor5-undo" "^20.0.0"
 
+"@ckeditor/ckeditor5-font@^20.0.0":
+  version "20.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-font/-/ckeditor5-font-20.0.0.tgz#38beae1447fdb1783a91ea01f93725feadbf774a"
+  integrity sha512-LE3+Aw5oAuFQhmMKpFzW/+9wXNYu4K45+9r5CieSj6aTzaFvujh31BN4T7yferaiGPVflHhxat+YC1mq4pNzfQ==
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^20.0.0"
+    "@ckeditor/ckeditor5-ui" "^20.0.0"
+    "@ckeditor/ckeditor5-utils" "^20.0.0"
+
 "@ckeditor/ckeditor5-image@^20.0.0":
   version "20.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-image/-/ckeditor5-image-20.0.0.tgz#1f0c94557df3100d9298515296be7d89d0dc454e"
@@ -934,6 +951,15 @@
     "@ckeditor/ckeditor5-clipboard" "^20.0.0"
     "@ckeditor/ckeditor5-core" "^20.0.0"
     "@ckeditor/ckeditor5-engine" "^20.0.0"
+
+"@ckeditor/ckeditor5-remove-format@^20.0.0":
+  version "20.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-remove-format/-/ckeditor5-remove-format-20.0.0.tgz#a47b768acd51cd5502fafc50251bf2abfa6885f0"
+  integrity sha512-Li2KLQR6oDJ4puQ8IzMR71CswHPwU/+N7je03+KUHX5UtL8erj6ib5Z2rQtqAhbr9jhh5LK2gTT8FkDCi0Efyw==
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^20.0.0"
+    "@ckeditor/ckeditor5-ui" "^20.0.0"
+    "@ckeditor/ckeditor5-utils" "^20.0.0"
 
 "@ckeditor/ckeditor5-select-all@^20.0.0":
   version "20.0.0"
