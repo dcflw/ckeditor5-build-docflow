@@ -17,8 +17,10 @@ export default class DocflowSanitizePaste extends Plugin {
 			}
 
 			const dataTransfer = data.dataTransfer;
-			const content = this.sanitizeHtml( dataTransfer.getData( 'text/html', true ) );
-			data.content = htmlDataProcessor.toView( content );
+			if ( dataTransfer.types.includes( 'text/html' ) ) {
+				const content = this.sanitizeHtml( dataTransfer.getData( 'text/html', true ) );
+				data.content = htmlDataProcessor.toView( content );
+			}
 		} );
 	}
 
