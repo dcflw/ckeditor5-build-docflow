@@ -8,7 +8,6 @@ export default class DocflowPlaceholderCommand extends Command {
 
 		editor.model.change( writer => {
 			const placeholder = writer.createElement( COMMAND_PLACEHOLDER, params );
-
 			editor.model.insertContent( placeholder );
 			writer.setSelectionFocus( placeholder, 'after' );
 		} );
