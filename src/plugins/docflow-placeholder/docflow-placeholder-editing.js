@@ -8,6 +8,9 @@ import Widget from '@ckeditor/ckeditor5-widget/src/widget';
 import DocflowPlaceholderCommand, {
 	COMMAND_PLACEHOLDER
 } from './docflow-placeholder-command';
+import DocflowEditPlaceholderCommand, {
+	COMMAND_EDIT_PLACEHOLDER
+} from './docflow-edit-placeholder-command';
 import DocflowVariableCommand, {
 	COMMAND_VARIABLE
 } from './docflow-variable-command';
@@ -35,6 +38,11 @@ export default class DocflowPlaceholderEditing extends Plugin {
 		this.editor.commands.add(
 			COMMAND_PLACEHOLDER,
 			new DocflowPlaceholderCommand( this.editor )
+		);
+
+		this.editor.commands.add(
+			COMMAND_EDIT_PLACEHOLDER,
+			new DocflowEditPlaceholderCommand( this.editor )
 		);
 		this.editor.commands.add(
 			COMMAND_VARIABLE,
@@ -141,7 +149,8 @@ export default class DocflowPlaceholderEditing extends Plugin {
 
 					return toWidget( widgetElement, viewWriter );
 				}
-			} );
+			} )
+			.add( dispatcher => dispatcher.on( 'attribute:name', this.editViewPlaceholder ) );
 
 		// model-to-view converter (data)
 		conversion
@@ -153,11 +162,28 @@ export default class DocflowPlaceholderEditing extends Plugin {
 			.elementToElement( {
 				model: TYPE_VARIABLE,
 				view: this.createViewVariable
-			} );
+			} )
+			.add( dispatcher => dispatcher.on( 'attribute:name', this.editViewPlaceholder ) );
+	}
+
+	editViewPlaceholder( evt, data, conversionApi ) {
+		conversionApi.consumable.consume( data.item, 'attribute' );
+		const modelElement = data.item;
+		// Mark element as consumed by conversion.
+		conversionApi.consumable.consume( data.item, evt.name );
+
+		// Get mapped view element to update.
+		const viewElement = conversionApi.mapper.toViewElement( modelElement );
+
+		// remove placeholder
+		conversionApi.writer.remove( viewElement.getChild( 0 ) );
+
+		// Set new placeholder content
+		const placeholder = conversionApi.writer.createText( data.attributeNewValue || '' );
+		conversionApi.writer.insert( conversionApi.writer.createPositionAt( viewElement, 0 ), placeholder );
 	}
 
 	createViewPlaceholder( modelItem, viewWriter, editorView = false ) {
-		const name = modelItem.getAttribute( 'name' );
 		const id = modelItem.getAttribute( 'id' );
 		const placeholderType = modelItem.getAttribute( 'placeholderType' );
 		const attributes = {
@@ -166,7 +192,16 @@ export default class DocflowPlaceholderEditing extends Plugin {
 			'data-placeholder-type': placeholderType
 		};
 
+		let name = '';
 		if ( editorView ) {
+			const placeholders = this.editor.config.get(
+				`${ CONFIG_NAMESPACE }.placeholders`
+			);
+			const placeholder = placeholders.find( placeholder => placeholder.id === id );
+
+			if ( placeholder ) {
+				name = placeholder.name;
+			}
 			attributes.class = 'placeholder';
 		}
 		const view = viewWriter.createContainerElement( 'span', attributes );
