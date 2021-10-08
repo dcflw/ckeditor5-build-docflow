@@ -18,6 +18,7 @@ import './theme/docflow-placeholder.css';
 
 export const ATTRIBUTE_ID = 'id';
 export const ATTRIBUTE_NAME = 'name';
+export const ATTRIBUTE_PLACEHOLDER_TYPE = 'placeholderType';
 export const CONFIG_NAMESPACE = 'docflowPlaceholder';
 export const CUSTOM_PROPERTY_ID = 'id';
 export const CUSTOM_PROPERTY_NAME = 'name';
@@ -70,7 +71,11 @@ export default class DocflowPlaceholderEditing extends Plugin {
 			allowWhere: '$text',
 			isInline: true,
 			isObject: true,
-			allowAttributes: [ ATTRIBUTE_ID, ATTRIBUTE_NAME ]
+			allowAttributes: [
+				ATTRIBUTE_ID,
+				ATTRIBUTE_NAME,
+				ATTRIBUTE_PLACEHOLDER_TYPE
+			]
 		} );
 		schema.register( TYPE_VARIABLE, {
 			allowIn: 'tableCell',
@@ -96,13 +101,19 @@ export default class DocflowPlaceholderEditing extends Plugin {
 				},
 				model: ( viewElement, modelWriter ) => {
 					const id = viewElement.getAttribute( 'data-uuid' );
-					const placeholderType = viewElement.getAttribute( 'data-placeholder-type' );
+					const placeholderType = viewElement.getAttribute(
+						'data-placeholder-type'
+					);
 					let name = '';
 
 					if ( viewElement.childCount === 1 ) {
 						name = viewElement.getChild( 0 ).data;
 					}
-					return modelWriter.createElement( TYPE_PLACEHOLDER, { name, id, placeholderType } );
+					return modelWriter.createElement( TYPE_PLACEHOLDER, {
+						name,
+						id,
+						placeholderType
+					} );
 				}
 			} )
 			.elementToElement( {
@@ -211,7 +222,11 @@ export default class DocflowPlaceholderEditing extends Plugin {
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_TYPE, TYPE_PLACEHOLDER, view );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_NAME, name, view );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_ID, id, view );
-		viewWriter.setCustomProperty( CUSTOM_PROPERTY_PLACEHOLDER_TYPE, placeholderType, view );
+		viewWriter.setCustomProperty(
+			CUSTOM_PROPERTY_PLACEHOLDER_TYPE,
+			placeholderType,
+			view
+		);
 
 		return view;
 	}

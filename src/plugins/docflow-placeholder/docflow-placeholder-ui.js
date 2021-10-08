@@ -43,8 +43,8 @@ export default class DocflowPlaceholderUi extends Plugin {
 		}
 	}
 
-	handleInsertPlaceholder( id, name ) {
-		this.editor.execute( COMMAND_PLACEHOLDER, { name, id } );
+	handleInsertPlaceholder( id, name, placeholderType ) {
+		this.editor.execute( COMMAND_PLACEHOLDER, { name, id, placeholderType } );
 	}
 
 	handleInsertVariable( name ) {
