@@ -99,7 +99,7 @@ export default class DocflowPlaceholderEditing extends Plugin {
 						'data-redactor-type': TYPE_PLACEHOLDER
 					}
 				},
-				model: ( viewElement, modelWriter ) => {
+				model: ( viewElement, modelConversionApi ) => {
 					const id = viewElement.getAttribute( 'data-uuid' );
 					const placeholderType = viewElement.getAttribute(
 						'data-placeholder-type'
@@ -109,7 +109,7 @@ export default class DocflowPlaceholderEditing extends Plugin {
 					if ( viewElement.childCount === 1 ) {
 						name = viewElement.getChild( 0 ).data;
 					}
-					return modelWriter.createElement( TYPE_PLACEHOLDER, {
+					return modelConversionApi.writer.createElement( TYPE_PLACEHOLDER, {
 						name,
 						id,
 						placeholderType
@@ -123,14 +123,14 @@ export default class DocflowPlaceholderEditing extends Plugin {
 						'data-redactor-type': TYPE_VARIABLE
 					}
 				},
-				model: ( viewElement, modelWriter ) => {
+				model: ( viewElement, modelConversionApi ) => {
 					let name = 'ERROR';
 
 					if ( viewElement.childCount === 1 ) {
 						name = viewElement.getChild( 0 ).data;
 					}
 
-					return modelWriter.createElement( TYPE_VARIABLE, { name } );
+					return modelConversionApi.writer.createElement( TYPE_VARIABLE, { name } );
 				}
 			} );
 
@@ -139,26 +139,26 @@ export default class DocflowPlaceholderEditing extends Plugin {
 			.for( 'editingDowncast' )
 			.elementToElement( {
 				model: TYPE_PLACEHOLDER,
-				view: ( modelItem, viewWriter ) => {
+				view: ( modelItem, viewConversionApi ) => {
 					const widgetElement = this.createViewPlaceholder(
 						modelItem,
-						viewWriter,
+						viewConversionApi,
 						true
 					);
 
-					return toWidget( widgetElement, viewWriter );
+					return toWidget( widgetElement, viewConversionApi.writer );
 				}
 			} )
 			.elementToElement( {
 				model: TYPE_VARIABLE,
-				view: ( modelItem, viewWriter ) => {
+				view: ( modelItem, viewConversionApi ) => {
 					const widgetElement = this.createViewVariable(
 						modelItem,
-						viewWriter,
+						viewConversionApi,
 						true
 					);
 
-					return toWidget( widgetElement, viewWriter );
+					return toWidget( widgetElement, viewConversionApi.writer );
 				}
 			} )
 			.add( dispatcher => dispatcher.on( 'attribute:name', this.editViewPlaceholder ) );
@@ -196,7 +196,8 @@ export default class DocflowPlaceholderEditing extends Plugin {
 		}
 	}
 
-	createViewPlaceholder( modelItem, viewWriter, editorView = false ) {
+	createViewPlaceholder( modelItem, viewConversionApi, editorView = false ) {
+		const viewWriter = viewConversionApi.writer;
 		const id = modelItem.getAttribute( 'id' );
 		const placeholderType = modelItem.getAttribute( 'placeholderType' );
 		const attributes = {
@@ -233,7 +234,8 @@ export default class DocflowPlaceholderEditing extends Plugin {
 		return view;
 	}
 
-	createViewVariable( modelItem, viewWriter, editorView = false ) {
+	createViewVariable( modelItem, viewConversionApi, editorView = false ) {
+		const viewWriter = viewConversionApi.writer;
 		const name = modelItem.getAttribute( 'name' );
 		const attributes = {
 			'data-redactor-type': TYPE_VARIABLE
