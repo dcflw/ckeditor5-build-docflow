@@ -178,20 +178,22 @@ export default class DocflowPlaceholderEditing extends Plugin {
 	}
 
 	editViewPlaceholder( evt, data, conversionApi ) {
-		conversionApi.consumable.consume( data.item, 'attribute' );
-		const modelElement = data.item;
-		// Mark element as consumed by conversion.
-		conversionApi.consumable.consume( data.item, evt.name );
+		if ( data.item && data.item.name === TYPE_PLACEHOLDER ) {
+			conversionApi.consumable.consume( data.item, 'attribute' );
+			const modelElement = data.item;
+			// Mark element as consumed by conversion.
+			conversionApi.consumable.consume( data.item, evt.name );
 
-		// Get mapped view element to update.
-		const viewElement = conversionApi.mapper.toViewElement( modelElement );
+			// Get mapped view element to update.
+			const viewElement = conversionApi.mapper.toViewElement( modelElement );
 
-		// remove placeholder
-		conversionApi.writer.remove( viewElement.getChild( 0 ) );
+			// remove placeholder
+			conversionApi.writer.remove( viewElement.getChild( 0 ) );
 
-		// Set new placeholder content
-		const placeholder = conversionApi.writer.createText( data.attributeNewValue || '' );
-		conversionApi.writer.insert( conversionApi.writer.createPositionAt( viewElement, 0 ), placeholder );
+			// Set new placeholder content
+			const placeholder = conversionApi.writer.createText( data.attributeNewValue || '' );
+			conversionApi.writer.insert( conversionApi.writer.createPositionAt( viewElement, 0 ), placeholder );
+		}
 	}
 
 	createViewPlaceholder( modelItem, viewWriter, editorView = false ) {
@@ -208,7 +210,7 @@ export default class DocflowPlaceholderEditing extends Plugin {
 			const placeholders = this.editor.config.get(
 				`${ CONFIG_NAMESPACE }.placeholders`
 			);
-			const placeholder = placeholders.find( placeholder => placeholder.id === id );
+			const placeholder = placeholders && placeholders.find( placeholder => placeholder.id === id );
 
 			if ( placeholder ) {
 				name = placeholder.name;
