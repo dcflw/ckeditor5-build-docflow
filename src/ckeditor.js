@@ -16,8 +16,11 @@ import Font from '@ckeditor/ckeditor5-font/src/font';
 import Image from '@ckeditor/ckeditor5-image/src/image';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
+import Indent from '@ckeditor/ckeditor5-indent/src/indent';
+import IndentBlock from '@ckeditor/ckeditor5-indent/src/indentblock';
 import Link from '@ckeditor/ckeditor5-link/src/link';
 import List from '@ckeditor/ckeditor5-list/src/list';
+import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
@@ -44,12 +47,15 @@ const plugins = [
 	DocflowLink,
 	DocflowSanitizePaste,
 	Font,
+	Indent,
+	IndentBlock,
 	Image,
 	ImageStyle,
 	ImageToolbar,
 	Italic,
 	Link,
 	List,
+	ListStyle,
 	Paragraph,
 	PasteFromOffice,
 	RemoveFormat,
@@ -75,6 +81,9 @@ const config = {
 			'italic',
 			'underline',
 			'strikethrough',
+			'|',
+			'outdent',
+			'indent',
 			'|',
 			'bulletedList',
 			'numberedList',

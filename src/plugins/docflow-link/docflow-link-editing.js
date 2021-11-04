@@ -80,7 +80,7 @@ export default class DocflowLinkEditing extends Plugin {
 						'data-docflow-type': TYPE_INTERNAL_LINK
 					}
 				},
-				model: ( viewElement, modelWriter ) => {
+				model: ( viewElement, modelConversionApi ) => {
 					const id = viewElement.getAttribute( 'data-reference-uuid' );
 					const reference = viewElement.getAttribute( 'data-reference-type' );
 					let name = '';
@@ -89,7 +89,7 @@ export default class DocflowLinkEditing extends Plugin {
 						name = viewElement.getChild( 0 ).data;
 					}
 
-					return modelWriter.createElement( TYPE_INTERNAL_LINK, { id, reference, name } );
+					return modelConversionApi.writer.createElement( TYPE_INTERNAL_LINK, { id, reference, name } );
 				}
 			} );
 
@@ -98,14 +98,14 @@ export default class DocflowLinkEditing extends Plugin {
 			.for( 'editingDowncast' )
 			.elementToElement( {
 				model: TYPE_INTERNAL_LINK,
-				view: ( modelItem, viewWriter ) => {
+				view: ( modelItem, viewConversionApi ) => {
 					const widgetElement = this.createViewInternalLink(
 						modelItem,
-						viewWriter,
+						viewConversionApi,
 						true
 					);
 
-					return toWidget( widgetElement, viewWriter );
+					return toWidget( widgetElement, viewConversionApi.writer );
 				}
 			} );
 
@@ -125,14 +125,14 @@ export default class DocflowLinkEditing extends Plugin {
 					name: 'span',
 					classes: [ 'missing-reference' ]
 				},
-				model: ( viewElement, modelWriter ) => {
+				model: ( viewElement, modelConversionApi ) => {
 					let name = '';
 
 					if ( viewElement.childCount === 1 ) {
 						name = viewElement.getChild( 0 ).data;
 					}
 
-					return modelWriter.createElement( TYPE_MISSING_REFERENCE, { name } );
+					return modelConversionApi.writer.createElement( TYPE_MISSING_REFERENCE, { name } );
 				}
 			} );
 
@@ -141,10 +141,10 @@ export default class DocflowLinkEditing extends Plugin {
 			.for( 'editingDowncast' )
 			.elementToElement( {
 				model: TYPE_MISSING_REFERENCE,
-				view: ( modelItem, viewWriter ) => {
-					const widgetElement = this.createMissingReference( modelItem, viewWriter );
+				view: ( modelItem, viewConversionApi ) => {
+					const widgetElement = this.createMissingReference( modelItem, viewConversionApi );
 
-					return toWidget( widgetElement, viewWriter );
+					return toWidget( widgetElement, viewConversionApi.writer );
 				}
 			} );
 
@@ -156,7 +156,8 @@ export default class DocflowLinkEditing extends Plugin {
 			} );
 	}
 
-	createViewInternalLink( modelItem, viewWriter, editorView = false ) {
+	createViewInternalLink( modelItem, conversionApi, editorView = false ) {
+		const viewWriter = conversionApi.writer;
 		const name = modelItem.getAttribute( 'name' );
 		const id = modelItem.getAttribute( 'id' );
 		const reference = modelItem.getAttribute( 'reference' );
@@ -183,7 +184,8 @@ export default class DocflowLinkEditing extends Plugin {
 		return view;
 	}
 
-	createMissingReference( modelItem, viewWriter ) {
+	createMissingReference( modelItem, conversionApi ) {
+		const viewWriter = conversionApi.writer;
 		const name = modelItem.getAttribute( 'name' );
 
 		const attributes = {
