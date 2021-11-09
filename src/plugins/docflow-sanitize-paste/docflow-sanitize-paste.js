@@ -27,7 +27,8 @@ export default class DocflowSanitizePaste extends Plugin {
 	sanitizeHtml( html ) {
 		const randomCodes = [
 			'<!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->',
-			'<!--br {mso-data-placement:same-cell;}-->'
+			'<!--br {mso-data-placement:same-cell;}-->',
+			/color:.*?;/g
 		];
 		for ( const code of randomCodes ) {
 			html = html.replace( `<p>${ code }</p>`, '' ).replace( code, '' );
