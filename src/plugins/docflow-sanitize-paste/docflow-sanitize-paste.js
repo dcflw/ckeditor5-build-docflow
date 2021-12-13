@@ -7,7 +7,7 @@ export default class DocflowSanitizePaste extends Plugin {
 	}
 	init() {
 		const editor = this.editor;
-		const clipboardPlugin = editor.plugins.get( 'Clipboard' );
+		const clipboardPlugin = editor.plugins.get( 'ClipboardPipeline' );
 		const editingView = editor.editing.view;
 		const htmlDataProcessor = new HtmlDataProcessor( editingView.document );
 
