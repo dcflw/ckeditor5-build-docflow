@@ -114,7 +114,7 @@ export default class DocflowPlaceholderUi extends Plugin {
 			const button = new ButtonView( locale );
 
 			button.set( {
-				label: 'Placeholder',
+				label: 'Smart field',
 				icon: iconTagsSolid,
 				tooltip: true
 			} );
