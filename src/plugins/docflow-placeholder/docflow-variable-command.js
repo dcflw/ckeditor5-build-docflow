@@ -11,14 +11,10 @@ export default class DocflowVariableCommand extends Command {
 			const isFrontpage = this.editor.config.get(
 				`${ CONFIG_NAMESPACE }.frontpage`
 			);
-			const variableLabels = this.editor.config.get(
-				`${ CONFIG_NAMESPACE }.variableLabels`
-			);
 			if ( isFrontpage ) {
 				const styles = Object.fromEntries( this.editor.model.document.selection.getAttributes() );
 				const insertPosition = editor.model.document.selection.getFirstPosition();
-				const variableLabel = variableLabels && `{{ ${ variableLabels[ params.name ] } }}`;
-				writer.insertText( variableLabel, styles, insertPosition );
+				writer.insertText( `{{${ params.name }}}`, styles, insertPosition );
 
 				return;
 			}
