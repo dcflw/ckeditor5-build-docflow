@@ -1,6 +1,6 @@
 {
   "name": "@docflow/ckeditor5-build-docflow",
-  "version": "1.6.0-beta2",
+  "version": "1.6.0-beta1",
   "description": "Docflow build of CKEditor 5",
   "main": "./build/ckeditor.js",
   "files": [
