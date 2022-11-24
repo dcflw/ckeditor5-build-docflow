@@ -105,7 +105,7 @@ export default class DocflowIdGenerator extends Plugin {
       },
     });
 
-    conversion.for("editingDowncast").elementToElement({
+    conversion.for("downcast").elementToElement({
       model: "comment",
       view: (modelItem, conversionApi) => {
         const viewWriter = conversionApi.writer;
@@ -124,15 +124,6 @@ export default class DocflowIdGenerator extends Plugin {
         viewWriter.setCustomProperty("name", name, view);
 
         return view;
-      },
-    });
-
-    conversion.for("dataDowncast").elementToElement({
-      model: "comment",
-      view: (modelItem, conversionApi) => {
-        const viewWriter = conversionApi.writer;
-        const name = modelItem.getAttribute("name");
-        return viewWriter.createText(name);
       },
     });
   }
