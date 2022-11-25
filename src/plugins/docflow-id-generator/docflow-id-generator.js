@@ -29,16 +29,13 @@ export default class DocflowIdGenerator extends Plugin {
     });
 
     schema.extend("$text", {
-      allowAttributes: ["comment", "data-comment-id"],
+      allowAttributes: [
+        "comment",
+        "data-comment-id",
+        "data-comment-node-index",
+        "data-leaf-id",
+      ],
     });
-
-    // schema.register("comment", {
-    //   allowIn: "tableCell",
-    //   allowWhere: "$text",
-    //   isInline: true,
-    //   isObject: true,
-    //   allowAttributes: ["data-comment-id"],
-    // });
   }
 
   defineConverters() {
@@ -52,38 +49,14 @@ export default class DocflowIdGenerator extends Plugin {
       },
     });
 
-    // conversion.for("upcast").elementToElement({
-    //   view: {
-    //     name: "span",
-    //     attributes: ["data-comment-id"],
-    //   },
-    //   model: (viewElement, modelConversionApi) => {
-    //     console.log("viewElement", viewElement);
-    //     const id = viewElement.getAttribute("data-comment-id");
-    //     let name = "";
-
-    //     if (viewElement.childCount === 1) {
-    //       name = viewElement.getChild(0).data;
-    //     }
-
-    //     // viewElement.getChild(0).setAttribute("data-comment-id", id);
-    //     console.log("name", name);
-    //     // return modelConversionApi.writer.createElement("comment", {
-    //     //   name,
-    //     //   "data-comment-id": id,
-    //     // });
-    //   },
-    // });
-
     conversion.for("upcast").elementToAttribute({
       view: {
         name: "span",
         attributes: ["data-comment-id"],
       },
       model: {
-        key: "comment",
+        key: "data-comment-id",
         value: viewElement => {
-          console.log("HER");
           return viewElement.getAttribute("data-comment-id");
         },
       },
@@ -126,41 +99,16 @@ export default class DocflowIdGenerator extends Plugin {
       },
     });
 
-    // conversion.for("downcast").elementToElement({
-    //   model: "comment",
-    //   view: (modelItem, conversionApi) => {
-    //     const viewWriter = conversionApi.writer;
-    //     const name = modelItem.getAttribute("name");
-    //     const id = modelItem.getAttribute("data-comment-id");
-
-    //     const attributes = {
-    //       "data-comment-id": id,
-    //     };
-
-    //     const view = viewWriter.createContainerElement("span", attributes);
-    //     const innerText = viewWriter.createText(name);
-
-    //     viewWriter.insert(viewWriter.createPositionAt(view, 0), innerText);
-    //     viewWriter.setCustomProperty("data-comment-id", id, view);
-    //     viewWriter.setCustomProperty("name", name, view);
-
-    //     return view;
-    //   },
-    // });
-
     conversion.for("downcast").attributeToElement({
       model: {
-        key: "comment",
+        key: "data-comment-id",
         name: "$text",
       },
-      view: (modelAttributeValue, conversionApi) => {
+      view: (modelAttributeValue, { writer }) => {
         const viewWriter = conversionApi.writer;
-        const attributes = {
+        return viewWriter.createAttributeElement("span", {
           "data-comment-id": modelAttributeValue,
-        };
-
-        console.log("attributes", attributes);
-        return viewWriter.createAttributeElement("span", attributes);
+        });
       },
     });
   }
