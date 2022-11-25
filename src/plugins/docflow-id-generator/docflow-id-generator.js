@@ -104,7 +104,7 @@ export default class DocflowIdGenerator extends Plugin {
         key: "data-comment-id",
         name: "$text",
       },
-      view: (modelAttributeValue, { writer }) => {
+      view: (modelAttributeValue, conversionApi) => {
         const viewWriter = conversionApi.writer;
         return viewWriter.createAttributeElement("span", {
           "data-comment-id": modelAttributeValue,
