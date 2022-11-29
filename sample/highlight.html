@@ -22,8 +22,9 @@
 
   <div id="editor">
     <p id="7v23pgj">
-      Lipsum <strong><span data-comment-id="comment-1">lorem</strong> ipsum dolor sit
-      amet, consectetur
+      <span data-comment-id="unsaved-comment">
+        Lipsum <strong>lorem</strong> ipsum dolor sit
+        amet, consectetur</span>
       adipiscing elit. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum lectus. Mauris quis felis
       dapibus, molestie quam eget, bibendum risus. Proin fringilla blandit ipsum eu sollicitudin. Nulla congue
       porttitor, a gravida nibh aliquet sed. Sed mollis augue
@@ -69,7 +70,10 @@
       });
 
     const getData = () => {
-      window.editor.execute("insertComment");
+      window.editor.execute("removeComment");
+      setTimeout(() => {
+        console.log("data", window.editor.getData())
+      })
       // const ranges = Array.from(window.editor.model.document.selection.getRanges());
       // const firstRange = window.editor.model.document.selection.getFirstRange().start;
       // const firstItemId = firstRange?.parent.getAttribute("id");
