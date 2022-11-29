@@ -73,12 +73,12 @@ export default class DocflowCommentsEditing extends Plugin {
         tableCells.forEach(tableCell => {
           writer.setAttribute(
             "id",
-            DocflowIdGenerator.generateUniqueId(),
+            DocflowCommentsEditing.generateUniqueId(),
             tableCell,
           );
           writer.setAttribute(
             "id",
-            DocflowIdGenerator.generateUniqueId(),
+            DocflowCommentsEditing.generateUniqueId(),
             mapper.toViewElement(tableCell),
           );
         });
@@ -129,7 +129,7 @@ export default class DocflowCommentsEditing extends Plugin {
     }
 
     if ((prevSibling && prevSibling.getAttribute("id") === id) || !id) {
-      id = DocflowIdGenerator.generateUniqueId();
+      id = DocflowCommentsEditing.generateUniqueId();
       writer.setAttribute("id", id, item);
     }
 
