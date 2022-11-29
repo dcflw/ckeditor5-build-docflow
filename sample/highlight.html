@@ -22,7 +22,7 @@
 
   <div id="editor">
     <p id="7v23pgj">
-      <strong>Lorem</strong> ipsum dolor sit
+      Lipsum <strong><span data-comment-id="comment-1">lorem</strong> ipsum dolor sit
       amet, consectetur
       adipiscing elit. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum lectus. Mauris quis felis
       dapibus, molestie quam eget, bibendum risus. Proin fringilla blandit ipsum eu sollicitudin. Nulla congue
@@ -69,33 +69,34 @@
       });
 
     const getData = () => {
-      const ranges = Array.from(window.editor.model.document.selection.getRanges());
-      const firstRange = window.editor.model.document.selection.getFirstRange().start;
-      const firstItemId = firstRange?.parent.getAttribute("id");
-      const lastRange = window.editor.model.document.selection.getLastRange().end;
-      const lastItemId = lastRange?.parent.getAttribute("id");
-      const selectedElements = Array.from(window.editor.model.document.selection.getSelectedBlocks());
+      window.editor.execute("insertComment");
+      // const ranges = Array.from(window.editor.model.document.selection.getRanges());
+      // const firstRange = window.editor.model.document.selection.getFirstRange().start;
+      // const firstItemId = firstRange?.parent.getAttribute("id");
+      // const lastRange = window.editor.model.document.selection.getLastRange().end;
+      // const lastItemId = lastRange?.parent.getAttribute("id");
+      // const selectedElements = Array.from(window.editor.model.document.selection.getSelectedBlocks());
 
-      const list = [];
+      // const list = [];
 
-      for (const range of ranges) {
-        const items = Array.from(range.getItems());
-        for (const item of items) {
-          if (item.is("$textProxy")) {
-            const parent = item.parent;
-            const leafId = parent.getAttribute("id");
-            list.push({
-              leafId: leafId,
-              text: item.data,
-              start: item.offsetInText,
-              end: item.offsetInText + item.offsetSize,
-              index: Array.from(parent.getChildren()).indexOf(item.textNode)
-            });
-          }
-        }
-      }
+      // for (const range of ranges) {
+      //   const items = Array.from(range.getItems());
+      //   for (const item of items) {
+      //     if (item.is("$textProxy")) {
+      //       const parent = item.parent;
+      //       const leafId = parent.getAttribute("id");
+      //       list.push({
+      //         leafId: leafId,
+      //         text: item.data,
+      //         start: item.offsetInText,
+      //         end: item.offsetInText + item.offsetSize,
+      //         index: Array.from(parent.getChildren()).indexOf(item.textNode)
+      //       });
+      //     }
+      //   }
+      // }
 
-      console.log("list", list)
+      // console.log("list", list)
     };
 
     document
