@@ -73,22 +73,16 @@ export default class DocflowCommentsEditing extends Plugin {
     conversion.for("downcast").add(dispatcher => {
       dispatcher.on("insert:tableRow", (evt, data, { writer, mapper }) => {
         const tableRow = data.item;
-        const tableCells = Array.from(tableRow.getChildren());
-
-        tableCells.forEach(tableCell => {
-          writer.setAttribute(
-            "id",
-            DocflowCommentsEditing.generateUniqueId(),
-            tableCell,
-          );
-          writer.setAttribute(
-            "id",
-            DocflowCommentsEditing.generateUniqueId(),
-            mapper.toViewElement(tableCell),
-          );
-        });
+        this.insertIdAttributeToTableCell(tableRow, writer, mapper);
       });
 
+      dispatcher.on("insert:table", (evt, data, { writer, mapper }) => {
+        const table = data.item;
+        const tableRows = Array.from(table.getChildren());
+        tableRows.forEach(tableRow => {
+          this.insertIdAttributeToTableCell(tableRow, writer, mapper);
+        });
+      });
       dispatcher.on("insert:paragraph", this.insertIdAttribute);
       dispatcher.on("insert:listItem", this.insertIdAttribute);
       dispatcher.on("insert:imageInline", this.insertIdAttribute);
@@ -139,6 +133,23 @@ export default class DocflowCommentsEditing extends Plugin {
     }
 
     writer.setAttribute("id", id, viewElement);
+  }
+
+  insertIdAttributeToTableCell(tableRow, writer, mapper) {
+    const tableCells = Array.from(tableRow.getChildren());
+
+    tableCells.forEach(tableCell => {
+      writer.setAttribute(
+        "id",
+        DocflowCommentsEditing.generateUniqueId(),
+        tableCell,
+      );
+      writer.setAttribute(
+        "id",
+        DocflowCommentsEditing.generateUniqueId(),
+        mapper.toViewElement(tableCell),
+      );
+    });
   }
 
   static generateUniqueId() {

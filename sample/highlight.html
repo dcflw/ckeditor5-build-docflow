@@ -22,9 +22,8 @@
 
   <div id="editor">
     <p id="7v23pgj">asd asd asd as
-      <span data-comment-id="unsaved-comment">
-        Lipsum <strong>lorem</strong> ipsum dolor sit
-        amet, consectetur</span>
+      Lipsum <strong>lorem</strong> ipsum dolor sit
+      amet, consectetur
       adipiscing elit. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum lectus. Mauris quis felis
       dapibus, molestie quam eget, bibendum risus. Proin fringilla blandit ipsum eu sollicitudin. Nulla congue
       porttitor, a gravida nibh aliquet sed. Sed mollis augue
@@ -32,30 +31,6 @@
       lectus viverra.
       Fusce nec enim vel massa faucibus dictum sit amet nec elit.
     </p>
-    <p id="7w33pcr"><span data-comment-id="comment-1" data-comment-node-index="1" data-leaf-id="7w33pcr">Nunc eu arcu at
-        orci pellentesque</span>
-      commodo at at nulla. Sed sed vehicula mi. Pellentesque elementum ornare leo, sed aliquet tellus aliquet a. Nam
-      ut ligula cursus, viverra mi vel, vehicula neque. Class aptent taciti sociosqu ad litora torquent per
-      conubia nostra, per inceptos himenaeos. Proin tristique augue turpis, et ultrices eros congue rhoncus.
-      Pellentesque neque ligula, semper id pulvinar nec, mattis id neque. Nunc ullamcorper eros lectus, nec euismod orci
-      tristique nec. Integer et condimentum tellus. Proin a semper turpis. Duis sodales congue ligula et blandit. Morbi
-      id porta urna.</p>
-    <p id="7w43pxx">Sed dapibus turpis in felis dignissim, vitae pellentesque leo commodo. Vivamus nunc libero, dapibus
-      ut sapien sit <strong>amet</strong>, euismod porttitor nisi. Pellentesque elementum, lorem nec auctor ullamcorper,
-      enim urna porta
-      lacus, non laoreet sem enim a mauris. Donec congue sem ut metus aliquet, pulvinar varius nisl elementum.
-      Pellentesque tincidunt sit amet lorem quis hendrerit. Aenean aliquam vitae turpis quis aliquet. Ut porttitor
-      tincidunt lacus, sed rhoncus sem scelerisque id. In posuere consectetur augue vulputate dignissim.</p>
-    <p id="7w53pmd">Donec placerat ipsum accumsan diam tristique euismod. Proin interdum velit leo, sed cursus magna
-      ullamcorper id. Sed facilisis vestibulum metus vel accumsan. Aliquam erat volutpat. Morbi tempor, quam vitae
-      vulputate varius, metus velit pellentesque lectus, et mollis tellus dui eu diam. Vivamus a eros feugiat, viverra
-      augue vel, consequat elit. Praesent ut urna arcu. Aenean nec gravida neque, eget venenatis sem. In ac sagittis
-      sem.</p>
-    <p id="7w63pi2">Suspendisse gravida dignissim mi, eu eleifend justo venenatis quis. Nulla nec vestibulum ipsum. Sed
-      ut sodales eros. Nam nec facilisis lacus, in porta massa. Suspendisse laoreet, ipsum ac mollis dictum, enim urna
-      sollicitudin felis, in tincidunt lorem risus vitae ante. Mauris eget consequat justo, et pretium massa. Vestibulum
-      non quam cursus, sollicitudin risus nec, pretium massa. Pellentesque non ligula efficitur, molestie ante id,
-      sagittis nulla. Phasellus fringilla suscipit elit nec tincidunt.</p>
   </div>
 
   <button id="button-get" type="button">Get Data</button>
@@ -70,7 +45,8 @@
       });
 
     const getData = () => {
-      window.editor.execute("setCommentId");
+      console.log("insertComment")
+      window.editor.execute("insertComment");
       // const ranges = Array.from(window.editor.model.document.selection.getRanges());
       // const firstRange = window.editor.model.document.selection.getFirstRange().start;
       // const firstItemId = firstRange?.parent.getAttribute("id");
