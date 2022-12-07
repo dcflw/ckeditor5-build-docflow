@@ -4,6 +4,10 @@ export default class DocflowCommentsSetIdCommand extends Command {
   findCommentAttributes(root) {
     const commentModels = [];
 
+    if (!root) {
+      return commentModels;
+    }
+
     for (const child of root.getChildren()) {
       if (child.is("element")) {
         commentModels.push(...this.findCommentAttributes(child));

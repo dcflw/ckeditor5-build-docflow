@@ -4,7 +4,11 @@ export default class DocflowCommentsRemoveCommand extends Command {
   findCommentAttributes(root, id) {
     const commentModels = [];
 
-    for (const child of root.getChildren()) {
+    if (!root || !id) {
+      return commentModels;
+    }
+
+    for (const child of root?.getChildren()) {
       if (child.is("element")) {
         commentModels.push(...this.findCommentAttributes(child, id));
       } else {
