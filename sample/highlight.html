@@ -23,7 +23,7 @@
   <div id="editor">
     <p id="7v23pgj">asd asd asd as
       Lipsum <strong>lorem</strong> ipsum dolor sit
-      amet, consectetur
+      amet, <span data-comment-id="MK">consectetur</span>
       adipiscing elit. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum lectus. Mauris quis felis
       dapibus, molestie quam eget, bibendum risus. Proin fringilla blandit ipsum eu sollicitudin. Nulla congue
       porttitor, a gravida nibh aliquet sed. Sed mollis augue
@@ -45,8 +45,14 @@
       });
 
     const getData = () => {
-      console.log("insertComment")
-      window.editor.execute("insertComment");
+      window.editor.execute("removeComment", {
+        id: "MK"
+      });
+
+      // setTimeout(() => {
+      //   console.log("SET");
+      //   window.editor.execute("setCommentId", { id: "123" });
+      // }, 2000);
       // const ranges = Array.from(window.editor.model.document.selection.getRanges());
       // const firstRange = window.editor.model.document.selection.getFirstRange().start;
       // const firstItemId = firstRange?.parent.getAttribute("id");
