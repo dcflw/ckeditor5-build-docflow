@@ -78,12 +78,7 @@ export default class DocflowCommentsEditing extends Plugin {
 
     conversion.for("downcast").add(dispatcher => {
       dispatcher.on("insert:tableRow", (evt, data, conversionApi) => {
-        if (conversionApi.consumable.consume(data.item, "insert:tableRow")) {
-          return;
-        }
-
         const tableRow = data.item;
-        console.log("insert:tableRow", tableRow);
         this.insertIdAttributeToTableCell(
           tableRow,
           conversionApi.writer,
@@ -92,16 +87,7 @@ export default class DocflowCommentsEditing extends Plugin {
       });
 
       dispatcher.on("insert:table", (evt, data, conversionApi) => {
-        console.log(
-          "TABLE",
-          conversionApi.consumable.consume(data.item, "insert:table"),
-        );
-        if (conversionApi.consumable.consume(data.item, "insert:table")) {
-          return;
-        }
-
         const table = data.item;
-        console.log("insert:table", table);
         const tableRows = Array.from(table.getChildren());
         tableRows.forEach(tableRow => {
           this.insertIdAttributeToTableCell(
@@ -143,7 +129,8 @@ export default class DocflowCommentsEditing extends Plugin {
     });
   }
 
-  insertIdAttribute(_, data, { writer, mapper }) {
+  insertIdAttribute(_, data, conversionApi) {
+    const { writer, mapper } = conversionApi;
     const item = data.item;
     const parent = item.parent;
     const prevSibling = item.previousSibling;
@@ -167,16 +154,18 @@ export default class DocflowCommentsEditing extends Plugin {
     const tableCells = Array.from(tableRow.getChildren());
 
     tableCells.forEach(tableCell => {
-      writer.setAttribute(
-        "id",
-        DocflowCommentsEditing.generateUniqueId(),
-        tableCell,
-      );
-      writer.setAttribute(
-        "id",
-        DocflowCommentsEditing.generateUniqueId(),
-        mapper.toViewElement(tableCell),
-      );
+      if (!writer.hasAttribute("id")) {
+        writer.setAttribute(
+          "id",
+          DocflowCommentsEditing.generateUniqueId(),
+          tableCell,
+        );
+        writer.setAttribute(
+          "id",
+          DocflowCommentsEditing.generateUniqueId(),
+          mapper.toViewElement(tableCell),
+        );
+      }
     });
   }
 
