@@ -77,18 +77,20 @@ export default class DocflowCommentsEditing extends Plugin {
     });
 
     conversion.for("downcast").add(dispatcher => {
-      // dispatcher.on("insert:tableRow", (evt, data, { writer, mapper }) => {
-      //   const tableRow = data.item;
-      //   this.insertIdAttributeToTableCell(tableRow, writer, mapper);
-      // });
+      dispatcher.on("insert:tableRow", (evt, data, { writer, mapper }) => {
+        const tableRow = data.item;
+        console.log("insert:table", tableRow);
+        this.insertIdAttributeToTableCell(tableRow, writer, mapper);
+      });
 
-      // dispatcher.on("insert:table", (evt, data, { writer, mapper }) => {
-      //   const table = data.item;
-      //   const tableRows = Array.from(table.getChildren());
-      //   tableRows.forEach(tableRow => {
-      //     this.insertIdAttributeToTableCell(tableRow, writer, mapper);
-      //   });
-      // });
+      dispatcher.on("insert:table", (evt, data, { writer, mapper }) => {
+        const table = data.item;
+        console.log("insert:table", table);
+        const tableRows = Array.from(table.getChildren());
+        tableRows.forEach(tableRow => {
+          this.insertIdAttributeToTableCell(tableRow, writer, mapper);
+        });
+      });
       dispatcher.on("insert:paragraph", this.insertIdAttribute);
       dispatcher.on("insert:listItem", this.insertIdAttribute);
       dispatcher.on("insert:imageInline", this.insertIdAttribute);
