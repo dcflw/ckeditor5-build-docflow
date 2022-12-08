@@ -77,9 +77,10 @@ export default class DocflowCommentsEditing extends Plugin {
     });
 
     conversion.for("downcast").add(dispatcher => {
+      console.log("downcast");
       dispatcher.on("insert:tableRow", (evt, data, { writer, mapper }) => {
         const tableRow = data.item;
-        console.log("insert:table", tableRow);
+        console.log("insert:tableRow", tableRow);
         this.insertIdAttributeToTableCell(tableRow, writer, mapper);
       });
 
@@ -146,18 +147,18 @@ export default class DocflowCommentsEditing extends Plugin {
   insertIdAttributeToTableCell(tableRow, writer, mapper) {
     const tableCells = Array.from(tableRow.getChildren());
 
-    tableCells.forEach(tableCell => {
-      writer.setAttribute(
-        "id",
-        DocflowCommentsEditing.generateUniqueId(),
-        tableCell,
-      );
-      writer.setAttribute(
-        "id",
-        DocflowCommentsEditing.generateUniqueId(),
-        mapper.toViewElement(tableCell),
-      );
-    });
+    // tableCells.forEach(tableCell => {
+    //   writer.setAttribute(
+    //     "id",
+    //     DocflowCommentsEditing.generateUniqueId(),
+    //     tableCell,
+    //   );
+    //   writer.setAttribute(
+    //     "id",
+    //     DocflowCommentsEditing.generateUniqueId(),
+    //     mapper.toViewElement(tableCell),
+    //   );
+    // });
   }
 
   static generateUniqueId() {
