@@ -154,6 +154,7 @@ export default class DocflowCommentsEditing extends Plugin {
     const tableCells = Array.from(tableRow.getChildren());
 
     tableCells.forEach(tableCell => {
+      console.log("hasID", tableCell.hasAttribute("id"));
       if (!tableCell.hasAttribute("id")) {
         writer.setAttribute(
           "id",
