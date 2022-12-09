@@ -23,17 +23,19 @@
   <div id="editor">
     <p id="7v23pgj">asd asd asd as
       Lipsum <strong>lorem</strong> ipsum dolor sit
-      amet, <span data-comment-id="MK">consectetur</span>
-      adipiscing elit. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum lectus. Mauris quis felis
+      amet, consectetur
+      adipiscing <strong>elit</strong>. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum
+      lectus. Mauris quis felis
       dapibus, molestie quam eget, bibendum risus. Proin fringilla blandit ipsum eu sollicitudin. Nulla congue
       porttitor, a gravida nibh aliquet sed. Sed mollis augue
       quis orci ornare, at aliquet
       lectus viverra.
-      Fusce nec enim vel massa faucibus dictum sit amet nec elit.
+      <a href="#">Fusce</a> nec enim vel massa faucibus dictum sit amet nec elit.
     </p>
   </div>
 
   <button id="button-get" type="button">Get Data</button>
+  <button id="button-insert" type="button">Insert Comment</button>
   <script src="../build/ckeditor.js"></script>
   <script>
     CKEDITOR.InlineEditor.create(document.querySelector("#editor"))
@@ -45,46 +47,24 @@
       });
 
     const getData = () => {
-      window.editor.execute("removeComment", {
-        id: "MK4"
-      });
-
-      // setTimeout(() => {
-      //   console.log("SET");
-      //   window.editor.execute("setCommentId", { id: "123" });
-      // }, 2000);
-      // const ranges = Array.from(window.editor.model.document.selection.getRanges());
-      // const firstRange = window.editor.model.document.selection.getFirstRange().start;
-      // const firstItemId = firstRange?.parent.getAttribute("id");
-      // const lastRange = window.editor.model.document.selection.getLastRange().end;
-      // const lastItemId = lastRange?.parent.getAttribute("id");
-      // const selectedElements = Array.from(window.editor.model.document.selection.getSelectedBlocks());
-
-      // const list = [];
-
-      // for (const range of ranges) {
-      //   const items = Array.from(range.getItems());
-      //   for (const item of items) {
-      //     if (item.is("$textProxy")) {
-      //       const parent = item.parent;
-      //       const leafId = parent.getAttribute("id");
-      //       list.push({
-      //         leafId: leafId,
-      //         text: item.data,
-      //         start: item.offsetInText,
-      //         end: item.offsetInText + item.offsetSize,
-      //         index: Array.from(parent.getChildren()).indexOf(item.textNode)
-      //       });
-      //     }
-      //   }
-      // }
-
-      // console.log("list", list)
+      const editor = window.editor;
+      console.log(editor.model);
+      console.log(editor.model.document.toJSON())
     };
+
+    const insertComment = () => {
+      window.editor.execute("insertComment");
+    };
+
+    document.addEventListener("commentClick", (evt) => console.log("evt", evt.detail));
 
     document
       .querySelector("#button-get")
       .addEventListener("click", getData);
+
+    document.
+      querySelector("#button-insert")
+      .addEventListener("click", insertComment);
   </script>
 </body>
 

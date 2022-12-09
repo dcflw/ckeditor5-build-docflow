@@ -28,9 +28,7 @@ export default class DocflowCommentsRemoveCommand extends Command {
     }
   }
 
-  execute(params) {
-    const id = params?.id;
-    const rootName = params?.rootName;
+  execute({ id, rootName }) {
     const model = this.editor.model;
     model.change(writer => {
       const root = model.document.getRoot(rootName);
