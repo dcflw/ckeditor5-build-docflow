@@ -1,7 +1,7 @@
 import Command from "@ckeditor/ckeditor5-core/src/command";
 
 export default class DocflowCommentsSetIdCommand extends Command {
-  findCommentAttributes(root) {
+  findCommentAttributes(root, commentId) {
     const commentModels = [];
 
     if (!root) {
@@ -10,10 +10,11 @@ export default class DocflowCommentsSetIdCommand extends Command {
 
     for (const child of root.getChildren()) {
       if (child.is("element")) {
-        commentModels.push(...this.findCommentAttributes(child));
+        commentModels.push(...this.findCommentAttributes(child, commentId));
       } else {
         const attr = child.getAttribute("data-comment-id");
-        if (attr === "unsaved-comment") {
+
+        if (attr === commentId) {
           commentModels.push(child);
         }
       }
@@ -30,14 +31,21 @@ export default class DocflowCommentsSetIdCommand extends Command {
     }
   }
 
-  execute(params) {
-    const commentId = params?.id;
-    const rootName = params?.rootName;
+  execute(params = {}) {
+    const { id, newId } = params;
+
+    if (!id || !newId) {
+      return;
+    }
+
     const model = this.editor.model;
     model.change(writer => {
-      const root = model.document.getRoot(rootName);
-      const commentModels = this.findCommentAttributes(root);
-      this.replaceCommentModels(commentModels, commentId, writer);
+      const roots = model.document.getRootNames();
+      for (const rootName of roots) {
+        const root = model.document.getRoot(rootName);
+        const commentModels = this.findCommentAttributes(root, id);
+        this.replaceCommentModels(commentModels, newId, writer);
+      }
     });
   }
 }

@@ -22,7 +22,7 @@
 
   <div id="editor">
     <p id="7v23pgj">asd asd asd as
-      Lipsum <strong>lorem</strong> ipsum dolor sit
+      Lipsum <strong>lorem</strong> ipsum dolor <span data-comment-id="unsaved-comment">sit</span>
       amet, consectetur
       adipiscing <strong>elit</strong>. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum
       lectus. Mauris quis felis
@@ -31,6 +31,7 @@
       quis orci ornare, at aliquet
       lectus viverra.
       <a href="#">Fusce</a> nec enim vel massa faucibus dictum sit amet nec elit.
+
     </p>
   </div>
 
@@ -47,13 +48,14 @@
       });
 
     const getData = () => {
-      const editor = window.editor;
-      console.log(editor.model);
-      console.log(editor.model.document.toJSON())
+
+      window.editor.execute("setCommentId", { id: "unsaved-comment", newId: "saved-comment" });
     };
 
     const insertComment = () => {
-      window.editor.execute("insertComment");
+      window.editor.execute("insertComment", {
+        commentId: "unsaved-comment"
+      });
     };
 
     document.addEventListener("commentClick", (evt) => console.log("evt", evt.detail));

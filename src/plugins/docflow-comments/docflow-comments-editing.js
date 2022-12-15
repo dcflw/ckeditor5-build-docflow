@@ -35,20 +35,17 @@ export default class DocflowCommentsEditing extends Plugin {
 
   defineSchemes() {
     const schema = this.editor.model.schema;
+
     schema.extend("$block", {
       allowAttributes: ["id"],
     });
+
     schema.extend("tableCell", {
       allowAttributes: ["id"],
     });
 
     schema.extend("$text", {
-      allowAttributes: [
-        "comment",
-        "data-comment-id",
-        "data-comment-node-index",
-        "data-leaf-id",
-      ],
+      allowAttributes: ["data-comment-id", "data-comment-is-active"],
     });
   }
 
@@ -63,48 +60,101 @@ export default class DocflowCommentsEditing extends Plugin {
       },
     });
 
-    conversion.for("upcast").elementToAttribute({
-      view: {
-        name: "span",
-        attributes: ["data-comment-id"],
-      },
-      model: {
-        key: "data-comment-id",
-        value: viewElement => {
-          return viewElement.getAttribute("data-comment-id");
+    conversion
+      .for("upcast")
+      .elementToAttribute({
+        view: {
+          name: "span",
+          attributes: ["data-comment-id"],
         },
-      },
-    });
+        model: {
+          key: "data-comment-id",
+          value: viewElement => {
+            return viewElement.getAttribute("data-comment-id");
+          },
+        },
+      })
+      .elementToAttribute({
+        view: {
+          name: "span",
+          attributes: ["data-comment-is-active"],
+        },
+        model: {
+          key: "data-comment-is-active",
+          value: viewElement => {
+            return viewElement.getAttribute("data-comment-is-active");
+          },
+        },
+      });
+
+    // conversion.for("downcast").attributeToElement({
+    //   model: "id",
+    //   view: (data, conversionApi) => {
+    //     const { writer, mapper } = conversionApi;
+    //     const item = data.item;
+    //     const parent = item.parent;
+    //     const prevSibling = item.previousSibling;
+    //     const viewElement = mapper.toViewElement(item);
+
+    //     console.log("item", item);
+    //   },
+    // });
+
+    // conversion.for("downcast").add(dispatcher => {
+    //   dispatcher.on("insert:tableRow", (evt, data, conversionApi) => {
+    //     const tableRow = data.item;
+    //     this.insertIdAttributeToTableCell(
+    //       tableRow,
+    //       conversionApi.writer,
+    //       conversionApi.mapper,
+    //     );
+    //   });
+
+    //   dispatcher.on("insert:table", (evt, data, conversionApi) => {
+    //     const table = data.item;
+    //     const tableRows = Array.from(table.getChildren());
+    //     tableRows.forEach(tableRow => {
+    //       this.insertIdAttributeToTableCell(
+    //         tableRow,
+    //         conversionApi.writer,
+    //         conversionApi.mapper,
+    //       );
+    //     });
+    //   });
+    //   dispatcher.on("insert:paragraph", this.insertIdAttribute);
+    //   dispatcher.on("insert:listItem", this.insertIdAttribute);
+    //   dispatcher.on("insert:imageInline", this.insertIdAttribute);
+    // });
 
     conversion.for("downcast").add(dispatcher => {
-      dispatcher.on("insert:tableRow", (evt, data, conversionApi) => {
-        const tableRow = data.item;
-        this.insertIdAttributeToTableCell(
-          tableRow,
-          conversionApi.writer,
-          conversionApi.mapper,
-        );
-      });
+      dispatcher.on("insert", (evt, data, { writer }) => {
+        if (data.item.is("model:element")) {
+          const item =
+            data?.item?.parent?.name === "tableCell"
+              ? data.item.parent
+              : data.item;
 
-      dispatcher.on("insert:table", (evt, data, conversionApi) => {
-        const table = data.item;
-        const tableRows = Array.from(table.getChildren());
-        tableRows.forEach(tableRow => {
-          this.insertIdAttributeToTableCell(
-            tableRow,
-            conversionApi.writer,
-            conversionApi.mapper,
-          );
-        });
+          const id = item.getAttribute("id");
+          const prevSibling = item.previousSibling;
+          const nextSibling = item.nextSibling;
+
+          if (
+            !id ||
+            prevSibling?.getAttribute("id") === id ||
+            nextSibling?.getAttribute("id") === id
+          ) {
+            writer.setAttribute(
+              "id",
+              DocflowCommentsEditing.generateUniqueId(),
+              item,
+            );
+          }
+        }
       });
-      dispatcher.on("insert:paragraph", this.insertIdAttribute);
-      dispatcher.on("insert:listItem", this.insertIdAttribute);
-      dispatcher.on("insert:imageInline", this.insertIdAttribute);
     });
 
-    conversion.for("dataDowncast").attributeToAttribute({
+    conversion.for("downcast").attributeToAttribute({
       model: {
-        name: "tableCell",
         key: "id",
       },
       view: modelAttributeValue => {
@@ -115,59 +165,32 @@ export default class DocflowCommentsEditing extends Plugin {
       },
     });
 
-    conversion.for("downcast").attributeToElement({
-      model: {
-        key: "data-comment-id",
-        name: "$text",
-      },
-      view: (modelAttributeValue, conversionApi) => {
-        const viewWriter = conversionApi.writer;
-        return viewWriter.createAttributeElement("span", {
-          "data-comment-id": modelAttributeValue,
-        });
-      },
-    });
-  }
-
-  insertIdAttribute(_, data, conversionApi) {
-    const { writer, mapper } = conversionApi;
-    const item = data.item;
-    const parent = item.parent;
-    const prevSibling = item.previousSibling;
-    const viewElement = mapper.toViewElement(item);
-
-    let id = item.getAttribute("id");
-
-    if (parent && parent.name === "tableCell") {
-      return;
-    }
-
-    if ((prevSibling && prevSibling.getAttribute("id") === id) || !id) {
-      id = DocflowCommentsEditing.generateUniqueId();
-      writer.setAttribute("id", id, item);
-    }
-
-    writer.setAttribute("id", id, viewElement);
-  }
-
-  insertIdAttributeToTableCell(tableRow, writer, mapper) {
-    const tableCells = Array.from(tableRow.getChildren());
-
-    tableCells.forEach(tableCell => {
-      console.log("hasID", tableCell.hasAttribute("id"));
-      if (!tableCell.hasAttribute("id")) {
-        writer.setAttribute(
-          "id",
-          DocflowCommentsEditing.generateUniqueId(),
-          tableCell,
-        );
-        writer.setAttribute(
-          "id",
-          DocflowCommentsEditing.generateUniqueId(),
-          mapper.toViewElement(tableCell),
-        );
-      }
-    });
+    conversion
+      .for("downcast")
+      .attributeToElement({
+        model: {
+          key: "data-comment-id",
+          name: "$text",
+        },
+        view: (modelAttributeValue, conversionApi) => {
+          const viewWriter = conversionApi.writer;
+          return viewWriter.createAttributeElement("span", {
+            "data-comment-id": modelAttributeValue,
+          });
+        },
+      })
+      .attributeToElement({
+        model: {
+          key: "data-comment-is-active",
+          name: "$text",
+        },
+        view: (modelAttributeValue, conversionApi) => {
+          const viewWriter = conversionApi.writer;
+          return viewWriter.createAttributeElement("span", {
+            "data-comment-is-active": modelAttributeValue,
+          });
+        },
+      });
   }
 
   static generateUniqueId() {

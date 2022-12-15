@@ -28,12 +28,17 @@ export default class DocflowCommentsRemoveCommand extends Command {
     }
   }
 
-  execute({ id, rootName }) {
+  execute({ id }) {
     const model = this.editor.model;
+
     model.change(writer => {
-      const root = model.document.getRoot(rootName);
-      const commentModels = this.findCommentAttributes(root, id);
-      this.removeCommentModels(commentModels, writer);
+      const roots = model.document.getRootNames();
+      for (const rootName of roots) {
+        const root = model.document.getRoot(rootName);
+
+        const commentModels = this.findCommentAttributes(root, id);
+        this.removeCommentModels(commentModels, writer);
+      }
     });
   }
 }

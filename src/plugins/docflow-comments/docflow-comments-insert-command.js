@@ -1,7 +1,7 @@
 import Command from "@ckeditor/ckeditor5-core/src/command";
 
 export default class DocflowCommentsInsertCommand extends Command {
-  execute({ commentId }) {
+  execute({ id }) {
     const model = this.editor.model;
     const selection = model.document.selection;
 
@@ -13,7 +13,8 @@ export default class DocflowCommentsInsertCommand extends Command {
         );
 
         for (const range of ranges) {
-          writer.setAttribute("data-comment-id", commentId, range);
+          writer.setAttribute("data-comment-id", id, range);
+          writer.setAttribute("data-comment-is-active", true, range);
         }
       }
     });
