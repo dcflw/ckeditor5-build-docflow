@@ -22,7 +22,8 @@
 
   <div id="editor">
     <p id="7v23pgj">asd asd asd as
-      Lipsum <strong>lorem</strong> ipsum dolor <span data-comment-id="unsaved-comment">sit</span>
+      Lipsum <strong>lorem</strong> ipsum dolor <span data-comment-id="unsaved-comment"
+        data-comment-is-active="true">sit</span>
       amet, consectetur
       adipiscing <strong>elit</strong>. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum
       lectus. Mauris quis felis
@@ -53,8 +54,8 @@
     };
 
     const insertComment = () => {
-      window.editor.execute("insertComment", {
-        commentId: "unsaved-comment"
+      window.editor.execute("removeComment", {
+        id: "unsaved-comment"
       });
     };
 

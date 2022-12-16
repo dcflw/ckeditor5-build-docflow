@@ -127,7 +127,7 @@ export default class DocflowCommentsEditing extends Plugin {
     // });
 
     conversion.for("downcast").add(dispatcher => {
-      dispatcher.on("insert", (evt, data, { writer }) => {
+      dispatcher.on("insert:paragraph", (evt, data, { writer }) => {
         if (data.item.is("model:element")) {
           const item =
             data?.item?.parent?.name === "tableCell"
@@ -143,6 +143,7 @@ export default class DocflowCommentsEditing extends Plugin {
             prevSibling?.getAttribute("id") === id ||
             nextSibling?.getAttribute("id") === id
           ) {
+            console.log("SET ATTRIBUTE");
             writer.setAttribute(
               "id",
               DocflowCommentsEditing.generateUniqueId(),

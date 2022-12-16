@@ -25,9 +25,7 @@ export default class DocflowCommentsSetIdCommand extends Command {
 
   replaceCommentModels(commentModels, commentId, writer) {
     for (const commentModel of commentModels) {
-      commentId
-        ? writer.setAttribute("data-comment-id", commentId, commentModel)
-        : writer.removeAttribute("data-comment-id", commentModel);
+      writer.setAttribute("data-comment-id", commentId, commentModel);
     }
   }
 

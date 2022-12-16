@@ -25,6 +25,7 @@ export default class DocflowCommentsRemoveCommand extends Command {
   removeCommentModels(commentModels, writer) {
     for (const commentModel of commentModels) {
       writer.removeAttribute("data-comment-id", commentModel);
+      writer.removeAttribute("data-comment-is-active", commentModel);
     }
   }
 
