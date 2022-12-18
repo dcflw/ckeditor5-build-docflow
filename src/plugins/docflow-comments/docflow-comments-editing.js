@@ -36,13 +36,13 @@ export default class DocflowCommentsEditing extends Plugin {
   defineSchemes() {
     const schema = this.editor.model.schema;
 
-    schema.extend("$block", {
-      allowAttributes: ["id"],
-    });
+    // schema.extend("$block", {
+    //   allowAttributes: ["id"],
+    // });
 
-    schema.extend("tableCell", {
-      allowAttributes: ["id"],
-    });
+    // schema.extend("tableCell", {
+    //   allowAttributes: ["id"],
+    // });
 
     schema.extend("$text", {
       allowAttributes: ["data-comment-id", "data-comment-is-active"],
@@ -52,13 +52,13 @@ export default class DocflowCommentsEditing extends Plugin {
   defineConverters() {
     const conversion = this.editor.conversion;
 
-    conversion.for("upcast").attributeToAttribute({
-      view: "id",
-      model: {
-        key: "id",
-        value: viewElement => viewElement.getAttribute("id"),
-      },
-    });
+    // conversion.for("upcast").attributeToAttribute({
+    //   view: "id",
+    //   model: {
+    //     key: "id",
+    //     value: viewElement => viewElement.getAttribute("id"),
+    //   },
+    // });
 
     conversion
       .for("upcast")
@@ -126,45 +126,45 @@ export default class DocflowCommentsEditing extends Plugin {
     //   dispatcher.on("insert:imageInline", this.insertIdAttribute);
     // });
 
-    conversion.for("downcast").add(dispatcher => {
-      dispatcher.on("insert:paragraph", (evt, data, { writer }) => {
-        if (data.item.is("model:element")) {
-          const item =
-            data?.item?.parent?.name === "tableCell"
-              ? data.item.parent
-              : data.item;
+    // conversion.for("downcast").add(dispatcher => {
+    //   dispatcher.on("insert:paragraph", (evt, data, { writer }) => {
+    //     if (data.item.is("model:element")) {
+    //       const item =
+    //         data?.item?.parent?.name === "tableCell"
+    //           ? data.item.parent
+    //           : data.item;
 
-          const id = item.getAttribute("id");
-          const prevSibling = item.previousSibling;
-          const nextSibling = item.nextSibling;
+    //       const id = item.getAttribute("id");
+    //       const prevSibling = item.previousSibling;
+    //       const nextSibling = item.nextSibling;
 
-          if (
-            !id ||
-            prevSibling?.getAttribute("id") === id ||
-            nextSibling?.getAttribute("id") === id
-          ) {
-            console.log("SET ATTRIBUTE");
-            writer.setAttribute(
-              "id",
-              DocflowCommentsEditing.generateUniqueId(),
-              item,
-            );
-          }
-        }
-      });
-    });
+    //       if (
+    //         !id ||
+    //         prevSibling?.getAttribute("id") === id ||
+    //         nextSibling?.getAttribute("id") === id
+    //       ) {
+    //         console.log("SET ATTRIBUTE");
+    //         writer.setAttribute(
+    //           "id",
+    //           DocflowCommentsEditing.generateUniqueId(),
+    //           item,
+    //         );
+    //       }
+    //     }
+    //   });
+    // });
 
-    conversion.for("downcast").attributeToAttribute({
-      model: {
-        key: "id",
-      },
-      view: modelAttributeValue => {
-        return {
-          key: "id",
-          value: modelAttributeValue,
-        };
-      },
-    });
+    // conversion.for("downcast").attributeToAttribute({
+    //   model: {
+    //     key: "id",
+    //   },
+    //   view: modelAttributeValue => {
+    //     return {
+    //       key: "id",
+    //       value: modelAttributeValue,
+    //     };
+    //   },
+    // });
 
     conversion
       .for("downcast")
