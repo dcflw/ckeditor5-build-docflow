@@ -16,7 +16,7 @@ export default class DocflowCommentsInsertCommand extends Command {
           writer.setAttribute("data-comment-id", id, range);
           writer.setAttribute("data-comment-is-active", true, range);
 
-          parentId && writer.setAttribute("data-comment-parent-id", id, range);
+          parentId && writer.setAttribute("data-comment-parent-id", parentId, range);
         }
       }
     });
