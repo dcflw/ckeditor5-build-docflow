@@ -45,7 +45,7 @@ export default class DocflowCommentsEditing extends Plugin {
     // });
 
     schema.extend("$text", {
-      allowAttributes: ["data-comment-id", "data-comment-is-active"],
+      allowAttributes: ["data-comment-id", "data-comment-is-active", "data-comment-parent-id"],
     });
   }
 
@@ -83,6 +83,18 @@ export default class DocflowCommentsEditing extends Plugin {
           key: "data-comment-is-active",
           value: viewElement => {
             return viewElement.getAttribute("data-comment-is-active");
+          },
+        },
+      })
+      .elementToAttribute({
+        view: {
+          name: "span",
+          attributes: ["data-comment-parent-id"],
+        },
+        model: {
+          key: "data-comment-parent-id",
+          value: viewElement => {
+            return viewElement.getAttribute("data-comment-parent-id");
           },
         },
       });
@@ -189,6 +201,18 @@ export default class DocflowCommentsEditing extends Plugin {
           const viewWriter = conversionApi.writer;
           return viewWriter.createAttributeElement("span", {
             "data-comment-is-active": modelAttributeValue,
+          });
+        },
+      })
+      .attributeToElement({
+        model: {
+          key: "data-comment-parent-id",
+          name: "$text",
+        },
+        view: (modelAttributeValue, conversionApi) => {
+          const viewWriter = conversionApi.writer;
+          return viewWriter.createAttributeElement("span", {
+            "data-comment-parent-id": modelAttributeValue,
           });
         },
       });
