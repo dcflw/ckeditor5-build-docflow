@@ -21,15 +21,18 @@
   <h1>CKEditor 5 – Docflow build</h1>
 
   <div id="editor">
-    <p><comment-start name="123:1"></comment-start>Lipsum lorem<comment-end name="123:1"></comment-end> ipsum dolor sit
-      amet, consectetur adipiscing elit. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum lectus.
-      <comment-start name="234:1:clcrnog0h00003b6h6tmiy4lh"></comment-start>Mauris quis felis dapibus, molestie quam
-      eget, bibendum risus. Proin fringilla blandit ipsum eu sollicitudin. Nulla congue porttitor, a gravida nibh
-      aliquet sed. Sed mollis augue quis orci ornare, at aliquet lectus viverra. <a href="#">Fusce</a> nec enim vel
-      massa faucibus dictum sit amet nec elit.<comment-end name="234:1:clcrnog0h00003b6h6tmiy4lh"></comment-end>
+    <p id="7v23pgj"><comment-start name="123:1"></comment-start>Lipsum lorem<comment-end name="123:1"></comment-end>
+      ipsum dolor sit
+      amet, consectetur
+      adipiscing elit. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum
+      lectus. Mauris quis felis
+      dapibus, molestie quam eget, bibendum risus. Proin fringilla blandit ipsum eu sollicitudin. Nulla congue
+      porttitor, a gravida nibh aliquet sed. Sed mollis augue
+      quis orci ornare, at aliquet
+      lectus viverra.
+      <a href="#">Fusce</a> nec enim vel massa faucibus dictum sit amet nec elit.
+
     </p>
-    <p><comment-start name="234:1:clcrnog0h00013b6hy9wbfy71"></comment-start>asdasdasdasd<comment-end
-        name="234:1:clcrnog0h00013b6hy9wbfy71"></comment-end></p>
   </div>
 
   <button id="button-get" type="button">Get Data</button>
@@ -50,8 +53,12 @@
     };
 
     const insertComment = () => {
-      window.editor.execute("insertComment", {
-        id: "234:1",
+      // window.editor.execute("insertComment", {
+      //   id: "234:1",
+      // });
+
+      window.editor.execute("removeComment", {
+        id: "123",
       });
     };
 

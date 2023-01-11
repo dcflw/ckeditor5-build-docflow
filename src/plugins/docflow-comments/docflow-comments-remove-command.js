@@ -34,12 +34,9 @@ export default class DocflowCommentsRemoveCommand extends Command {
     const model = this.editor.model;
 
     model.change(writer => {
-      const roots = model.document.getRootNames();
-      for (const rootName of roots) {
-        const root = model.document.getRoot(rootName);
-
-        const commentModels = this.findCommentAttributes(root, id);
-        this.removeCommentModels(commentModels, writer);
+      for (const marker of model.markers) {
+        marker.name.startsWith(`comment:${id}:`) &&
+          writer.removeMarker(marker.name);
       }
     });
   }
