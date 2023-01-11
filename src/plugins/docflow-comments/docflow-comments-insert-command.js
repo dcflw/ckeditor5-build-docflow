@@ -1,22 +1,26 @@
 import Command from "@ckeditor/ckeditor5-core/src/command";
+import { ATTRIBUTE_NAME, COMMENT_MARKER_NAME } from "./constants";
+import cuid from "cuid";
 
 export default class DocflowCommentsInsertCommand extends Command {
-  execute({ id, parentId }) {
+  execute({ id }) {
     const model = this.editor.model;
     const selection = model.document.selection;
+
+    console.log("model.markers", model.markers);
 
     model.change(writer => {
       if (!selection.isCollapsed) {
         const ranges = model.schema.getValidRanges(
           selection.getRanges(),
-          "data-comment-id",
+          ATTRIBUTE_NAME,
         );
 
         for (const range of ranges) {
-          writer.setAttribute("data-comment-id", id, range);
-          writer.setAttribute("data-comment-is-active", true, range);
-
-          parentId && writer.setAttribute("data-comment-parent-id", parentId, range);
+          writer.addMarker(`${COMMENT_MARKER_NAME}:${id}:${cuid()}`, {
+            range,
+            usingOperation: false,
+          });
         }
       }
     });
