@@ -38,12 +38,17 @@ export default class DocflowCommentsSetIdCommand extends Command {
 
     const model = this.editor.model;
     model.change(writer => {
-      const roots = model.document.getRootNames();
-      for (const rootName of roots) {
-        const root = model.document.getRoot(rootName);
-        const commentModels = this.findCommentAttributes(root, id);
-        this.replaceCommentModels(commentModels, newId, writer);
-      }
+      for (const marker of model.markers) {
+
+        if (marker.name.startsWith(`comment:${id}:`) ) {
+          const newMarkerName = marker.name.replace(`comment:${id}:`, `comment:${newId}:`);
+          writer.addMarker(newMarkerName, {
+            range: marker.getRange(),
+            usingOperation: false,
+          });
+          writer.removeMarker(marker.name);
+        }
+      } 
     });
   }
 }
