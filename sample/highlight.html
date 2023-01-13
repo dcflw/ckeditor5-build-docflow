@@ -20,20 +20,7 @@
 <body>
   <h1>CKEditor 5 – Docflow build</h1>
 
-  <div id="editor">
-    <p id="7v23pgj"><comment-start name="123:1"></comment-start>Lipsum lorem<comment-end name="123:1"></comment-end>
-      ipsum dolor sit
-      amet, consectetur
-      adipiscing elit. Fusce pretium dolor nec nunc hendrerit ultrices. Nulla at fermentum
-      lectus. Mauris quis felis
-      dapibus, molestie quam eget, bibendum risus. Proin fringilla blandit ipsum eu sollicitudin. Nulla congue
-      porttitor, a gravida nibh aliquet sed. Sed mollis augue
-      quis orci ornare, at aliquet
-      lectus viverra.
-      <a href="#">Fusce</a> nec enim vel massa faucibus dictum sit amet nec elit.
-
-    </p>
-  </div>
+  <div id="editor"><p>Lorem <comment-start name="comment-1:1"></comment-start><i>ipsum</i><comment-end name="comment-1:1"></comment-end> dolor sit <strong>amet</strong></p></div>
 
   <button id="button-get" type="button">Get Data</button>
   <button id="button-insert" type="button">Insert Comment</button>
@@ -48,19 +35,34 @@
       });
 
     const getData = () => {
-
+      window.editor.execute("unselectComment");
       console.log('data', window.editor.getData());
     };
 
     const insertComment = () => {
+      // const model = editor.model;
+
+      // for(const marker of model.markers) {
+      //   const range = marker.getRange();
+      //   const [_, commentId, leafId] = marker.name.split(':');
+      //   console.log(commentId, leafId);
+      //   console.log(range.start.path);
+      //   console.log(range.end.path);
+      //   console.log(range.start.offset);
+      //   console.log(range.end.offset);
+      // }
+
+      window.editor.execute("selectComment", {
+        id: "comment-1",
+      });
       // window.editor.execute("insertComment", {
       //   id: "234:1",
       // });
 
-      window.editor.execute("setCommentId", {
-        id: "123",
-        newId: "melih"
-      });
+      // window.editor.execute("setCommentId", {
+      //   id: "123",
+      //   newId: "melih"
+      // });
     };
 
     document.addEventListener("commentClick", (evt) => console.log("evt", evt.detail));

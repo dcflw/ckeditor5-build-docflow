@@ -3,7 +3,9 @@ import { viewToModelPositionOutsideModelElement } from "@ckeditor/ckeditor5-widg
 import DocflowCommentsInsertCommand from "./docflow-comments-insert-command";
 import DocflowCommentsSetIdCommand from "./docflow-comments-setid-command";
 import DocflowCommentsRemoveCommand from "./docflow-comments-remove-command";
-import { ATTRIBUTE_NAME, COMMENT_MARKER_NAME } from "./constants";
+import DocflowCommentsSelectCommand from "./docflow-comments-select-command";
+import DocflowCommentsUnselectCommand from "./docflow-comments-unselect-command";
+import { ATTRIBUTE_NAME } from "./constants";
 
 export default class DocflowCommentsEditing extends Plugin {
   init() {
@@ -25,6 +27,16 @@ export default class DocflowCommentsEditing extends Plugin {
       new DocflowCommentsRemoveCommand(this.editor),
     );
 
+    this.editor.commands.add(
+      "selectComment",
+      new DocflowCommentsSelectCommand(this.editor),
+    )
+
+    this.editor.commands.add(
+      "unselectComment",
+      new DocflowCommentsUnselectCommand(this.editor),
+    )
+
     this.editor.editing.mapper.on(
       "viewToModelPosition",
       viewToModelPositionOutsideModelElement(this.editor.model, viewElement =>
@@ -37,7 +49,7 @@ export default class DocflowCommentsEditing extends Plugin {
     const schema = this.editor.model.schema;
 
     schema.extend("$text", {
-      allowAttributes: [ATTRIBUTE_NAME],
+      allowAttributes: [ATTRIBUTE_NAME, "data-selected"],
     });
   }
 
@@ -53,10 +65,16 @@ export default class DocflowCommentsEditing extends Plugin {
     conversion.for("editingDowncast").markerToHighlight({
       model: "comment",
       view: data => {
-        const [, commentId] = data.markerName.split(":");
+        const [, commentId, leafId, selected] = data.markerName.split(":");
+
+        const attributes = { [ATTRIBUTE_NAME]: commentId };
+        
+        if (selected === "selected") {
+          attributes["data-selected"] = "selected";
+        }
 
         return {
-          attributes: { [ATTRIBUTE_NAME]: commentId },
+          attributes,
         };
       },
       converterPriority: "high",
