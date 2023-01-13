@@ -68,7 +68,7 @@ export default class DocflowCommentsEditing extends Plugin {
         const [, commentId, leafId, selected] = data.markerName.split(":");
 
         const attributes = { [ATTRIBUTE_NAME]: commentId };
-        
+
         if (selected === "selected") {
           attributes["data-selected"] = "selected";
         }
@@ -89,6 +89,21 @@ export default class DocflowCommentsEditing extends Plugin {
         };
       },
       converterPriority: "high",
+    });
+
+    this.editor.editing.view.document.on( 'click', (info, data) => {
+      const { target } = data;
+      const attributeKeys = Array.from(target.getAttributeKeys());
+
+      if (attributeKeys.includes("data-comment-id")) {
+        const commentId = target.getAttribute("data-comment-id")?.split(":")[0];
+        
+        const customEvent = new CustomEvent('commentClick', {
+          detail: commentId
+        });
+
+        document.dispatchEvent(customEvent);
+      };
     });
   }
 }
