@@ -33,7 +33,7 @@ import DocflowImageUpload from './plugins/docflow-image-upload/docflow-image-upl
 import DocflowLink from './plugins/docflow-link/docflow-link';
 import DocflowPlaceholder from './plugins/docflow-placeholder/docflow-placeholder';
 import DocflowSanitizePaste from './plugins/docflow-sanitize-paste/docflow-sanitize-paste';
-import DocflowComments from "./plugins/docflow-comments/docflow-comments";
+import DocflowComments from './plugins/docflow-comments/docflow-comments';
 import './ckeditor.css';
 
 class DecoupledEditor extends DecoupledEditorBase { }
@@ -67,7 +67,7 @@ const plugins = [
 	// TableProperties,
 	TableToolbar,
 	Underline,
-  DocflowComments
+	DocflowComments
 ];
 
 DecoupledEditor.builtinPlugins = plugins;
