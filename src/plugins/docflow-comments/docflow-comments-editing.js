@@ -5,7 +5,7 @@ import DocflowCommentsSetIdCommand from "./docflow-comments-setid-command";
 import DocflowCommentsRemoveCommand from "./docflow-comments-remove-command";
 import DocflowCommentsSelectCommand from "./docflow-comments-select-command";
 import DocflowCommentsUnselectCommand from "./docflow-comments-unselect-command";
-import { ATTRIBUTE_NAME } from "./constants";
+import { ID_ATTRIBUTE, SELECTED_ATTRIBUTE, VIEW_NAME, MARKER_NAME, MODEL_NAME, GROUP_NAME } from "./constants";
 
 export default class DocflowCommentsEditing extends Plugin {
   init() {
@@ -40,7 +40,7 @@ export default class DocflowCommentsEditing extends Plugin {
     this.editor.editing.mapper.on(
       "viewToModelPosition",
       viewToModelPositionOutsideModelElement(this.editor.model, viewElement =>
-        viewElement.hasAttribute(ATTRIBUTE_NAME),
+        viewElement.hasAttribute(ID_ATTRIBUTE),
       ),
     );
   }
@@ -49,7 +49,7 @@ export default class DocflowCommentsEditing extends Plugin {
     const schema = this.editor.model.schema;
 
     schema.extend("$text", {
-      allowAttributes: [ATTRIBUTE_NAME, "data-selected"],
+      allowAttributes: [ID_ATTRIBUTE, SELECTED_ATTRIBUTE],
     });
   }
 
@@ -57,20 +57,19 @@ export default class DocflowCommentsEditing extends Plugin {
     const conversion = this.editor.conversion;
 
     conversion.for("upcast").dataToMarker({
-      view: "comment",
-      model: (name, conversionApi) => "comment:" + name,
+      view: VIEW_NAME,
+      model: (name, conversionApi) => `${MARKER_NAME}:${name}`,
       converterPriority: "high",
     });
 
     conversion.for("editingDowncast").markerToHighlight({
-      model: "comment",
-      view: data => {
+      model: MODEL_NAME,
+      view: (data, viewWriter) => {
         const [, commentId, leafId, selected] = data.markerName.split(":");
-
-        const attributes = { [ATTRIBUTE_NAME]: commentId };
+        const attributes = { [ID_ATTRIBUTE]: commentId };
 
         if (selected === "selected") {
-          attributes["data-selected"] = "selected";
+          attributes[SELECTED_ATTRIBUTE] = "selected";
         }
 
         return {
@@ -81,10 +80,10 @@ export default class DocflowCommentsEditing extends Plugin {
     });
 
     conversion.for("dataDowncast").markerToData({
-      model: "comment",
+      model: MODEL_NAME,
       view: markerName => {
         return {
-          group: "comment",
+          group: GROUP_NAME,
           name: markerName.substr(8), // Removes 'comment:' part.
         };
       },
@@ -95,8 +94,8 @@ export default class DocflowCommentsEditing extends Plugin {
       const { target } = data;
       const attributeKeys = Array.from(target.getAttributeKeys());
 
-      if (attributeKeys.includes("data-comment-id")) {
-        const commentId = target.getAttribute("data-comment-id")?.split(":")[0];
+      if (attributeKeys.includes(ID_ATTRIBUTE)) {
+        const commentId = target.getAttribute(ID_ATTRIBUTE)?.split(":")[0];
         
         const customEvent = new CustomEvent('commentClick', {
           detail: commentId

@@ -1,4 +1,5 @@
 import Command from "@ckeditor/ckeditor5-core/src/command";
+import { ID_ATTRIBUTE, MARKER_NAME } from "./constants";
 
 export default class DocflowCommentsSetIdCommand extends Command {
   findCommentAttributes(root, commentId) {
@@ -12,7 +13,7 @@ export default class DocflowCommentsSetIdCommand extends Command {
       if (child.is("element")) {
         commentModels.push(...this.findCommentAttributes(child, commentId));
       } else {
-        const attr = child.getAttribute("data-comment-id");
+        const attr = child.getAttribute(ID_ATTRIBUTE);
 
         if (attr === commentId) {
           commentModels.push(child);
@@ -25,7 +26,7 @@ export default class DocflowCommentsSetIdCommand extends Command {
 
   replaceCommentModels(commentModels, commentId, writer) {
     for (const commentModel of commentModels) {
-      writer.setAttribute("data-comment-id", commentId, commentModel);
+      writer.setAttribute(ID_ATTRIBUTE, commentId, commentModel);
     }
   }
 
@@ -40,8 +41,8 @@ export default class DocflowCommentsSetIdCommand extends Command {
     model.change(writer => {
       for (const marker of model.markers) {
 
-        if (marker.name.startsWith(`comment:${id}:`) ) {
-          const newMarkerName = marker.name.replace(`comment:${id}:`, `comment:${newId}:`);
+        if (marker.name.startsWith(`${MARKER_NAME}:${id}:`) ) {
+          const newMarkerName = marker.name.replace(`${MARKER_NAME}:${id}:`, `${MARKER_NAME}:${newId}:`);
           writer.addMarker(newMarkerName, {
             range: marker.getRange(),
             usingOperation: false,

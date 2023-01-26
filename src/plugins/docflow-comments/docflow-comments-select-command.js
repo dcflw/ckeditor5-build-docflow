@@ -1,4 +1,5 @@
 import Command from "@ckeditor/ckeditor5-core/src/command";
+import { MARKER_NAME } from "./constants";
 
 export default class DocflowCommentsSelectCommand extends Command {
   execute({ id }) {
@@ -7,14 +8,14 @@ export default class DocflowCommentsSelectCommand extends Command {
 
     model.change(writer => {
       for(const marker of Array.from(model.markers)) {
-        if(marker.name.startsWith(`comment:`)) {
+        if(marker.name.startsWith(`${MARKER_NAME}:`)) {
           const [_, commentId, leafId, selected] = marker.name.split(':');
 
           if (selected !== 'selected' && commentId !== id) {
             continue;
           }
 
-          let commentMarkerName = `comment:${commentId}:${leafId}`;
+          let commentMarkerName = `${MARKER_NAME}:${commentId}:${leafId}`;
           
           if(commentId === id) {
             commentMarkerName += ':selected';

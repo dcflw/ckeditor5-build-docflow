@@ -1,4 +1,5 @@
 import Command from "@ckeditor/ckeditor5-core/src/command";
+import { ID_ATTRIBUTE, MARKER_NAME } from "./constants";
 
 export default class DocflowCommentsRemoveCommand extends Command {
   findCommentAttributes(root, id) {
@@ -12,7 +13,7 @@ export default class DocflowCommentsRemoveCommand extends Command {
       if (child.is("element")) {
         commentModels.push(...this.findCommentAttributes(child, id));
       } else {
-        const attr = child.getAttribute("data-comment-id");
+        const attr = child.getAttribute(ID_ATTRIBUTE);
         if (attr === id) {
           commentModels.push(child);
         }
@@ -24,9 +25,7 @@ export default class DocflowCommentsRemoveCommand extends Command {
 
   removeCommentModels(commentModels, writer) {
     for (const commentModel of commentModels) {
-      writer.removeAttribute("data-comment-id", commentModel);
-      writer.removeAttribute("data-comment-is-active", commentModel);
-      writer.removeAttribute("data-comment-parent-id", commentModel);
+      writer.removeAttribute(ID_ATTRIBUTE, commentModel);
     }
   }
 
@@ -35,7 +34,7 @@ export default class DocflowCommentsRemoveCommand extends Command {
 
     model.change(writer => {
       for (const marker of model.markers) {
-        marker.name.startsWith(`comment:${id}:`) &&
+        marker.name.startsWith(`${MARKER_NAME}:${id}:`) &&
           writer.removeMarker(marker.name);
       }
     });
