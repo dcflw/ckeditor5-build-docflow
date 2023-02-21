@@ -9,17 +9,10 @@ export default class DocflowCommentsSelectCommand extends Command {
 			for ( const marker of Array.from( model.markers ) ) {
 				if ( marker.name.startsWith( `${ MARKER_NAME }:` ) ) {
 					// eslint-disable-next-line no-unused-vars
-					const [ _, commentId, leafId, selected ] = marker.name.split( ':' );
+					const [ _, commentId, leafId, selected, solved ] = marker.name.split( ':' );
 
-					if ( selected !== 'selected' && commentId !== id ) {
-						continue;
-					}
-
-					let commentMarkerName = `${ MARKER_NAME }:${ commentId }:${ leafId }`;
-
-					if ( commentId === id ) {
-						commentMarkerName += ':selected';
-					}
+					const commentMarkerName =
+            `${ MARKER_NAME }:${ commentId }:${ leafId }:${ commentId === id }:${ solved }}`;
 
 					writer.addMarker( commentMarkerName, {
 						range: marker.getRange(),
