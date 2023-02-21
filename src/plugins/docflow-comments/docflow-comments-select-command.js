@@ -12,7 +12,7 @@ export default class DocflowCommentsSelectCommand extends Command {
 					const [ _, commentId, leafId, selected, solved ] = marker.name.split( ':' );
 
 					const commentMarkerName =
-            `${ MARKER_NAME }:${ commentId }:${ leafId }:${ commentId === id }:${ solved }}`;
+            `${ MARKER_NAME }:${ commentId }:${ leafId }:${ commentId === id }:${ solved }`;
 
 					writer.addMarker( commentMarkerName, {
 						range: marker.getRange(),
