@@ -1,6 +1,7 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
-import { ID_ATTRIBUTE, MARKER_NAME } from './constants';
+import { ID_ATTRIBUTE } from './constants';
 import cuid from 'cuid';
+import { getMarkerName } from './helper';
 
 export default class DocflowCommentsInsertCommand extends Command {
 	execute( { id } ) {
@@ -14,11 +15,9 @@ export default class DocflowCommentsInsertCommand extends Command {
 					ID_ATTRIBUTE
 				);
 
-				console.log( 'model.markers', model.markers );
 				for ( const range of ranges ) {
-					const marker = `${ MARKER_NAME }:${ id }:${ cuid() }:true:false`;
-					console.log( 'marker', marker );
-					writer.addMarker( marker, {
+					const markerName = getMarkerName( id, cuid(), true, false );
+					writer.addMarker( markerName, {
 						range,
 						usingOperation: false
 					} );
