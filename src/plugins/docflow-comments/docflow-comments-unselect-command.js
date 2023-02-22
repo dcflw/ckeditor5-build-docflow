@@ -17,11 +17,11 @@ export default class DocflowCommentsUnselectCommand extends Command {
 
 					const commentMarkerName = getMarkerName( commentId, leafId, false, solved );
 
-					writer.removeMarker( marker.name );
 					writer.addMarker( commentMarkerName, {
 						range: marker.getRange(),
 						usingOperation: false
 					} );
+					writer.removeMarker( marker.name );
 				}
 			}
 		} );
