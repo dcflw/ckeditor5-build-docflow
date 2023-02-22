@@ -37,6 +37,8 @@ export default class DocflowCommentsRemoveCommand extends Command {
 			for ( const marker of model.markers ) {
 				const { commentId } = getMarkerName( marker.name );
 
+				console.log( 'commentId', commentId, id );
+
 				if ( commentId === id ) {
 					writer.removeMarker( marker.name );
 				}

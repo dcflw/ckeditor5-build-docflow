@@ -11,7 +11,6 @@ export default class DocflowCommentsUnselectCommand extends Command {
 				if ( marker.name.startsWith( `${ MARKER_NAME }:` ) ) {
 					const { commentId, leafId, solved, selected } = getDataFromMarkerName( marker.name );
 
-					console.log( 'unselect', commentId, selected );
 					if ( !selected ) {
 						continue;
 					}
