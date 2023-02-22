@@ -15,7 +15,7 @@ export default class DocflowCommentsInsertCommand extends Command {
 				);
 
 				for ( const range of ranges ) {
-					writer.addMarker( `${ MARKER_NAME }:${ id }:${ cuid() }`, {
+					writer.addMarker( `${ MARKER_NAME }:${ id }:${ cuid() }:false`, {
 						range,
 						usingOperation: false
 					} );
