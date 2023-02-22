@@ -16,7 +16,7 @@ export default class DocflowCommentsInsertCommand extends Command {
 
 				console.log( 'model.markers', model.markers );
 				for ( const range of ranges ) {
-					const marker = `${ MARKER_NAME }:${ id }:${ cuid() }:false`;
+					const marker = `${ MARKER_NAME }:${ id }:${ cuid() }:true:false`;
 					console.log( 'marker', marker );
 					writer.addMarker( marker, {
 						range,
