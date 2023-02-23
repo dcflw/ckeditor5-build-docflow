@@ -10,7 +10,6 @@ export default class DocflowCommentsSelectCommand extends Command {
 			for ( const marker of Array.from( model.markers ) ) {
 				if ( marker.name.startsWith( `${ MARKER_NAME }:` ) ) {
 					const { commentId, leafId, solved, selected } = getDataFromMarkerName( marker.name );
-					console.log( 'ID:SELECT', id, commentId );
 
 					if ( id !== commentId || selected ) {
 						continue;
