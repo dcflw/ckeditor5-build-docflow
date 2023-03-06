@@ -9,12 +9,12 @@ export default class DocflowCommentsSelectCommand extends Command {
 		model.change( writer => {
 			for ( const marker of Array.from( model.markers ) ) {
 				if ( marker.name.startsWith( `${ MARKER_NAME }:` ) ) {
-					const { commentId, leafId, solved, selected } = getDataFromMarkerName( marker.name );
+					const { commentId, leafId, parentId, solved, selected } = getDataFromMarkerName( marker.name );
 
 					if ( id !== commentId || selected ) {
 						continue;
 					}
-					const commentMarkerName = getMarkerName( commentId, leafId, true, solved );
+					const commentMarkerName = getMarkerName( commentId, leafId, parentId, true, solved );
 
 					writer.addMarker( commentMarkerName, {
 						range: marker.getRange(),

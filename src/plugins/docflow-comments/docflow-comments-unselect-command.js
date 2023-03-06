@@ -9,13 +9,13 @@ export default class DocflowCommentsUnselectCommand extends Command {
 		model.change( writer => {
 			for ( const marker of Array.from( model.markers ) ) {
 				if ( marker.name.startsWith( `${ MARKER_NAME }:` ) ) {
-					const { commentId, leafId, solved, selected } = getDataFromMarkerName( marker.name );
+					const { commentId, leafId, solved, selected, parentId } = getDataFromMarkerName( marker.name );
 
 					if ( !selected ) {
 						continue;
 					}
 
-					const commentMarkerName = getMarkerName( commentId, leafId, false, solved );
+					const commentMarkerName = getMarkerName( commentId, leafId, parentId, false, solved );
 
 					writer.addMarker( commentMarkerName, {
 						range: marker.getRange(),
