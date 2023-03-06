@@ -34,6 +34,7 @@ import DocflowLink from './plugins/docflow-link/docflow-link';
 import DocflowPlaceholder from './plugins/docflow-placeholder/docflow-placeholder';
 import DocflowSanitizePaste from './plugins/docflow-sanitize-paste/docflow-sanitize-paste';
 import DocflowComments from './plugins/docflow-comments/docflow-comments';
+import DocflowSmartfield from './plugins/docflow-smartfield/docflow-smarfield';
 import './ckeditor.css';
 
 class DecoupledEditor extends DecoupledEditorBase { }
@@ -47,6 +48,7 @@ const plugins = [
 	DocflowPlaceholder,
 	DocflowLink,
 	DocflowSanitizePaste,
+	DocflowSmartfield,
 	Font,
 	Indent,
 	IndentBlock,
@@ -91,6 +93,7 @@ const config = {
 			'numberedList',
 			'insertTable',
 			'insertPlaceholder',
+			'insertSmartfield',
 			'docflowLink',
 			'imageUpload',
 			'|',
