@@ -5,3 +5,4 @@ export const SOLVED_ATTRIBUTE = 'data-solved';
 export const VIEW_NAME = 'comment';
 export const MODEL_NAME = 'comment';
 export const GROUP_NAME = 'comment';
+export const PARENT_ID_ATTRIBUTE = 'data-parent-id';
