@@ -34,7 +34,7 @@ import DocflowLink from './plugins/docflow-link/docflow-link';
 import DocflowPlaceholder from './plugins/docflow-placeholder/docflow-placeholder';
 import DocflowSanitizePaste from './plugins/docflow-sanitize-paste/docflow-sanitize-paste';
 import DocflowComments from './plugins/docflow-comments/docflow-comments';
-import DocflowSmartfield from './plugins/docflow-smartfield/docflow-smarfield';
+import DocflowSmartfield from './plugins/docflow-smartfield/docflow-smartfield';
 import './ckeditor.css';
 
 class DecoupledEditor extends DecoupledEditorBase { }
