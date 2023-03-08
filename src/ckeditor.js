@@ -27,6 +27,8 @@ import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableKeyboard from '@ckeditor/ckeditor5-table/src/tablekeyboard';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
+import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 
 import MultirootEditor from './editors/multiroot-editor';
 import DocflowImageUpload from './plugins/docflow-image-upload/docflow-image-upload';
@@ -64,9 +66,9 @@ const plugins = [
 	RemoveFormat,
 	Strikethrough,
 	Table,
-	// TableCellProperties,
+	TableCellProperties,
 	TableKeyboard,
-	// TableProperties,
+	TableProperties,
 	TableToolbar,
 	Underline,
 	DocflowComments
@@ -113,9 +115,9 @@ const config = {
 		contentToolbar: [
 			'tableColumn',
 			'tableRow',
-			'mergeTableCells'
-			// "tableProperties",
-			// "tableCellProperties",
+			'mergeTableCells',
+			'tableProperties',
+			'tableCellProperties'
 		]
 	}
 };
