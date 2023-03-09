@@ -10,6 +10,7 @@ export const ATTRIBUTE_NAME = 'name';
 export const ATTRIBUTE_TYPE = 'type';
 export const COMMAND_INSERT_SMARTFIELD = 'insertSmartfield';
 export const COMMAND_DELETE_SMARTFIELD = 'deleteSmartfield';
+export const SMARTFIELD_REGEX = /({{[a-zA-Z][\w.]*}})/;
 
 export default class DocflowSmartfieldEditing extends Plugin {
 	static get requires() {
@@ -17,6 +18,12 @@ export default class DocflowSmartfieldEditing extends Plugin {
 	}
 
 	init() {
+		const config = this.editor.config.get( 'docflowSmartfield' );
+
+		if ( !config || config.enabled === false || !config.renderSmartfield ) {
+			return;
+		}
+
 		this._defineSchema();
 		this._defineConverters();
 		this._addAutoFormat();
@@ -83,8 +90,8 @@ export default class DocflowSmartfieldEditing extends Plugin {
 					a => a.is( 'element' ) && a.hasClass( 'smartfield__react-wrapper' )
 				);
 
-				for ( const part of data.viewItem.data.split( /(?={{.*?}})|(?<=}})/ ) ) {
-					const node = part.startsWith( '{{' ) || isSmartfield ?
+				for ( const part of data.viewItem.data.split( SMARTFIELD_REGEX ) ) {
+					const node = SMARTFIELD_REGEX.test( part ) || isSmartfield ?
 						writer.createElement( TYPE_SMARTFIELD, { name: part.slice( 2, -2 ) } ) :
 						writer.createText( part );
 
@@ -194,16 +201,36 @@ export default class DocflowSmartfieldEditing extends Plugin {
 	}
 
 	_addAutoFormat() {
-		inlineAutoformatEditing( this.editor, this, /(?:^|\s)({{)([^*]+)(}})$/g, autoformatCallback );
+		const config = this.editor.config.get( 'docflowSmartfield' );
 
-		function autoformatCallback( writer, rangesToFormat ) {
+		inlineAutoformatEditing( this.editor, this, /(?:^|\s)({{)([^*]+)(}})$/g, ( writer, rangesToFormat ) => {
 			for ( const range of rangesToFormat ) {
+				const name = this._getTextFromRange( range );
+				if ( !SMARTFIELD_REGEX.test( `{{${ name }}}` ) ) {
+					if ( config.onInvalidSmartfieldName ) {
+						config.onInvalidSmartfieldName( name );
+					}
+					return false;
+				}
+
 				writer.setAttribute( 'smartfield', true, range );
 
 				// After applying attribute to the text, remove given attribute from the selection.
 				// This way user is able to type a text without attribute used by auto formatter.
 				writer.removeSelectionAttribute( 'smartfield' );
 			}
+		} );
+	}
+
+	_getTextFromRange( range ) {
+		const results = [];
+
+		for ( const item of range.getItems() ) {
+			if ( item.is( 'textProxy' ) ) {
+				results.push( item.data );
+			}
 		}
+
+		return results.join( ' ' ).trim();
 	}
 }
