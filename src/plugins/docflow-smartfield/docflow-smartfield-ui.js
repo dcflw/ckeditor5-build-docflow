@@ -4,7 +4,7 @@ import ContextualBalloon from '@ckeditor/ckeditor5-ui/src/panel/balloon/contextu
 import Model from '@ckeditor/ckeditor5-ui/src/model';
 import Collection from '@ckeditor/ckeditor5-utils/src/collection';
 import { addListToDropdown, createDropdown } from '@ckeditor/ckeditor5-ui/src/dropdown/utils';
-import { COMMAND_INSERT_SMARTFIELD } from './docflow-smartfield-editing';
+import { COMMAND_INSERT_SMARTFIELD, SMARTFIELD_REGEX } from './docflow-smartfield-editing';
 import smartFieldRegular from './theme/icons/smartFieldRegular.svg';
 import linkIcon from './theme/icons/link-icon.svg';
 
@@ -91,7 +91,18 @@ export default class DocflowSmartfieldUI extends Plugin {
 	}
 
 	insertNewSmartfield( type ) {
-		this.editor.execute( COMMAND_INSERT_SMARTFIELD, { name: this.getSelectedText(), type } );
+		const config = this.editor.config.get( 'docflowSmartfield' );
+		const selectedText = this.getSelectedText().trim();
+		const isValidSmartfieldName = SMARTFIELD_REGEX.test( `{{${ selectedText }}}` );
+
+		if ( selectedText && !isValidSmartfieldName ) {
+			if ( config.onInvalidSmartfieldName ) {
+				config.onInvalidSmartfieldName( selectedText );
+			}
+			return;
+		}
+
+		this.editor.execute( COMMAND_INSERT_SMARTFIELD, { name: selectedText, type } );
 	}
 
 	getSelectedText() {

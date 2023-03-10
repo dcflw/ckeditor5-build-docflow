@@ -54,6 +54,18 @@
           formComponentProps: {},
           variableLabels: {},
         },
+        docflowSmartfield: {
+          enabled: true,
+          renderSmartfield: (props, domElement) => {
+            const smartfield = document.createElement('span');
+            smartfield.innerHTML = props.name;
+            smartfield.style.border = '1px solid red';
+            domElement.appendChild(smartfield);
+          },
+          onInvalidSmartfieldName: (name) => {
+            console.log('Invalid smartfield name: ', name);
+          },
+        }
       })
         .then(editor => {
           window.editor = editor;
