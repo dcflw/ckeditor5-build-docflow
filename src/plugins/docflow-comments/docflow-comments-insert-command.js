@@ -8,8 +8,6 @@ export default class DocflowCommentsInsertCommand extends Command {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 
-		console.log( 'CK-INSERT', parentId );
-
 		model.change( writer => {
 			if ( !selection.isCollapsed ) {
 				const ranges = model.schema.getValidRanges(
@@ -19,12 +17,15 @@ export default class DocflowCommentsInsertCommand extends Command {
 
 				for ( const range of ranges ) {
 					const markerName = getMarkerName( id, cuid(), parentId, true, false );
-					console.log( 'CK_MARKER', markerName );
 
-					writer.addMarker( markerName, {
-						range,
-						usingOperation: false
-					} );
+					const currentMarkers = Array.from( model.markers ) || [];
+
+					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {
+						writer.addMarker( markerName, {
+							range,
+							usingOperation: false
+						} );
+					}
 				}
 			}
 		} );

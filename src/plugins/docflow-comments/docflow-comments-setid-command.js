@@ -42,11 +42,15 @@ export default class DocflowCommentsSetIdCommand extends Command {
 			for ( const marker of model.markers ) {
 				if ( marker.name.startsWith( `${ MARKER_NAME }:${ id }:` ) ) {
 					const newMarkerName = marker.name.replace( `${ MARKER_NAME }:${ id }:`, `${ MARKER_NAME }:${ newId }:` );
-					writer.addMarker( newMarkerName, {
-						range: marker.getRange(),
-						usingOperation: false
-					} );
-					writer.removeMarker( marker.name );
+					const currentMarkers = Array.from( model.markers ) || [];
+
+					if ( currentMarkers.every( marker => marker.name !== newMarkerName ) ) {
+						writer.addMarker( newMarkerName, {
+							range: marker.getRange(),
+							usingOperation: false
+						} );
+						writer.removeMarker( marker.name );
+					}
 				}
 			}
 		} );
