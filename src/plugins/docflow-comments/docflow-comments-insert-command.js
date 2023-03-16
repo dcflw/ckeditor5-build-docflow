@@ -17,7 +17,7 @@ export default class DocflowCommentsInsertCommand extends Command {
 
 				for ( const range of ranges ) {
 					const markerName = getMarkerName( id, cuid(), parentId, true, false );
-
+					console.log( 'markerName', markerName );
 					const currentMarkers = Array.from( model.markers ) || [];
 
 					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {
