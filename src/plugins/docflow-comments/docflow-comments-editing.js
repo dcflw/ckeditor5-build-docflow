@@ -68,11 +68,18 @@ export default class DocflowCommentsEditing extends Plugin {
 			model: MODEL_NAME,
 			view: data => {
 				const { commentId, selected, solved, parentId } = getDataFromMarkerName( data.markerName );
-				const attributes = { [ ID_ATTRIBUTE ]: commentId };
+				const attributes = {
+					[ ID_ATTRIBUTE ]: commentId,
+					[ SELECTED_ATTRIBUTE ]: selected,
+					[ SOLVED_ATTRIBUTE ]: solved,
+					[ PARENT_ID_ATTRIBUTE ]: parentId
+				};
 
 				attributes[ SELECTED_ATTRIBUTE ] = selected;
 				attributes[ SOLVED_ATTRIBUTE ] = solved;
 				attributes[ PARENT_ID_ATTRIBUTE ] = parentId;
+
+				console.log( 'EDITING DOWNCAST', attributes );
 
 				return {
 					attributes
