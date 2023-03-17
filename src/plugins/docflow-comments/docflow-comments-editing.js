@@ -79,8 +79,6 @@ export default class DocflowCommentsEditing extends Plugin {
 				attributes[ SOLVED_ATTRIBUTE ] = solved;
 				attributes[ PARENT_ID_ATTRIBUTE ] = parentId;
 
-				console.log( 'EDITING DOWNCAST', attributes );
-
 				return {
 					attributes
 				};
