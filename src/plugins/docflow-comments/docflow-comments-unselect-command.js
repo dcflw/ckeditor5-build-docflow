@@ -1,5 +1,6 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
 import { MARKER_NAME } from './constants';
+import { getDataFromMarkerName, getMarkerName } from './helper';
 
 export default class DocflowCommentsUnselectCommand extends Command {
 	execute() {
@@ -8,20 +9,22 @@ export default class DocflowCommentsUnselectCommand extends Command {
 		model.change( writer => {
 			for ( const marker of Array.from( model.markers ) ) {
 				if ( marker.name.startsWith( `${ MARKER_NAME }:` ) ) {
-					// eslint-disable-next-line no-unused-vars
-					const [ _, commentId, leafId, selected ] = marker.name.split( ':' );
+					const { commentId, leafId, solved, selected, parentId } = getDataFromMarkerName( marker.name );
 
-					if ( selected !== 'selected' ) {
+					if ( !selected ) {
 						continue;
 					}
 
-					const commentMarkerName = `${ MARKER_NAME }:${ commentId }:${ leafId }`;
+					const commentMarkerName = getMarkerName( commentId, leafId, parentId, false, solved );
+					const currentMarkers = Array.from( model.markers ) || [];
 
-					writer.addMarker( commentMarkerName, {
-						range: marker.getRange(),
-						usingOperation: false
-					} );
-					writer.removeMarker( marker.name );
+					if ( currentMarkers.every( marker => marker.name !== commentMarkerName ) ) {
+						writer.addMarker( commentMarkerName, {
+							range: marker.getRange(),
+							usingOperation: false
+						} );
+						writer.removeMarker( marker.name );
+					}
 				}
 			}
 		} );

@@ -1,5 +1,6 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
-import { ID_ATTRIBUTE, MARKER_NAME } from './constants';
+import { ID_ATTRIBUTE } from './constants';
+import { getDataFromMarkerName } from './helper';
 
 export default class DocflowCommentsRemoveCommand extends Command {
 	findCommentAttributes( root, id ) {
@@ -34,7 +35,9 @@ export default class DocflowCommentsRemoveCommand extends Command {
 
 		model.change( writer => {
 			for ( const marker of model.markers ) {
-				if ( marker.name.startsWith( `${ MARKER_NAME }:${ id }:` ) ) {
+				const { commentId } = getDataFromMarkerName( marker.name );
+
+				if ( commentId === id ) {
 					writer.removeMarker( marker.name );
 				}
 			}

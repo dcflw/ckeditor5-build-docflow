@@ -1,5 +1,6 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
 import { MARKER_NAME } from './constants';
+import { getDataFromMarkerName, getMarkerName } from './helper';
 
 export default class DocflowCommentsSelectCommand extends Command {
 	execute( { id } ) {
@@ -8,24 +9,22 @@ export default class DocflowCommentsSelectCommand extends Command {
 		model.change( writer => {
 			for ( const marker of Array.from( model.markers ) ) {
 				if ( marker.name.startsWith( `${ MARKER_NAME }:` ) ) {
-					// eslint-disable-next-line no-unused-vars
-					const [ _, commentId, leafId, selected ] = marker.name.split( ':' );
+					const { commentId, leafId, parentId, solved, selected } = getDataFromMarkerName( marker.name );
 
-					if ( selected !== 'selected' && commentId !== id ) {
+					if ( id !== commentId || selected ) {
 						continue;
 					}
+					const commentMarkerName = getMarkerName( commentId, leafId, parentId, true, solved );
 
-					let commentMarkerName = `${ MARKER_NAME }:${ commentId }:${ leafId }`;
+					const currentMarkers = Array.from( model.markers ) || [];
 
-					if ( commentId === id ) {
-						commentMarkerName += ':selected';
+					if ( currentMarkers.every( marker => marker.name !== commentMarkerName ) ) {
+						writer.addMarker( commentMarkerName, {
+							range: marker.getRange(),
+							usingOperation: false
+						} );
+						writer.removeMarker( marker.name );
 					}
-
-					writer.addMarker( commentMarkerName, {
-						range: marker.getRange(),
-						usingOperation: false
-					} );
-					writer.removeMarker( marker.name );
 				}
 			}
 		} );

@@ -1,9 +1,10 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
-import { ID_ATTRIBUTE, MARKER_NAME } from './constants';
+import { ID_ATTRIBUTE } from './constants';
 import cuid from 'cuid';
+import { getMarkerName } from './helper';
 
 export default class DocflowCommentsInsertCommand extends Command {
-	execute( { id } ) {
+	execute( { id, parentId } ) {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 
@@ -15,10 +16,15 @@ export default class DocflowCommentsInsertCommand extends Command {
 				);
 
 				for ( const range of ranges ) {
-					writer.addMarker( `${ MARKER_NAME }:${ id }:${ cuid() }`, {
-						range,
-						usingOperation: false
-					} );
+					const markerName = getMarkerName( id, cuid(), parentId, true, false );
+					const currentMarkers = Array.from( model.markers ) || [];
+
+					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {
+						writer.addMarker( markerName, {
+							range,
+							usingOperation: false
+						} );
+					}
 				}
 			}
 		} );
