@@ -4,10 +4,9 @@ import cuid from 'cuid';
 import { getMarkerName } from './helper';
 
 export default class DocflowCommentsInsertCommand extends Command {
-	execute( { id, parentId } ) {
+	execute( id, parentId ) {
 		const model = this.editor.model;
 		const selection = model.document.selection;
-
 
 		model.change( writer => {
 			if ( !selection.isCollapsed ) {
@@ -17,7 +16,7 @@ export default class DocflowCommentsInsertCommand extends Command {
 				);
 
 				for ( const range of ranges ) {
-					const markerName = getMarkerName( id, cuid(), parentId, true, false );
+					const markerName = getMarkerName( id, 'leaf-id', parentId, true, false );
 					const currentMarkers = Array.from( model.markers ) || [];
 
 					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {

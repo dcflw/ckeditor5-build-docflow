@@ -50,7 +50,6 @@ const plugins = [
 	DocflowPlaceholder,
 	DocflowLink,
 	DocflowSanitizePaste,
-	DocflowComments,
 	DocflowSmartfield,
 	Font,
 	Indent,
@@ -71,7 +70,8 @@ const plugins = [
 	TableKeyboard,
 	TableProperties,
 	TableToolbar,
-	Underline
+	Underline,
+	DocflowComments
 ];
 
 DecoupledEditor.builtinPlugins = plugins;
