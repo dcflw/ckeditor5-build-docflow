@@ -77,7 +77,10 @@
       });
 
     document.querySelector("#new-comment").addEventListener("click", () => {
-      window.editor.execute("insertComment", "deneme-comment")
+      window.editor.execute("insertComment", {
+        id: "deneme-comment",
+        rootName: "main"
+      })
     });
   </script>
 </body>
