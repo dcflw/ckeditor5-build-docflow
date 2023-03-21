@@ -4,11 +4,10 @@ import cuid from 'cuid';
 import { getMarkerName } from './helper';
 
 export default class DocflowCommentsInsertCommand extends Command {
-	execute( { id, parentId, rootName } ) {
+	execute( { id, parentId } ) {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 
-		console.log( 'DATA', this.editor.getData( { rootName } ) );
 
 		model.change( writer => {
 			if ( !selection.isCollapsed ) {
