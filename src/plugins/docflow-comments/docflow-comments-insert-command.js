@@ -8,6 +8,8 @@ export default class DocflowCommentsInsertCommand extends Command {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 
+		console.log( 'DATA', this.editor.getData() );
+
 		model.change( writer => {
 			if ( !selection.isCollapsed ) {
 				const ranges = model.schema.getValidRanges(
