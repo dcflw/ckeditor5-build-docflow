@@ -15,6 +15,8 @@ export default class DocflowCommentsInsertCommand extends Command {
 					ID_ATTRIBUTE
 				);
 
+				console.log( 'rootName', rootName );
+				console.log( 'model.document.roots', model.document.roots );
 				const numberOfLeafs = model.document.roots.get( rootName ).childCount;
 
 				const leafIds = Array.from( { length: numberOfLeafs } ).map( () => cuid() );
