@@ -4,7 +4,7 @@ import cuid from 'cuid';
 import { getMarkerName } from './helper';
 
 export default class DocflowCommentsInsertCommand extends Command {
-	execute( id, parentId ) {
+	execute( id, rootName, parentId ) {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 
@@ -15,7 +15,7 @@ export default class DocflowCommentsInsertCommand extends Command {
 					ID_ATTRIBUTE
 				);
 
-				const numberOfLeafs = model.document.roots.get( 'main' ).childCount;
+				const numberOfLeafs = model.document.roots.get( rootName ).childCount;
 
 				const leafIds = Array.from( { length: numberOfLeafs } ).map( () => cuid() );
 
