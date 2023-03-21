@@ -4,7 +4,7 @@ import cuid from 'cuid';
 import { getMarkerName } from './helper';
 
 export default class DocflowCommentsInsertCommand extends Command {
-	execute( id, rootName, parentId ) {
+	execute( { id, rootName, parentId } ) {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 
