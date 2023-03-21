@@ -52,6 +52,7 @@ export default class DocflowSmartfieldEditing extends Plugin {
 			allowWhere: '$text',
 			isInline: true,
 			isObject: true,
+			allowAttributesOf: '$text',
 			allowAttributes: [
 				ATTRIBUTE_NAME,
 				ATTRIBUTE_TYPE
@@ -161,7 +162,13 @@ export default class DocflowSmartfieldEditing extends Plugin {
 			const type = modelItem.getAttribute( 'type' );
 			const config = editor.config.get( 'docflowSmartfield' );
 
-			const smartfieldView = viewWriter.createContainerElement( 'span', { class: 'smartfield' } );
+			const smartfieldView = viewWriter.createContainerElement(
+				'span',
+				{ class: 'smartfield' },
+				// undocumented feature: https://github.com/ckeditor/ckeditor5/pull/8998
+				// allows element to be inside styling attributes (e.g. <strong>)
+				{ isAllowedInsideAttributeElement: true }
+			);
 
 			const reactWrapper = viewWriter.createRawElement( 'span', {
 				class: 'smartfield__react-wrapper'
