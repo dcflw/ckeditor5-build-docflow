@@ -15,8 +15,14 @@ export default class DocflowCommentsInsertCommand extends Command {
 					ID_ATTRIBUTE
 				);
 
+				const numberOfLeafs = window.editor.model.document.roots.get( 'main' ).childCount;
+
+				const leafIds = Array.from( { length: numberOfLeafs } ).map( () => cuid() );
+
 				for ( const range of ranges ) {
-					const markerName = getMarkerName( id, 'leaf-id', parentId, true, false );
+					const rangeStart = range.start;
+					const leafIndex = rangeStart.path[ 0 ];
+					const markerName = getMarkerName( id, leafIds[ leafIndex ], parentId, true, false );
 					const currentMarkers = Array.from( model.markers ) || [];
 
 					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {

@@ -21,10 +21,8 @@
   <h1>CKEditor 5 – Docflow build</h1>
 
   <div id="editor">
-    <p style="margin-left:0px;"><comment-start
-        name="unsaved-comment:clfi5321900033b7bipg0132k:a3dffca4-d0a6-4f94-b623-05df46a4add2:true:false"></comment-start>Lorem&nbsp;{{ipsum}}
-      dolor sit amet, <comment-end
-        name="unsaved-comment:clfi5321900033b7bipg0132k:a3dffca4-d0a6-4f94-b623-05df46a4add2:true:false"></comment-end>consectetur
+    <p style="margin-left:0px;">Lorem {{ipsum}}
+      dolor sit amet, consectetur
       adipiscing elit. Sed porttitor neque at bibendum viverra. Duis aliquam nibh ut turpis gravida molestie. Nulla ac
       enim consectetur lacus condimentum facilisis. Duis eu scelerisque magna, in feugiat diam. Quisque non ex dui.
       Donec pellentesque arcu id arcu dignissim, quis pharetra dolor semper. Aliquam est libero, luctus sed quam a,
@@ -38,6 +36,12 @@
       efficitur luctus. Nunc vulputate hendrerit mi, ac accumsan ex imperdiet eget. Suspendisse nec consequat sem. In
       sodales massa felis, tempor rhoncus magna consequat quis. In faucibus elit vulputate augue finibus, ac maximus
       dolor imperdiet. Suspendisse orci velit, dignissim non accumsan non, pretium ac purus.</p>
+    <p style="margin-left:0px;">
+      Quisque ullamcorper, lacus sit amet egestas laoreet, risus magna
+      scelerisque eros, nec semper velit augue sit amet urna. Nullam a lacus odio. Donec finibus leo vitae turpis
+      efficitur luctus. Nunc vulputate hendrerit mi, ac accumsan ex imperdiet eget. Suspendisse nec consequat sem. In
+      sodales massa felis, tempor rhoncus magna consequat quis. In faucibus elit
+    </p>
   </div>
   <button id="new-comment">Insert new</button>
   <script src="../build/ckeditor.js"></script>
@@ -52,19 +56,18 @@
         formComponentProps: {},
         variableLabels: {},
       },
-      // docflowSmartfield: {
-      //   enabled: true,
-      //   renderSmartfield: (props, domElement) => {
-      //     const smartfield = document.createElement('span');
-      //     smartfield.innerHTML = props.name;
-      //     smartfield.style.border = '1px solid red';
-      //     domElement.appendChild(smartfield);
-      //   },
-      //   onInvalidSmartfieldName: (name) => {
-      //     console.log('Invalid smartfield name: ', name);
-      //   },
-      // },
-      removePlugins: ["DocflowSmartfield"]
+      docflowSmartfield: {
+        enabled: true,
+        renderSmartfield: (props, domElement) => {
+          const smartfield = document.createElement('span');
+          smartfield.innerHTML = props.name;
+          smartfield.style.border = '1px solid red';
+          domElement.appendChild(smartfield);
+        },
+        onInvalidSmartfieldName: (name) => {
+          console.log('Invalid smartfield name: ', name);
+        },
+      },
     })
       .then(editor => {
         window.editor = editor;
@@ -74,7 +77,7 @@
       });
 
     document.querySelector("#new-comment").addEventListener("click", () => {
-      window.editor.execute("insertComment", { id: "deneme-comment" })
+      window.editor.execute("insertComment", "deneme-comment")
     });
   </script>
 </body>
