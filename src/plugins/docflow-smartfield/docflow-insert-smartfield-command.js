@@ -10,8 +10,6 @@ export default class DocflowInsertSmartfieldCommand extends Command {
 			editor.model.insertContent( smartfield );
 			writer.setSelection( smartfield, 'on' );
 		} );
-
-		setTimeout( () => editor.editing.view.focus() );
 	}
 
 	refresh() {
