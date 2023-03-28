@@ -142,7 +142,8 @@ export default class DocflowSmartfieldEditing extends Plugin {
 				const widgetElement = createSmartfieldView( modelItem, viewWriter );
 
 				// Enable widget handling on a placeholder element inside the editing view.
-				return toWidget( widgetElement, viewWriter );
+				// adding `hasSelectionHandle: true` fixes issues in Firefox
+				return toWidget( widgetElement, viewWriter, { hasSelectionHandle: true } );
 			}
 		} )
 			.add( dispatcher => dispatcher.on( 'attribute:smartfield', convertTextToSmartfield ) );
