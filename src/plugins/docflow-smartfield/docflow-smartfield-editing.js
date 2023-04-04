@@ -157,6 +157,12 @@ export default class DocflowSmartfieldEditing extends Plugin {
 			} )
 		} );
 
+		conversion.for( 'upcast' ).dataToMarker( {
+			view: 'smartfield',
+			model: name => `smartfield:${ name }`,
+			converterPriority: 'high'
+		} );
+
 		function createSmartfieldView( modelItem, viewWriter ) {
 			const name = modelItem.getAttribute( 'name' );
 			const type = modelItem.getAttribute( 'type' );
