@@ -97,19 +97,19 @@ export default class DocflowCommentsEditing extends Plugin {
 			converterPriority: 'high'
 		} );
 
-		// this.editor.editing.view.document.on( 'click', ( info, data ) => {
-		// 	const { target } = data;
-		// 	const attributeKeys = Array.from( target.getAttributeKeys() );
+		this.editor.editing.view.document.on( 'click', ( info, data ) => {
+			const { target } = data;
+			const attributeKeys = Array.from( target.getAttributeKeys() );
 
-		// 	if ( attributeKeys.includes( ID_ATTRIBUTE ) ) {
-		// 		const commentId = target.getAttribute( ID_ATTRIBUTE ).split( ':' )[ 0 ];
+			if ( attributeKeys.includes( ID_ATTRIBUTE ) ) {
+				const commentId = target.getAttribute( ID_ATTRIBUTE ).split( ':' )[ 0 ];
 
-		// 		const customEvent = new CustomEvent( 'commentClick', {
-		// 			detail: commentId
-		// 		} );
+				const customEvent = new CustomEvent( 'commentClick', {
+					detail: commentId
+				} );
 
-		// 		document.dispatchEvent( customEvent );
-		// 	}
-		// } );
+				document.dispatchEvent( customEvent );
+			}
+		} );
 	}
 }
