@@ -16,6 +16,9 @@ export default class DocflowCommentsInsertCommand extends Command {
 				);
 
 				for ( let range of ranges ) {
+          console.log("RANGE", range);
+          console.log("NODE BEFORE", range.start?.nodeBefore);
+
           if (range.start?.nodeBefore?.name === "smartfield") {
             console.log("range.start.nodeBefore", range.start.nodeBefore);
             console.log("start", range.start);
