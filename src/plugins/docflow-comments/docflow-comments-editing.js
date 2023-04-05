@@ -3,7 +3,6 @@ import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widg
 import DocflowCommentsInsertCommand from './docflow-comments-insert-command';
 import DocflowCommentsSetIdCommand from './docflow-comments-setid-command';
 import DocflowCommentsRemoveCommand from './docflow-comments-remove-command';
-import DocflowCommentsTestCommand from './docflow-comments-test';
 import {
 	ID_ATTRIBUTE,
 	VIEW_NAME,
@@ -26,11 +25,6 @@ export default class DocflowCommentsEditing extends Plugin {
 		this.editor.commands.add(
 			'setCommentId',
 			new DocflowCommentsSetIdCommand( this.editor )
-		);
-
-		this.editor.commands.add(
-			'testComment',
-			new DocflowCommentsTestCommand( this.editor )
 		);
 
 		this.editor.commands.add(
