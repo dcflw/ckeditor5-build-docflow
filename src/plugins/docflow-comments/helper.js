@@ -4,10 +4,7 @@ export const getDataFromMarkerName = markerName => {
 	const [
 		name,
 		commentId,
-		leafId,
-		parentId,
-		selected = '',
-		solved = ''
+		leafId
 	] = markerName.split( ':' );
 
 	if ( name !== MARKER_NAME ) {
@@ -16,15 +13,10 @@ export const getDataFromMarkerName = markerName => {
 
 	return {
 		commentId,
-		leafId,
-		parentId,
-		selected: selected.toLowerCase() === 'true',
-		solved: solved.toLowerCase() === 'true'
+		leafId
 	};
 };
 
-export const getMarkerName = ( commentId, leafId, parentId = 'none', selected = false, solved = false ) => {
-	return `${ MARKER_NAME }:${ commentId }:${ leafId }:${ parentId }:${ selected
-		.toString()
-		.toLowerCase() }:${ solved.toString().toLowerCase() }`;
+export const getMarkerName = ( commentId, leafId ) => {
+	return `${ MARKER_NAME }:${ commentId }:${ leafId }`;
 };
