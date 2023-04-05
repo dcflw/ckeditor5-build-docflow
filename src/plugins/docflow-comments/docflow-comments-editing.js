@@ -83,6 +83,7 @@ export default class DocflowCommentsEditing extends Plugin {
 
 			if ( attributeKeys.includes( ID_ATTRIBUTE ) ) {
 				const commentId = target.getAttribute( ID_ATTRIBUTE ).split( ':' )[ 0 ];
+				console.log( 'target', target, commentId );
 
 				const customEvent = new CustomEvent( 'commentClick', {
 					detail: commentId
