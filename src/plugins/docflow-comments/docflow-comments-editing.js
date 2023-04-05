@@ -65,7 +65,6 @@ export default class DocflowCommentsEditing extends Plugin {
 			converterPriority: 'high'
 		} );
 
-		console.log( 'defineConverters' );
 
 		conversion.for( 'editingDowncast' ).markerToHighlight( {
 			model: MODEL_NAME,
