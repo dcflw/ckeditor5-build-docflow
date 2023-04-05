@@ -77,7 +77,7 @@ export default class DocflowCommentsEditing extends Plugin {
 			converterPriority: 'high'
 		} );
 
-		this.editor.editing.view.document.on( 'click', ( info, data ) => {
+		this.editor.editing.view.document.on( 'mousedown', ( info, data ) => {
 			const { target } = data;
 			const attributeKeys = Array.from( target.getAttributeKeys() );
 
