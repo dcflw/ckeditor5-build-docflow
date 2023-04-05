@@ -19,14 +19,16 @@ export default class DocflowCommentsInsertCommand extends Command {
           console.log("RANGE", range);
           console.log("NODE BEFORE", range.start?.nodeBefore);
 
-          if (range.start?.nodeBefore?.name === "smartfield") {
-            console.log("range.start.nodeBefore", range.start.nodeBefore);
-            console.log("start", range.start);
+          if (range.start?.nodeAfter?.name === "smartfield") {
+            console.log("1", range.start.nodeBefore);
+            console.log("2", range.start);
             range = writer.createRange(
               model.createPositionFromPath(range.root, [range.start.path[0], range.end.path[1] - 5]),
               model.createPositionFromPath(range.root, range.end.path)
             );
-          } else if(range.end?.nodeAfter?.name === "smartfield") {
+          } else if(range.end?.nodeBefore?.name === "smartfield") {
+            onsole.log("3", range.start.nodeBefore);
+            console.log("4", range.start);
             range = writer.createRange(
               model.createPositionFromPath(range.root, range.start.path),
               model.createPositionFromPath(range.root, [range.end.path[0], range.end.path[1] - 1])
