@@ -76,21 +76,5 @@ export default class DocflowCommentsEditing extends Plugin {
 			},
 			converterPriority: 'high'
 		} );
-
-		this.editor.editing.view.document.on( 'mousedown', ( info, data ) => {
-			const { target } = data;
-			const attributeKeys = Array.from( target.getAttributeKeys() );
-
-			if ( attributeKeys.includes( ID_ATTRIBUTE ) ) {
-				const commentId = target.getAttribute( ID_ATTRIBUTE ).split( ':' )[ 0 ];
-				console.log( 'target', target, commentId );
-
-				const customEvent = new CustomEvent( 'commentClick', {
-					detail: commentId
-				} );
-
-				document.dispatchEvent( customEvent );
-			}
-		} );
 	}
 }
