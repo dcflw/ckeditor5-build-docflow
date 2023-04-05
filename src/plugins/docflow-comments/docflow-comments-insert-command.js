@@ -27,11 +27,11 @@ export default class DocflowCommentsInsertCommand extends Command {
               model.createPositionFromPath(range.root, range.end.path)
             );
           } else if(range.end?.nodeBefore?.name === "smartfield") {
-            onsole.log("3", range.start.nodeBefore);
+            console.log("3", range.start.nodeBefore);
             console.log("4", range.start);
             range = writer.createRange(
               model.createPositionFromPath(range.root, range.start.path),
-              model.createPositionFromPath(range.root, [range.end.path[0], range.end.path[1] - 1])
+              model.createPositionFromPath(range.root, [range.end.path[0], range.end.path[1] - 2])
             );
           }
 
