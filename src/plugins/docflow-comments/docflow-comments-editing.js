@@ -3,6 +3,7 @@ import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widg
 import DocflowCommentsInsertCommand from './docflow-comments-insert-command';
 import DocflowCommentsSetIdCommand from './docflow-comments-setid-command';
 import DocflowCommentsRemoveCommand from './docflow-comments-remove-command';
+import DocflowCommentsSelectCommand from './docflow-comments-select-comment';
 import {
 	ID_ATTRIBUTE,
 	VIEW_NAME,
@@ -32,13 +33,14 @@ export default class DocflowCommentsEditing extends Plugin {
 			new DocflowCommentsRemoveCommand( this.editor )
 		);
 
+		this.editor.commands.add(
+			'selectComment',
+			new DocflowCommentsSelectCommand( this.editor )
+		);
+
 		this.editor.editing.mapper.on(
 			'viewToModelPosition',
 			viewToModelPositionOutsideModelElement( this.editor.model, viewElement => {
-				if ( viewElement.hasAttribute( ID_ATTRIBUTE ) ) {
-					console.log( 'viewElement', viewElement );
-				}
-
 				return viewElement.hasAttribute( ID_ATTRIBUTE );
 			} )
 		);
@@ -70,9 +72,9 @@ export default class DocflowCommentsEditing extends Plugin {
 			view: data => {
 				const { commentId } = getDataFromMarkerName( data.markerName );
 
+
 				const attributes = {
 					[ ID_ATTRIBUTE ]: commentId,
-					'class': 'comment'
 				};
 
 				return {
