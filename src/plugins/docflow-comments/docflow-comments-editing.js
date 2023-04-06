@@ -6,6 +6,7 @@ import DocflowCommentsRemoveCommand from './docflow-comments-remove-command';
 import DocflowCommentsSelectCommand from './docflow-comments-select-comment';
 import {
 	ID_ATTRIBUTE,
+  RESOLVED_ATTRIBUTE,
 	VIEW_NAME,
 	MARKER_NAME,
 	MODEL_NAME,
