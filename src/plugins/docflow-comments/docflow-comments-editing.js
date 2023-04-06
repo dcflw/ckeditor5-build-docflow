@@ -104,7 +104,9 @@ export default class DocflowCommentsEditing extends Plugin {
 
 		conversion.for( 'dataDowncast' ).markerToData( {
 			model: MODEL_NAME,
-			view: markerName => {
+			view: (markerName, api) => {
+        console.log("markerName", markerName);
+
 				return {
 					group: GROUP_NAME,
 					name: markerName.substr( 8 )
