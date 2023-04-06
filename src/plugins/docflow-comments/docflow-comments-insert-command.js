@@ -16,10 +16,20 @@ export default class DocflowCommentsInsertCommand extends Command {
 				);
 
 				for ( let range of ranges ) {
-          if (range.start?.nodeAfter?.name === "smartfield" || range.start?.nodeBefore?.name === "smartfield") {
+          if (range.start?.nodeAfter?.name === "smartfield") {
+            range = writer.createRange(
+              model.createPositionFromPath(range.root, [range.start.path[0], range.start.path[1] + 2]),
+              model.createPositionFromPath(range.root, range.end.path)
+            );
+          } if (range.start?.nodeBefore?.name === "smartfield") {
             range = writer.createRange(
               model.createPositionFromPath(range.root, [range.start.path[0], range.start.path[1] + 1]),
               model.createPositionFromPath(range.root, range.end.path)
+            );
+          } else if(range.end?.nodeBefore?.name === "smartfield") {
+            range = writer.createRange(
+              model.createPositionFromPath(range.root, range.start.path),
+              model.createPositionFromPath(range.root, [range.end.path[0], range.end.path[1] - 2])
             );
           } else if(range.end?.nodeBefore?.name === "smartfield" || range.end?.nodeAfter?.name === "smartfield") {
             range = writer.createRange(
