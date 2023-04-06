@@ -11,10 +11,12 @@ export default class DocflowCommentsSelectCommand extends Command {
 				if ( marker.name.startsWith( `comment:${ id }:` ) ) {
 					this.editor.editing.mapper.markerNameToElements( marker.name ).forEach( viewElement => {
 						writer.addClass( 'comment-selected', viewElement );
+            writer.removeClass('comment', viewElement);
 					} );
 				} else {
 					this.editor.editing.mapper.markerNameToElements( marker.name ).forEach( viewElement => {
 						writer.removeClass( 'comment-selected', viewElement );
+            writer.addClass('comment', viewElement);
 					} );
 				}
 			}

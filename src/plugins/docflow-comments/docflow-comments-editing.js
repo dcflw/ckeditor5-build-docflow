@@ -84,13 +84,16 @@ export default class DocflowCommentsEditing extends Plugin {
 				}, [] ) : classNamesCache;
 
 				classNamesCache = classNames;
-				console.log( 'classNames', classNames, commentId);
+				
+        if (classNames.length === 0) {
+          classNames.push('comment');
+        }
 
 				return {
 					attributes: {
 		        [ ID_ATTRIBUTE ]: commentId,
 		      },
-		      classes: [ 'comment', ...classNames ]
+		      classes: classNames
 				};
 			}
 		} );
