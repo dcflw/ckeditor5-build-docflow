@@ -62,7 +62,7 @@
       let lastcomment = null;
       document.getElementById("add").addEventListener("click", () => {
         lastcomment = Date.now().toString();
-        editor.execute("insertComment", { id: lastcomment});
+        editor.execute("insertComment", { id: lastcomment, parentId: "melih"});
       });
 
       document.getElementById("select").addEventListener("click", () => {

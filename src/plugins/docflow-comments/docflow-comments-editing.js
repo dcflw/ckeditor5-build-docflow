@@ -7,6 +7,7 @@ import DocflowCommentsSelectCommand from './docflow-comments-select-comment';
 import {
 	ID_ATTRIBUTE,
   RESOLVED_ATTRIBUTE,
+  PARENT_ATTRIBUTE,
 	VIEW_NAME,
 	MARKER_NAME,
 	MODEL_NAME,
@@ -77,7 +78,7 @@ export default class DocflowCommentsEditing extends Plugin {
           return;
         }
 
-				const { commentId, resolved } = getDataFromMarkerName( data.markerName );
+				const { commentId, resolved, parentId } = getDataFromMarkerName( data.markerName );
 				const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
 				const classNames = elements.length ? elements.flatMap( element => {
 					return element.getAttribute( 'class' )?.split( ' ' );
@@ -93,7 +94,8 @@ export default class DocflowCommentsEditing extends Plugin {
 				return {
 					attributes: {
 		        [ ID_ATTRIBUTE ]: commentId,
-            [RESOLVED_ATTRIBUTE]: resolved
+            [RESOLVED_ATTRIBUTE]: resolved,
+            [PARENT_ATTRIBUTE]: parentId
 		      },
 		      classes: [ 'comment', ...classNames ]
 				};
