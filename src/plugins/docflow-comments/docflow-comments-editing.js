@@ -72,7 +72,7 @@ export default class DocflowCommentsEditing extends Plugin {
 			model: MODEL_NAME,
 			converterPriority: 'high',
 			view: data => {
-        if (data.item.name === "smartfield") {
+        if (data?.item?.name === "smartfield") {
           return;
         }
 
