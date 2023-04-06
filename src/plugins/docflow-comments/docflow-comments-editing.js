@@ -56,7 +56,7 @@ export default class DocflowCommentsEditing extends Plugin {
 
 	defineConverters() {
 		const editor = this.editor;
-		const conversion = this.editor.conversion;
+		const conversion = editor.conversion;
 
 		conversion.for( 'upcast' ).dataToMarker( {
 			view: VIEW_NAME,
@@ -68,45 +68,82 @@ export default class DocflowCommentsEditing extends Plugin {
 
 		let classNamesCache = [];
 
-		conversion.for( 'editingDowncast' ).markerToHighlight( {
-			model: MODEL_NAME,
-			converterPriority: 'high',
-			view: data => {
-				const { commentId } = getDataFromMarkerName( data.markerName );
-				const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
+		// conversion.for( 'editingDowncast' ).markerToHighlight( {
+		// 	model: MODEL_NAME,
+		// 	converterPriority: 'high',
+		// 	view: data => {
+		// 		const { commentId } = getDataFromMarkerName( data.markerName );
+		// 		const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
+		// 		const classNames = elements.length ? elements.flatMap( element => {
+		// 			return element.getAttribute( 'class' )?.split( ' ' );
+		// 		} ).filter( Boolean ).filter( name => name !== 'comment' ).reduce( ( acc, item ) => {
+		// 			// remove duplicates
+		// 			const prevItems = acc.filter( prevItem => prevItem !== item );
 
-				const classNames = elements.length ? elements.flatMap( element => {
-					return element.getAttribute( 'class' ).split( ' ' );
-				} ).filter( Boolean ).filter( name => name !== 'comment' ).reduce( ( acc, item ) => {
-					// remove duplicates
-					const prevItems = acc.filter( prevItem => prevItem !== item );
+		// 			return [ ...prevItems, item ];
+		// 		}, [] ) : classNamesCache;
 
-					return [ ...prevItems, item ];
-				}, [] ) : classNamesCache;
+		// 		classNamesCache = classNames;
+		// 		console.log( 'classNames', classNames, commentId);
 
-				classNamesCache = classNames;
-				console.log( 'classNames', classNames );
-
-				const attributes = {
-					[ ID_ATTRIBUTE ]: commentId,
-					'class': [ 'comment', ...classNames ].join( ' ' )
-				};
-
-				return {
-					attributes
-				};
-			}
-		} );
+		// 		return {
+		// 			attributes: {
+		//         [ ID_ATTRIBUTE ]: commentId,
+		//       },
+		//       classes: [ 'comment', ...classNames ]
+		// 		};
+		// 	}
+		// } );
 
 		conversion.for( 'dataDowncast' ).markerToData( {
 			model: MODEL_NAME,
 			view: markerName => {
 				return {
 					group: GROUP_NAME,
-					name: markerName.substr( 8 ) // Removes 'comment:' part.
+					name: markerName.substr( 8 )
 				};
 			},
 			converterPriority: 'high'
 		} );
+
+		conversion
+			.for( 'editingDowncast' )
+			.markerToHighlight( {
+				model: MODEL_NAME,
+				converterPriority: 'high',
+        view: {
+          classes: 'comment',
+          name: 'div',
+        }
+				// view: data => {
+				// 	const { commentId } = getDataFromMarkerName( data.markerName );
+				// 	const elements = Array.from(
+				// 	  editor.editing.mapper.markerNameToElements(data.markerName) || [],
+				// 	);
+				// 	const classNames = elements.length
+				// 	  ? elements
+				// 	      .flatMap(element => {
+				// 	        return element.getAttribute("class")?.split(" ");
+				// 	      })
+				// 	      .filter(Boolean)
+				// 	      .filter(name => name !== "comment")
+				// 	      .reduce((acc, item) => {
+				// 	        // remove duplicates
+				// 	        const prevItems = acc.filter(prevItem => prevItem !== item);
+
+				// 	        return [...prevItems, item];
+				// 	      }, [])
+				// 	  : classNamesCache;
+
+				// 	classNamesCache = classNames;
+
+				// 	return {
+				// 		attributes: {
+				// 			[ ID_ATTRIBUTE ]: commentId
+				// 		},
+				// 		classes: ["comment", ...classNames],
+				// 	};
+				// }
+			} );
 	}
 }
