@@ -72,6 +72,10 @@ export default class DocflowCommentsEditing extends Plugin {
 			model: MODEL_NAME,
 			converterPriority: 'high',
 			view: data => {
+        if (data.item.name === "smartfield") {
+          return;
+        }
+
 				const { commentId } = getDataFromMarkerName( data.markerName );
 				const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
 				const classNames = elements.length ? elements.flatMap( element => {
@@ -84,16 +88,12 @@ export default class DocflowCommentsEditing extends Plugin {
 				}, [] ) : classNamesCache;
 
 				classNamesCache = classNames;
-				
-        if (classNames.length === 0) {
-          classNames.push('comment');
-        }
 
 				return {
 					attributes: {
 		        [ ID_ATTRIBUTE ]: commentId,
 		      },
-		      classes: classNames
+		      classes: [ 'comment', ...classNames ]
 				};
 			}
 		} );
