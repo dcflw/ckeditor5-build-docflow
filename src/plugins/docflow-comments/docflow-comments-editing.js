@@ -76,7 +76,7 @@ export default class DocflowCommentsEditing extends Plugin {
           return;
         }
 
-				const { commentId } = getDataFromMarkerName( data.markerName );
+				const { commentId, resolved } = getDataFromMarkerName( data.markerName );
 				const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
 				const classNames = elements.length ? elements.flatMap( element => {
 					return element.getAttribute( 'class' )?.split( ' ' );
@@ -92,6 +92,7 @@ export default class DocflowCommentsEditing extends Plugin {
 				return {
 					attributes: {
 		        [ ID_ATTRIBUTE ]: commentId,
+            [RESOLVED_ATTRIBUTE]: resolved
 		      },
 		      classes: [ 'comment', ...classNames ]
 				};
