@@ -50,11 +50,12 @@ export default class DocflowCommentsEditing extends Plugin {
 		const schema = this.editor.model.schema;
 
 		schema.extend( '$text', {
-			allowAttributes: [ ID_ATTRIBUTE, 'class' ]
+			allowAttributes: [ ID_ATTRIBUTE ]
 		} );
 	}
 
 	defineConverters() {
+		const editor = this.editor;
 		const conversion = this.editor.conversion;
 
 		conversion.for( 'upcast' ).dataToMarker( {
@@ -65,15 +66,30 @@ export default class DocflowCommentsEditing extends Plugin {
 			converterPriority: 'high'
 		} );
 
+		let classNamesCache = [];
 
 		conversion.for( 'editingDowncast' ).markerToHighlight( {
 			model: MODEL_NAME,
+			converterPriority: 'high',
 			view: data => {
 				const { commentId } = getDataFromMarkerName( data.markerName );
+				const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
 
+				const classNames = elements.length ? elements.flatMap( element => {
+					return element.getAttribute( 'class' ).split( ' ' );
+				} ).filter( Boolean ).filter( name => name !== 'comment' ).reduce( ( acc, item ) => {
+					// remove duplicates
+					const prevItems = acc.filter( prevItem => prevItem !== item );
+
+					return [ ...prevItems, item ];
+				}, [] ) : classNamesCache;
+
+				classNamesCache = classNames;
+				console.log( 'classNames', classNames );
 
 				const attributes = {
 					[ ID_ATTRIBUTE ]: commentId,
+					'class': [ 'comment', ...classNames ].join( ' ' )
 				};
 
 				return {
