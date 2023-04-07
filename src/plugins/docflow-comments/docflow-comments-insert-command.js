@@ -16,29 +16,33 @@ export default class DocflowCommentsInsertCommand extends Command {
 				);
 
 				for ( let range of ranges ) {
+					const startNodeAfter = range.start && range.start.nodeAfter;
+					const startNodeBofore = range.start && range.start.nodeBefore;
+					const endNodeBefore = range.end && range.end.nodeBefore;
+					const endNodeAfter = range.end && range.end.nodeAfter;
 
-          // Hack for smartfields. If we have a smartfield in the beginning or in the end, we need to adjust the range.
-          if (range.start?.nodeAfter?.name === "smartfield") {
-            range = writer.createRange(
-              model.createPositionFromPath(range.root, [range.start.path[0], range.start.path[1] + 2]),
-              model.createPositionFromPath(range.root, range.end.path)
-            );
-          } if (range.start?.nodeBefore?.name === "smartfield") {
-            range = writer.createRange(
-              model.createPositionFromPath(range.root, [range.start.path[0], range.start.path[1] + 1]),
-              model.createPositionFromPath(range.root, range.end.path)
-            );
-          } else if(range.end?.nodeBefore?.name === "smartfield") {
-            range = writer.createRange(
-              model.createPositionFromPath(range.root, range.start.path),
-              model.createPositionFromPath(range.root, [range.end.path[0], range.end.path[1] - 2])
-            );
-          } else if(range.end?.nodeAfter?.name === "smartfield") {
-            range = writer.createRange(
-              model.createPositionFromPath(range.root, range.start.path),
-              model.createPositionFromPath(range.root, [range.end.path[0], range.end.path[1] - 1])
-            );
-          }
+					// Hack for smartfields. If we have a smartfield in the beginning or in the end, we need to adjust the range.
+					if ( startNodeAfter && startNodeAfter.name === 'smartfield' ) {
+						range = writer.createRange(
+							model.createPositionFromPath( range.root, [ range.start.path[ 0 ], range.start.path[ 1 ] + 2 ] ),
+							model.createPositionFromPath( range.root, range.end.path )
+						);
+					} else if ( startNodeBofore && startNodeBofore.name === 'smartfield' ) {
+						range = writer.createRange(
+							model.createPositionFromPath( range.root, [ range.start.path[ 0 ], range.start.path[ 1 ] + 1 ] ),
+							model.createPositionFromPath( range.root, range.end.path )
+						);
+					} else if ( endNodeBefore && endNodeBefore.name === 'smartfield' ) {
+						range = writer.createRange(
+							model.createPositionFromPath( range.root, range.start.path ),
+							model.createPositionFromPath( range.root, [ range.end.path[ 0 ], range.end.path[ 1 ] - 2 ] )
+						);
+					} else if ( endNodeAfter && endNodeAfter.name === 'smartfield' ) {
+						range = writer.createRange(
+							model.createPositionFromPath( range.root, range.start.path ),
+							model.createPositionFromPath( range.root, [ range.end.path[ 0 ], range.end.path[ 1 ] - 1 ] )
+						);
+					}
 
 					const markerName = getMarkerName( id, cuid(), parentId, false );
 					const currentMarkers = Array.from( model.markers ) || [];
@@ -46,7 +50,7 @@ export default class DocflowCommentsInsertCommand extends Command {
 					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {
 						writer.addMarker( markerName, {
 							range,
-							usingOperation: false,
+							usingOperation: false
 						} );
 					}
 				}

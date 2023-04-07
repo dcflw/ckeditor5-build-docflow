@@ -5,15 +5,20 @@ export default class DocflowCommentsSelectCommand extends Command {
 		const model = this.editor.model;
 		const view = this.editor.editing.view;
 
-
 		view.change( writer => {
 			for ( const marker of model.markers ) {
+				const viewElements = this.editor.editing.mapper.markerNameToElements( marker.name );
+
+				if ( !viewElements || !viewElements.length ) {
+					continue;
+				}
+
 				if ( marker.name.startsWith( `comment:${ id }:` ) ) {
-					this.editor.editing.mapper.markerNameToElements( marker.name )?.forEach( viewElement => {
+					viewElements.forEach( viewElement => {
 						writer.addClass( 'comment-selected', viewElement );
 					} );
 				} else {
-					this.editor.editing.mapper.markerNameToElements( marker.name )?.forEach( viewElement => {
+					viewElements.forEach( viewElement => {
 						writer.removeClass( 'comment-selected', viewElement );
 					} );
 				}

@@ -5,7 +5,7 @@ export const getDataFromMarkerName = markerName => {
 		name,
 		commentId,
 		leafId,
-    parentId,
+		parentId,
 		resolved
 	] = markerName.split( ':' );
 
@@ -16,11 +16,11 @@ export const getDataFromMarkerName = markerName => {
 	return {
 		commentId,
 		leafId,
-		resolved, 
-    parentId
+		resolved,
+		parentId
 	};
 };
 
 export const getMarkerName = ( commentId, leafId, parentId, resolved = false ) => {
-	return `${ MARKER_NAME }:${ commentId }:${ leafId }:${parentId}:${ resolved }`;
+	return `${ MARKER_NAME }:${ commentId }:${ leafId }:${ parentId }:${ resolved }`;
 };

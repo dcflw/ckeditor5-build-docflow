@@ -6,8 +6,8 @@ import DocflowCommentsRemoveCommand from './docflow-comments-remove-command';
 import DocflowCommentsSelectCommand from './docflow-comments-select-comment';
 import {
 	ID_ATTRIBUTE,
-  RESOLVED_ATTRIBUTE,
-  PARENT_ATTRIBUTE,
+	RESOLVED_ATTRIBUTE,
+	PARENT_ATTRIBUTE,
 	VIEW_NAME,
 	MARKER_NAME,
 	MODEL_NAME,
@@ -74,21 +74,23 @@ export default class DocflowCommentsEditing extends Plugin {
 			model: MODEL_NAME,
 			converterPriority: 'high',
 			view: data => {
-        if (data?.item?.name === "smartfield") {
-          return;
-        }
+				if ( data && data.item && data.item.name === 'smartfield' ) {
+					return;
+				}
 
 				const { commentId, resolved, parentId } = getDataFromMarkerName( data.markerName );
 				const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
 
-        // Find current comment in the list of comments
-        // Take the class names from the comment
-        // Filter out the comment class name
-        // Filter out duplicates
-        // Add the comment class name to cache. The reason is that when user pres a button this function triggers couple of times
-        // And we need to keep the class names from the previous state
-				const classNames = elements?.length ? elements.flatMap( element => {
-					return element.getAttribute( 'class' )?.split( ' ' );
+				// Find current comment in the list of comments
+				// Take the class names from the comment
+				// Filter out the comment class name
+				// Filter out duplicates
+				// Add the comment class name to cache. The reason is that when user pres a button this function triggers couple of times
+				// And we need to keep the class names from the previous state
+
+				const classNames = elements && elements.length ? elements.flatMap( element => {
+					const classAttribute = element.getAttribute( 'class' ) || '';
+					return classAttribute.split( ' ' );
 				} ).filter( Boolean ).filter( name => name !== 'comment' ).reduce( ( acc, item ) => {
 					// remove duplicates
 					const prevItems = acc.filter( prevItem => prevItem !== item );
@@ -100,18 +102,18 @@ export default class DocflowCommentsEditing extends Plugin {
 
 				return {
 					attributes: {
-		        [ ID_ATTRIBUTE ]: commentId,
-            [RESOLVED_ATTRIBUTE]: resolved,
-            [PARENT_ATTRIBUTE]: parentId
-		      },
-		      classes: [ 'comment', ...classNames ]
+						[ ID_ATTRIBUTE ]: commentId,
+						[ RESOLVED_ATTRIBUTE ]: resolved,
+						[ PARENT_ATTRIBUTE ]: parentId
+					},
+					classes: [ 'comment', ...classNames ]
 				};
 			}
 		} );
 
 		conversion.for( 'dataDowncast' ).markerToData( {
 			model: MODEL_NAME,
-			view: (markerName, api) => {
+			view: markerName => {
 				return {
 					group: GROUP_NAME,
 					name: markerName.substr( 8 )
