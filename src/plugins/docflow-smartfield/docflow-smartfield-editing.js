@@ -98,7 +98,9 @@ export default class DocflowSmartfieldEditing extends Plugin {
 
 					writer.insert( node, modelCursor );
 
-					modelCursor = modelCursor.getShiftedBy( node.offsetSize );
+					if ( node.offsetSize ) {
+						modelCursor = modelCursor.getShiftedBy( node.offsetSize );
+					}
 				}
 
 				data.modelRange = writer.createRange( position, modelCursor );
