@@ -87,7 +87,7 @@ export default class DocflowCommentsEditing extends Plugin {
         // Filter out duplicates
         // Add the comment class name to cache. The reason is that when user pres a button this function triggers couple of times
         // And we need to keep the class names from the previous state
-				const classNames = elements.length ? elements.flatMap( element => {
+				const classNames = elements?.length ? elements.flatMap( element => {
 					return element.getAttribute( 'class' )?.split( ' ' );
 				} ).filter( Boolean ).filter( name => name !== 'comment' ).reduce( ( acc, item ) => {
 					// remove duplicates
