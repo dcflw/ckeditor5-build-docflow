@@ -80,10 +80,16 @@ export default class DocflowCommentsEditing extends Plugin {
 
 				const { commentId, resolved, parentId } = getDataFromMarkerName( data.markerName );
 				const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
+
+        // Find current comment in the list of comments
+        // Take the class names from the comment
+        // Filter out the comment class name
+        // Filter out duplicates
+        // Add the comment class name to cache. The reason is that when user pres a button this function triggers couple of times
+        // And we need to keep the class names from the previous state
 				const classNames = elements.length ? elements.flatMap( element => {
 					return element.getAttribute( 'class' )?.split( ' ' );
 				} ).filter( Boolean ).filter( name => name !== 'comment' ).reduce( ( acc, item ) => {
-					// remove duplicates
 					const prevItems = acc.filter( prevItem => prevItem !== item );
 
 					return [ ...prevItems, item ];
