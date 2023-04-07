@@ -8,8 +8,9 @@ export default class DocflowCommentsSelectCommand extends Command {
 		view.change( writer => {
 			for ( const marker of model.markers ) {
 				const viewElements = this.editor.editing.mapper.markerNameToElements( marker.name );
+				console.log( 'viewElements', viewElements );
 
-				if ( !viewElements || !viewElements.length ) {
+				if ( !viewElements ) {
 					continue;
 				}
 
