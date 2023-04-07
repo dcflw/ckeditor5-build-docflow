@@ -34,9 +34,13 @@ export default class DocflowCommentsInsertCommand extends Command {
             model.createPositionFromPath(rangeStartPath),
             model.createPositionFromPath(rangeEndPath)
           );
-					const markerName = getMarkerName( id, cuid(), parentId );
+					const markerName = getMarkerName( id, cuid(), parentId, false );
 					const currentMarkers = Array.from( model.markers ) || [];
 
+
+          console.log("currentMarkers", currentMarkers);
+          console.log("updatedRange", updatedRange);
+          
 					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {
             console.log("range", updatedRange);
 
