@@ -15,28 +15,33 @@ export default class DocflowCommentsInsertCommand extends Command {
 					ID_ATTRIBUTE
 				);
 
-				for ( let range of ranges ) {
-          const rangeStart = range.start;
-          const rangeEnd = range.end;
+				for ( const range of ranges ) {
+          const rangeStartPath = range.start.path;
+          const rangeEndPath = range.end.path;
 
           // Hack for smartfields. If we have a smartfield in the beginning or in the end, we need to adjust the range.
           if (range.start?.nodeAfter?.name === "smartfield") {
-            rangeStart.path[1] += 2;
+            rangeStartPath[1] += 2;
           } if (range.start?.nodeBefore?.name === "smartfield") {
-            rangeStart.path[1] += 1;
+            rangeStartPath[1] += 1;
           } else if(range.end?.nodeBefore?.name === "smartfield") {
-            rangeEnd.path[1] -= 2;
+            rangeEndPath[1] -= 2;
           } else if(range.end?.nodeBefore?.name === "smartfield" || range.end?.nodeAfter?.name === "smartfield") {
-            rangeEnd.path[1] -= 1;
+            rangeEndPath[1] -= 1;
           }
 
-          range = writer.createRange(rangeStart, rangeEnd);
+          const updatedRange = writer.createRange(
+            model.createPositionFromPath(rangeStartPath),
+            model.createPositionFromPath(rangeEndPath)
+          );
 					const markerName = getMarkerName( id, cuid(), parentId );
 					const currentMarkers = Array.from( model.markers ) || [];
 
 					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {
+            console.log("range", updatedRange);
+
 						writer.addMarker( markerName, {
-							range,
+							updatedRange,
 							usingOperation: false,
 						} );
 					}
