@@ -3,10 +3,16 @@ import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widg
 import DocflowCommentsInsertCommand from './docflow-comments-insert-command';
 import DocflowCommentsSetIdCommand from './docflow-comments-setid-command';
 import DocflowCommentsRemoveCommand from './docflow-comments-remove-command';
-import DocflowCommentsSelectCommand from './docflow-comments-select-command';
-import DocflowCommentsUnselectCommand from './docflow-comments-unselect-command';
-import { ID_ATTRIBUTE, SELECTED_ATTRIBUTE, VIEW_NAME, MARKER_NAME, MODEL_NAME, GROUP_NAME, SOLVED_ATTRIBUTE,
-	PARENT_ID_ATTRIBUTE } from './constants';
+import DocflowCommentsSelectCommand from './docflow-comments-select-comment';
+import {
+	ID_ATTRIBUTE,
+  RESOLVED_ATTRIBUTE,
+  PARENT_ATTRIBUTE,
+	VIEW_NAME,
+	MARKER_NAME,
+	MODEL_NAME,
+	GROUP_NAME
+} from './constants';
 import { getDataFromMarkerName } from './helper';
 
 export default class DocflowCommentsEditing extends Plugin {
@@ -34,16 +40,11 @@ export default class DocflowCommentsEditing extends Plugin {
 			new DocflowCommentsSelectCommand( this.editor )
 		);
 
-		this.editor.commands.add(
-			'unselectComment',
-			new DocflowCommentsUnselectCommand( this.editor )
-		);
-
 		this.editor.editing.mapper.on(
 			'viewToModelPosition',
-			viewToModelPositionOutsideModelElement( this.editor.model, viewElement =>
-				viewElement.hasAttribute( ID_ATTRIBUTE )
-			)
+			viewToModelPositionOutsideModelElement( this.editor.model, viewElement => {
+				return viewElement.hasAttribute( ID_ATTRIBUTE );
+			} )
 		);
 	}
 
@@ -51,65 +52,73 @@ export default class DocflowCommentsEditing extends Plugin {
 		const schema = this.editor.model.schema;
 
 		schema.extend( '$text', {
-			allowAttributes: [ ID_ATTRIBUTE, SELECTED_ATTRIBUTE, SOLVED_ATTRIBUTE, PARENT_ID_ATTRIBUTE ]
+			allowAttributes: [ ID_ATTRIBUTE ]
 		} );
 	}
 
 	defineConverters() {
-		const conversion = this.editor.conversion;
+		const editor = this.editor;
+		const conversion = editor.conversion;
 
 		conversion.for( 'upcast' ).dataToMarker( {
 			view: VIEW_NAME,
-			model: name => `${ MARKER_NAME }:${ name }`,
+			model: name => {
+				return `${ MARKER_NAME }:${ name }`;
+			},
 			converterPriority: 'high'
 		} );
 
+		let classNamesCache = [];
+
 		conversion.for( 'editingDowncast' ).markerToHighlight( {
 			model: MODEL_NAME,
+			converterPriority: 'high',
 			view: data => {
-				const { commentId, selected, solved, parentId } = getDataFromMarkerName( data.markerName );
-				const attributes = {
-					[ ID_ATTRIBUTE ]: commentId,
-					[ SELECTED_ATTRIBUTE ]: selected,
-					[ SOLVED_ATTRIBUTE ]: solved,
-					[ PARENT_ID_ATTRIBUTE ]: parentId
-				};
+        if (data?.item?.name === "smartfield") {
+          return;
+        }
 
-				attributes[ SELECTED_ATTRIBUTE ] = selected;
-				attributes[ SOLVED_ATTRIBUTE ] = solved;
-				attributes[ PARENT_ID_ATTRIBUTE ] = parentId;
+				const { commentId, resolved, parentId } = getDataFromMarkerName( data.markerName );
+				const elements = Array.from( editor.editing.mapper.markerNameToElements( data.markerName ) || [] );
+
+        // Find current comment in the list of comments
+        // Take the class names from the comment
+        // Filter out the comment class name
+        // Filter out duplicates
+        // Add the comment class name to cache. The reason is that when user pres a button this function triggers couple of times
+        // And we need to keep the class names from the previous state
+				const classNames = elements.length ? elements.flatMap( element => {
+					return element.getAttribute( 'class' )?.split( ' ' );
+				} ).filter( Boolean ).filter( name => name !== 'comment' ).reduce( ( acc, item ) => {
+					const prevItems = acc.filter( prevItem => prevItem !== item );
+
+					return [ ...prevItems, item ];
+				}, [] ) : classNamesCache;
+
+				classNamesCache = classNames;
 
 				return {
-					attributes
+					attributes: {
+		        [ ID_ATTRIBUTE ]: commentId,
+            [RESOLVED_ATTRIBUTE]: resolved,
+            [PARENT_ATTRIBUTE]: parentId
+		      },
+		      classes: [ 'comment', ...classNames ]
 				};
-			},
-			converterPriority: 'high'
+			}
 		} );
 
 		conversion.for( 'dataDowncast' ).markerToData( {
 			model: MODEL_NAME,
-			view: markerName => {
+			view: (markerName, api) => {
+        console.log("markerName", markerName);
+
 				return {
 					group: GROUP_NAME,
-					name: markerName.substr( 8 ) // Removes 'comment:' part.
+					name: markerName.substr( 8 )
 				};
 			},
 			converterPriority: 'high'
-		} );
-
-		this.editor.editing.view.document.on( 'click', ( info, data ) => {
-			const { target } = data;
-			const attributeKeys = Array.from( target.getAttributeKeys() );
-
-			if ( attributeKeys.includes( ID_ATTRIBUTE ) ) {
-				const commentId = target.getAttribute( ID_ATTRIBUTE ).split( ':' )[ 0 ];
-
-				const customEvent = new CustomEvent( 'commentClick', {
-					detail: commentId
-				} );
-
-				document.dispatchEvent( customEvent );
-			}
 		} );
 	}
 }

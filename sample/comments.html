@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CKEditor 5 – Docflow build</title>
+    <style>
+      body {
+        max-width: 800px;
+        margin: 20px auto;
+      }
+
+      .ck.ck-editor__editable.ck-blurred {
+        border: 1px solid var(--ck-color-base-border);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CKEditor 5 – Docflow build</h1>
+
+    <div id="editor">
+      <p>{{Lorem}} dolor sit amet, consectetur adipiscing elit. Morbi ultrices id dolor id vestibulum. Mauris lacinia nulla sed nisi sagittis imperdiet. Suspendisse malesuada bibendum quam ut facilisis. Mauris at est ac erat sollicitudin viverra ut fringilla lectus. Nunc pretium turpis sed pharetra varius. Morbi ac hendrerit lacus. Morbi urna nulla, ullamcorper a egestas quis, accumsan a odio. Sed rutrum viverra tortor, eget imperdiet dolor hendrerit vel. Maecenas mollis sem ac tincidunt auctor. Aliquam erat volutpat. Morbi suscipit sollicitudin urna, et ultrices elit fermentum vel. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam accumsan, dolor et eleifend auctor, ipsum ante ultrices enim, ac pretium lectus quam ac sem. Integer vel dolor felis. Fusce eu enim risus. In non finibus elit.</p>
+      <p>
+        Cras ac mi quam. Aliquam {{varius}} turpis vulputate augue viverra sagittis eget id ante. Vivamus at nibh vitae elit efficitur tristique vel eget arcu. Vestibulum aliquam, elit nec aliquet tempus, arcu dolor lacinia magna, id viverra ante augue sed eros. Pellentesque tempor massa ut mi tristique, at convallis turpis pretium. Vestibulum placerat facilisis mauris, sit amet vestibulum felis condimentum eu. Phasellus venenatis non felis eget hendrerit. Sed nec mi sollicitudin, laoreet libero sed, pulvinar diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In hac habitasse platea dictumst. Fusce sodales mi in metus convallis, id malesuada elit elementum. Maecenas luctus tempor purus, id vulputate metus convallis sit amet. Vivamus et velit dolor. Donec iaculis diam quis pharetra ornare.
+      </p>
+    </div>
+
+    <button id="add">Add comment</button>
+    <button id="select">Select comment</button>
+    <script src="../build/ckeditor.js"></script>
+    <script>
+      CKEDITOR.InlineEditor.create(document.querySelector("#editor"), {
+        docflowImageUpload: {
+          directUploadsPath:
+            "http://localhost:3000/rails/active_storage/direct_uploads",
+        },
+        docflowPlaceholder: {
+          formComponent: null,
+          formComponentProps: {},
+          variableLabels: {},
+        },
+        docflowSmartfield: {
+          enabled: true,
+          renderSmartfield: (props, domElement) => {
+            const smartfield = document.createElement('span');
+            smartfield.innerHTML = props.name;
+            smartfield.style.border = '1px solid red';
+            domElement.appendChild(smartfield);
+          },
+          onInvalidSmartfieldName: (name) => {
+            console.log('Invalid smartfield name: ', name);
+          },
+          
+        }
+      })
+        .then(editor => {
+          window.editor = editor;
+        })
+        .catch(err => {
+          console.error(err.stack);
+        });
+
+      let lastcomment = null;
+      document.getElementById("add").addEventListener("click", () => {
+        lastcomment = Date.now().toString();
+        editor.execute("insertComment", { id: lastcomment, parentId: "melih"});
+      });
+
+      document.getElementById("select").addEventListener("click", () => {
+        editor.execute("selectComment", { id: lastcomment });
+      });
+    </script>
+  </body>
+</html>
