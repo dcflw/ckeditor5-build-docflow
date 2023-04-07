@@ -30,6 +30,7 @@ export default class DocflowCommentsInsertCommand extends Command {
             rangeEnd.path[1] -= 1;
           }
 
+          range = writer.createRange(rangeStart, rangeEnd);
 					const markerName = getMarkerName( id, cuid(), parentId );
 					const currentMarkers = Array.from( model.markers ) || [];
 
