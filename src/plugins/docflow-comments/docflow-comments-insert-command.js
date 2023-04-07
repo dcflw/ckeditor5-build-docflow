@@ -15,36 +15,38 @@ export default class DocflowCommentsInsertCommand extends Command {
 					ID_ATTRIBUTE
 				);
 
-				for ( let range of ranges ) {
+				for ( const range of ranges ) {
+          const rangeStartPath = range.start.path;
+          const rangeEndPath = range.end.path;
+
+          // Hack for smartfields. If we have a smartfield in the beginning or in the end, we need to adjust the range.
           if (range.start?.nodeAfter?.name === "smartfield") {
-            range = writer.createRange(
-              model.createPositionFromPath(range.root, [range.start.path[0], range.start.path[1] + 2]),
-              model.createPositionFromPath(range.root, range.end.path)
-            );
+            rangeStartPath[1] += 2;
           } if (range.start?.nodeBefore?.name === "smartfield") {
-            range = writer.createRange(
-              model.createPositionFromPath(range.root, [range.start.path[0], range.start.path[1] + 1]),
-              model.createPositionFromPath(range.root, range.end.path)
-            );
+            rangeStartPath[1] += 1;
           } else if(range.end?.nodeBefore?.name === "smartfield") {
-            range = writer.createRange(
-              model.createPositionFromPath(range.root, range.start.path),
-              model.createPositionFromPath(range.root, [range.end.path[0], range.end.path[1] - 2])
-            );
-          } else if(range.end?.nodeAfter?.name === "smartfield") {
-            range = writer.createRange(
-              model.createPositionFromPath(range.root, range.start.path),
-              model.createPositionFromPath(range.root, [range.end.path[0], range.end.path[1] - 1])
-            );
+            rangeEndPath[1] -= 2;
+          } else if(range.end?.nodeBefore?.name === "smartfield" || range.end?.nodeAfter?.name === "smartfield") {
+            rangeEndPath[1] -= 1;
           }
 
-					const markerName = getMarkerName( id, cuid(), parentId );
+          const updatedRange = writer.createRange(
+            model.createPositionFromPath(rangeStartPath),
+            model.createPositionFromPath(rangeEndPath)
+          );
+					const markerName = getMarkerName( id, cuid(), parentId, false );
 					const currentMarkers = Array.from( model.markers ) || [];
 
+
+          console.log("currentMarkers", currentMarkers);
+          console.log("updatedRange", updatedRange);
+          
 					if ( currentMarkers.every( marker => marker.name !== markerName ) ) {
+            console.log("range", updatedRange);
+
 						writer.addMarker( markerName, {
-							range,
-							usingOperation: true,
+							updatedRange,
+							usingOperation: false,
 						} );
 					}
 				}
