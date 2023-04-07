@@ -17,7 +17,6 @@ import { getDataFromMarkerName } from './helper';
 
 export default class DocflowCommentsEditing extends Plugin {
 	init() {
-		this.defineSchemes();
 		this.defineConverters();
 
 		this.editor.commands.add(
@@ -42,18 +41,10 @@ export default class DocflowCommentsEditing extends Plugin {
 
 		this.editor.editing.mapper.on(
 			'viewToModelPosition',
-			viewToModelPositionOutsideModelElement( this.editor.model, viewElement => {
-				return viewElement.hasAttribute( ID_ATTRIBUTE );
-			} )
+			viewToModelPositionOutsideModelElement( this.editor.model, viewElement => 
+        viewElement.hasAttribute( ID_ATTRIBUTE )
+      )
 		);
-	}
-
-	defineSchemes() {
-		const schema = this.editor.model.schema;
-
-		schema.extend( '$text', {
-			allowAttributes: [ ID_ATTRIBUTE ]
-		} );
 	}
 
 	defineConverters() {
