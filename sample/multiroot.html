@@ -47,7 +47,7 @@
             >Malta</a
           >
           is the top destination this summer. It’s home to a cutting-edge
-          contemporary {{architecture}}, baroque masterpieces, delicious local
+          contemporary architecture, baroque masterpieces, delicious local
           cuisine and at least 8 months of sun. It’s also a top destination for
           filmmakers, so you can take a tour through locations familiar to you
           from Game of Thrones, Gladiator, Troy and many more.
@@ -62,7 +62,7 @@
 
     <button id="button-new-editor" type="button">Add new editor</button>
     <button id="button-new-editor-delayed" type="button">Add new editor (after 3s)</button>
-    <button id="add-comment" type="button">New Comment</button>
+
     <script src="../build/ckeditor.js"></script>
     <script>
       CKEDITOR.MultirootEditor.create(
@@ -101,16 +101,6 @@
         .querySelector("#button-new-editor-delayed")
         .addEventListener("click", () => {
           setTimeout(addNewRoot, 3000);
-        });
-      document
-        .querySelector("#add-comment")
-        .addEventListener("click", () => {
-          setTimeout(() => {
-            window.editor.execute("insertComment", {
-              id: "new-comment",
-              rootName: "content",
-            })
-          }, 3000);
         });
     </script>
   </body>
