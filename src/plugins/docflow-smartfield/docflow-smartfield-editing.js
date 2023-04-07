@@ -98,7 +98,9 @@ export default class DocflowSmartfieldEditing extends Plugin {
 
 					writer.insert( node, modelCursor );
 
-					modelCursor = modelCursor.getShiftedBy( node.offsetSize );
+					if ( node.offsetSize !== undefined ) {
+						modelCursor = modelCursor.getShiftedBy( node.offsetSize );
+					}
 				}
 
 				data.modelRange = writer.createRange( position, modelCursor );
@@ -155,6 +157,12 @@ export default class DocflowSmartfieldEditing extends Plugin {
 				const name = element.getAttribute( 'name' );
 				return domDocument.createTextNode( `{{${ name }}}` );
 			} )
+		} );
+
+		conversion.for( 'upcast' ).dataToMarker( {
+			view: 'smartfield',
+			model: name => `smartfield:${ name }`,
+			converterPriority: 'high'
 		} );
 
 		function createSmartfieldView( modelItem, viewWriter ) {
