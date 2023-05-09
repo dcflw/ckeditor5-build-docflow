@@ -95,6 +95,7 @@ export default class DocflowSmartfieldUI extends Plugin {
 		const selectedText = this.getSelectedText().trim();
 		const isValidSmartfieldName = SMARTFIELD_REGEX.test( `{{${ selectedText }}}` );
 
+		const name = selectedText.replace( / /g, '__' );
 		if ( selectedText && !isValidSmartfieldName ) {
 			if ( config.onInvalidSmartfieldName ) {
 				config.onInvalidSmartfieldName( selectedText );
@@ -102,7 +103,7 @@ export default class DocflowSmartfieldUI extends Plugin {
 			return;
 		}
 
-		this.editor.execute( COMMAND_INSERT_SMARTFIELD, { name: selectedText, type } );
+		this.editor.execute( COMMAND_INSERT_SMARTFIELD, { name, type } );
 	}
 
 	getSelectedText() {
