@@ -158,6 +158,7 @@ export default class DocflowCommentsEditing extends Plugin {
 						content = viewElement.getChild( 0 ).data;
 					}
 
+					console.log( 'commentId', commentId, content );
 					return modelConversionApi.writer.createElement( TYPE_COMMENT, { commentId, parentId, resolved, content, classes } );
 				}
 			} );
