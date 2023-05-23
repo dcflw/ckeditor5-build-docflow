@@ -1,5 +1,5 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widget/src/utils';
+import { viewToModelPositionOutsideModelElement, toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 import DocflowCommentsInsertCommand from './docflow-comments-insert-command';
 import DocflowCommentsSetIdCommand from './docflow-comments-setid-command';
 import DocflowCommentsRemoveCommand from './docflow-comments-remove-command';
@@ -13,6 +13,8 @@ import {
 	MODEL_NAME,
 	GROUP_NAME
 } from './constants';
+export const TYPE_COMMENT = 'comment';
+export const ATTRIBUTE_NAME = 'name';
 import { getDataFromMarkerName } from './helper';
 
 export default class DocflowCommentsEditing extends Plugin {
@@ -52,7 +54,21 @@ export default class DocflowCommentsEditing extends Plugin {
 		const schema = this.editor.model.schema;
 
 		schema.extend( '$text', {
-			allowAttributes: [ ID_ATTRIBUTE ]
+			allowAttributes: [ ID_ATTRIBUTE, RESOLVED_ATTRIBUTE, PARENT_ATTRIBUTE, ATTRIBUTE_NAME ]
+		} );
+
+		schema.register( TYPE_COMMENT, {
+			allowIn: 'tableCell',
+			allowWhere: '$text',
+			isInline: true,
+			isObject: true,
+			allowAttributesOf: '$text',
+			allowAttributes: [
+				ATTRIBUTE_NAME,
+				ID_ATTRIBUTE,
+				RESOLVED_ATTRIBUTE,
+				PARENT_ATTRIBUTE
+			]
 		} );
 	}
 
@@ -121,5 +137,77 @@ export default class DocflowCommentsEditing extends Plugin {
 			},
 			converterPriority: 'high'
 		} );
+
+		// view-to-model converter
+		conversion
+			.for( 'upcast' )
+			.elementToElement( {
+				view: {
+					name: 'span',
+					classes: 'comment'
+				},
+				model: ( viewElement, modelConversionApi ) => {
+					const commentId = viewElement.getAttribute( 'data-comment-id' );
+					const parentId = viewElement.getAttribute( 'data-comment-parent' );
+					const resolved = viewElement.getAttribute( 'data-comment-resolved' );
+					const classes = viewElement.getAttribute( 'class' ) || '';
+
+					let content = '';
+
+					if ( viewElement.childCount === 1 ) {
+						content = viewElement.getChild( 0 ).data;
+					}
+
+					return modelConversionApi.writer.createElement( TYPE_COMMENT, { commentId, parentId, resolved, content, classes } );
+				}
+			} );
+
+		// model-to-view converter (editor)
+		conversion
+			.for( 'editingDowncast' )
+			.elementToElement( {
+				model: TYPE_COMMENT,
+				view: ( modelItem, viewConversionApi ) => {
+					const widgetElement = this.createCommentTag(
+						modelItem,
+						viewConversionApi,
+						true
+					);
+
+					return toWidget( widgetElement, viewConversionApi.writer );
+				}
+			} );
+
+		// model-to-view converter (data)
+		conversion
+			.for( 'dataDowncast' )
+			.elementToElement( {
+				model: TYPE_COMMENT,
+				view: this.createCommentTag
+			} );
+	}
+
+	createCommentTag( modelItem, conversionApi ) {
+		const viewWriter = conversionApi.writer;
+		const commentId = modelItem.getAttribute( 'commentId' );
+		const resolved = modelItem.getAttribute( 'resolved' );
+		const parentId = modelItem.getAttribute( 'parentId' );
+		const content = modelItem.getAttribute( 'content' );
+		const classes = modelItem.getAttribute( 'classes' ) || '';
+
+		const attributes = {
+			'data-docflow-type': TYPE_COMMENT,
+			[ ID_ATTRIBUTE ]: commentId,
+			[ RESOLVED_ATTRIBUTE ]: resolved,
+			[ PARENT_ATTRIBUTE ]: parentId,
+			'class': classes
+		};
+
+		const view = viewWriter.createContainerElement( 'span', attributes );
+		const innerText = viewWriter.createText( content );
+
+		viewWriter.insert( viewWriter.createPositionAt( view, 0 ), innerText );
+
+		return view;
 	}
 }

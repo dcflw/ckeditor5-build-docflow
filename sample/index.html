@@ -23,7 +23,7 @@
       <p> This is a smartfield {{name}}</p>
 
       <p>
-        This is an instance of the
+        This is an <span class="comment comment-selected" data-comment-id="1" data-comment-resolved="true" name="instance">instance</span> of the
         <a
           href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor"
           >classic editor build</a
@@ -44,6 +44,7 @@
       </p>
     </div>
 
+    <button onclick="getdata()">GETDATA</button>
     <script src="../build/ckeditor.js"></script>
     <script>
       CKEDITOR.InlineEditor.create(document.querySelector("#editor"), {
@@ -70,11 +71,16 @@
         }
       })
         .then(editor => {
+          console.log("editor", editor);
           window.editor = editor;
         })
         .catch(err => {
           console.error(err.stack);
         });
+      
+      function getdata() {
+        console.log(window.editor.getData());
+      }
     </script>
   </body>
 </html>
