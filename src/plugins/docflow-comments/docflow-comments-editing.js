@@ -54,21 +54,11 @@ export default class DocflowCommentsEditing extends Plugin {
 		const schema = this.editor.model.schema;
 
 		schema.extend( '$text', {
-			allowAttributes: [ ID_ATTRIBUTE, RESOLVED_ATTRIBUTE, PARENT_ATTRIBUTE, ATTRIBUTE_NAME ]
-		} );
-
-		schema.register( TYPE_COMMENT, {
-			allowIn: 'tableCell',
-			allowWhere: '$text',
-			isInline: true,
-			isObject: true,
-			allowAttributesOf: '$text',
 			allowAttributes: [
-				ATTRIBUTE_NAME,
 				ID_ATTRIBUTE,
 				RESOLVED_ATTRIBUTE,
-				PARENT_ATTRIBUTE
-			]
+				PARENT_ATTRIBUTE,
+				'spanClasses' ]
 		} );
 	}
 
@@ -141,51 +131,71 @@ export default class DocflowCommentsEditing extends Plugin {
 		// view-to-model converter
 		conversion
 			.for( 'upcast' )
-			.elementToElement( {
+			.elementToAttribute( {
 				view: {
 					name: 'span',
 					classes: 'comment'
 				},
-				model: ( viewElement, modelConversionApi ) => {
-					const commentId = viewElement.getAttribute( 'data-comment-id' );
-					const parentId = viewElement.getAttribute( 'data-comment-parent' );
-					const resolved = viewElement.getAttribute( 'data-comment-resolved' );
-					const classes = viewElement.getAttribute( 'class' ) || '';
+				model: {
+					key: 'spanClasses',
+					value: viewElement => {
+						const attributes = Array.from( viewElement.getAttributes() ).reduce( ( acc, [ key, value ] ) => {
+							acc[ key ] = value;
+							return acc;
+						}, {} );
 
-					let content = '';
-
-					if ( viewElement.childCount === 1 ) {
-						content = viewElement.getChild( 0 ).data;
+						return JSON.stringify( attributes );
 					}
-
-					console.log( 'commentId', commentId, content );
-					return modelConversionApi.writer.createElement( TYPE_COMMENT, { commentId, parentId, resolved, content, classes } );
 				}
 			} );
 
-		// model-to-view converter (editor)
-		conversion
-			.for( 'editingDowncast' )
-			.elementToElement( {
-				model: TYPE_COMMENT,
-				view: ( modelItem, viewConversionApi ) => {
-					const widgetElement = this.createCommentTag(
-						modelItem,
-						viewConversionApi,
-						true
-					);
+		conversion.for( 'downcast' ).attributeToElement( {
+			model: 'spanClasses',
+			view: ( modelAttributeValue, { writer } ) => {
+				const attributes = JSON.parse( modelAttributeValue );
 
-					return toWidget( widgetElement, viewConversionApi.writer );
-				}
-			} );
+				return writer.createAttributeElement( 'span', attributes );
+			}
+		} );
 
-		// model-to-view converter (data)
-		conversion
-			.for( 'dataDowncast' )
-			.elementToElement( {
-				model: TYPE_COMMENT,
-				view: this.createCommentTag
-			} );
+		// // model-to-view converter (editor)
+		// conversion
+		// 	.for( 'editingDowncast' )
+		// 	.attributeToElement( {
+		// 		model: TYPE_COMMENT,
+		// 		view: ( modelItem, viewConversionApi ) => {
+		// 			// const widgetElement = this.createCommentTag(
+		// 			// 	modelItem,
+		// 			// 	viewConversionApi
+		// 			// );
+
+		// 			// return toWidget( widgetElement, viewConversionApi.writer );
+
+		// 			const commentId = modelItem.getAttribute( 'commentId' );
+		// 			const resolved = modelItem.getAttribute( 'resolved' );
+		// 			const parentId = modelItem.getAttribute( 'parentId' );
+		// 			const content = modelItem.getAttribute( 'content' );
+		// 			const classes = modelItem.getAttribute( 'classes' ) || '';
+
+		// 			const attributes = {
+		// 				'data-docflow-type': TYPE_COMMENT,
+		// 				[ ID_ATTRIBUTE ]: commentId,
+		// 				[ RESOLVED_ATTRIBUTE ]: resolved,
+		// 				[ PARENT_ATTRIBUTE ]: parentId,
+		// 				'class': classes
+		// 			};
+
+		// 			return viewConversionApi.writer.createAttributeElement( 'span', attributes );
+		// 		}
+		// 	} );
+
+		// // model-to-view converter (data)
+		// conversion
+		// 	.for( 'dataDowncast' )
+		// 	.elementToElement( {
+		// 		model: TYPE_COMMENT,
+		// 		view: this.createCommentTag
+		// 	} );
 	}
 
 	createCommentTag( modelItem, conversionApi ) {

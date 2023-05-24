@@ -23,7 +23,7 @@
       <p> This is a smartfield {{name}}</p>
 
       <p>
-        This is an <span class="comment comment-selected" data-comment-id="1" data-comment-resolved="true" name="instance">instance</span> of the
+        This is an <span class="comment" data-comment-id="1" data-comment-resolved="true" data-comment-parent="parent-1">instance</span> of the
         <a
           href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor"
           >classic editor build</a
@@ -71,7 +71,6 @@
         }
       })
         .then(editor => {
-          console.log("editor", editor);
           window.editor = editor;
         })
         .catch(err => {
