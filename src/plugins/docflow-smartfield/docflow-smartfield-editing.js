@@ -10,7 +10,7 @@ export const ATTRIBUTE_NAME = 'name';
 export const ATTRIBUTE_TYPE = 'type';
 export const COMMAND_INSERT_SMARTFIELD = 'insertSmartfield';
 export const COMMAND_DELETE_SMARTFIELD = 'deleteSmartfield';
-export const SMARTFIELD_REGEX = /({{[a-zA-Z][\w.]*}})/;
+export const SMARTFIELD_REGEX = /({{[a-zA-Z\s][\s\w.]*}})/;
 
 export default class DocflowSmartfieldEditing extends Plugin {
 	static get requires() {
@@ -187,7 +187,7 @@ export default class DocflowSmartfieldEditing extends Plugin {
 				config.renderSmartfield( {
 					name,
 					type,
-					changeSmartfieldName: name => { editor.execute( COMMAND_INSERT_SMARTFIELD, { name } ); },
+					changeSmartfieldName: ( name, type ) => { editor.execute( COMMAND_INSERT_SMARTFIELD, { name, type } ); },
 					removeSmartfield: () => { editor.execute( COMMAND_DELETE_SMARTFIELD, { modelItem } ); }
 				}, domElement );
 			} );
@@ -206,7 +206,8 @@ export default class DocflowSmartfieldEditing extends Plugin {
 				conversionApi.consumable.consume( modelElement, evt.name );
 
 				editor.model.enqueueChange( writer => {
-					const node = writer.createElement( TYPE_SMARTFIELD, { name: modelElement.data } );
+					const name = modelElement.data.trim().replace( / /g, '_' );
+					const node = writer.createElement( TYPE_SMARTFIELD, { name } );
 					writer.model.insertContent( node );
 					writer.setSelectionFocus( node, 'after' );
 

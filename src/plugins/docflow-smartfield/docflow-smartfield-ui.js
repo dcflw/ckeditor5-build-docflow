@@ -39,7 +39,7 @@ export default class DocflowSmartfieldUI extends Plugin {
 				tooltip: true
 			} );
 
-			this.listenTo( button, 'execute', () => this.insertNewSmartfield( TYPE.String ) );
+			this.listenTo( button, 'execute', () => this.insertNewSmartfield( ) );
 
 			return button;
 		} );
@@ -102,7 +102,9 @@ export default class DocflowSmartfieldUI extends Plugin {
 			return;
 		}
 
-		this.editor.execute( COMMAND_INSERT_SMARTFIELD, { name: selectedText, type } );
+		const name = selectedText.trim().replace( / /g, '_' );
+
+		this.editor.execute( COMMAND_INSERT_SMARTFIELD, { name, type } );
 	}
 
 	getSelectedText() {
