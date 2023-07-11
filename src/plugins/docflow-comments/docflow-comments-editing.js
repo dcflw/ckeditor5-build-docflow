@@ -1,6 +1,7 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widget/src/utils';
 import DocflowCommentsInsertCommand from './docflow-comments-insert-command';
+import DocflowCommentsInsertExistingCommand from './docflow-comments-insert-existing-command';
 import DocflowCommentsSetIdCommand from './docflow-comments-setid-command';
 import DocflowCommentsRemoveCommand from './docflow-comments-remove-command';
 import DocflowCommentsSelectCommand from './docflow-comments-select-comment';
@@ -23,6 +24,11 @@ export default class DocflowCommentsEditing extends Plugin {
 		this.editor.commands.add(
 			'insertComment',
 			new DocflowCommentsInsertCommand( this.editor )
+		);
+
+		this.editor.commands.add(
+			'insertExistingComment',
+			new DocflowCommentsInsertExistingCommand( this.editor )
 		);
 
 		this.editor.commands.add(
