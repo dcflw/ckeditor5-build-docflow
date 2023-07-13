@@ -33,7 +33,8 @@ export default class DocflowCommentsInsertExistingCommand extends Command {
 				if ( currentMarkers.every( marker => marker.name !== markerName ) ) {
 					writer.addMarker( markerName, {
 						range,
-						usingOperation: false
+						usingOperation: false,
+						affectsData: true
 					} );
 				}
 			}
