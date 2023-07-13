@@ -30,14 +30,14 @@ export default class DocflowCommentsRemoveCommand extends Command {
 		}
 	}
 
-	execute( { id } ) {
+	execute( { id, comment } ) {
 		const model = this.editor.model;
 
 		model.change( writer => {
 			for ( const marker of model.markers ) {
-				const { commentId } = getDataFromMarkerName( marker.name );
+				const { commentId, resolved } = getDataFromMarkerName( marker.name );
 
-				if ( commentId === id ) {
+				if ( commentId === id && ( comment === undefined || String( comment.solved ) === resolved ) ) {
 					writer.removeMarker( marker.name );
 				}
 			}
