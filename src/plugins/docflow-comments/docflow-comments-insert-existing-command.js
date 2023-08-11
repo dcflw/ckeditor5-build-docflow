@@ -1,7 +1,7 @@
-import Command from '@ckeditor/ckeditor5-core/src/command';
+import { AlwaysEnabledCommand } from '../AlwaysEnabledCommand';
 import { getMarkerName } from './helper';
 
-export default class DocflowCommentsInsertExistingCommand extends Command {
+export default class DocflowCommentsInsertExistingCommand extends AlwaysEnabledCommand {
 	execute( { id, comment } ) {
 		const model = this.editor.model;
 		model.change( writer => {

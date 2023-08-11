@@ -1,7 +1,7 @@
-import Command from '@ckeditor/ckeditor5-core/src/command';
+import { AlwaysEnabledCommand } from '../AlwaysEnabledCommand';
 import { ID_ATTRIBUTE, MARKER_NAME } from './constants';
 
-export default class DocflowCommentsSetIdCommand extends Command {
+export default class DocflowCommentsSetIdCommand extends AlwaysEnabledCommand {
 	findCommentAttributes( root, commentId ) {
 		const commentModels = [];
 

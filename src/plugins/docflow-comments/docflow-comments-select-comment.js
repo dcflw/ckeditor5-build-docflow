@@ -1,6 +1,6 @@
-import Command from '@ckeditor/ckeditor5-core/src/command';
+import { AlwaysEnabledCommand } from '../AlwaysEnabledCommand';
 
-export default class DocflowCommentsSelectCommand extends Command {
+export default class DocflowCommentsSelectCommand extends AlwaysEnabledCommand {
 	execute( { id } ) {
 		const model = this.editor.model;
 		const view = this.editor.editing.view;

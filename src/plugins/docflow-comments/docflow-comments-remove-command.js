@@ -1,8 +1,8 @@
-import Command from '@ckeditor/ckeditor5-core/src/command';
+import { AlwaysEnabledCommand } from '../AlwaysEnabledCommand';
 import { ID_ATTRIBUTE } from './constants';
 import { getDataFromMarkerName } from './helper';
 
-export default class DocflowCommentsRemoveCommand extends Command {
+export default class DocflowCommentsRemoveCommand extends AlwaysEnabledCommand {
 	findCommentAttributes( root, id ) {
 		const commentModels = [];
 
