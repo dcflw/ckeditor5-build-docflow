@@ -172,10 +172,9 @@ export default class DocflowLinkEditing extends Plugin {
 			attributes.class = 'internalLink';
 		}
 
-		const view = viewWriter.createContainerElement( 'span', attributes );
 		const innerText = viewWriter.createText( name );
+		const view = viewWriter.createContainerElement( 'span', attributes, [ innerText ] );
 
-		viewWriter.insert( viewWriter.createPositionAt( view, 0 ), innerText );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_TYPE, TYPE_INTERNAL_LINK, view );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_NAME, name, view );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_ID, id, view );
@@ -193,10 +192,9 @@ export default class DocflowLinkEditing extends Plugin {
 			'data-docflow-type': TYPE_MISSING_REFERENCE
 		};
 
-		const view = viewWriter.createContainerElement( 'span', attributes );
 		const innerText = viewWriter.createText( name );
+		const view = viewWriter.createContainerElement( 'span', attributes, [ innerText ] );
 
-		viewWriter.insert( viewWriter.createPositionAt( view, 0 ), innerText );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_TYPE, TYPE_MISSING_REFERENCE, view );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_NAME, name, view );
 

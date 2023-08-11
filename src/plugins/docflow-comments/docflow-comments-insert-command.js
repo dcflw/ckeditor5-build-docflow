@@ -1,9 +1,9 @@
-import Command from '@ckeditor/ckeditor5-core/src/command';
+import { AlwaysEnabledCommand } from '../AlwaysEnabledCommand';
 import { ID_ATTRIBUTE } from './constants';
 import cuid from 'cuid';
 import { getMarkerName } from './helper';
 
-export default class DocflowCommentsInsertCommand extends Command {
+export default class DocflowCommentsInsertCommand extends AlwaysEnabledCommand {
 	execute( { id, parentId } ) {
 		const model = this.editor.model;
 		const selection = model.document.selection;

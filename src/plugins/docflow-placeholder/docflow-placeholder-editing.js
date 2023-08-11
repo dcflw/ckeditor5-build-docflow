@@ -218,10 +218,9 @@ export default class DocflowPlaceholderEditing extends Plugin {
 			}
 			attributes.class = 'placeholder';
 		}
-		const view = viewWriter.createContainerElement( 'span', attributes );
 		const innerText = viewWriter.createText( name );
+		const view = viewWriter.createContainerElement( 'span', attributes, [ innerText ] );
 
-		viewWriter.insert( viewWriter.createPositionAt( view, 0 ), innerText );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_TYPE, TYPE_PLACEHOLDER, view );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_NAME, name, view );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_ID, id, view );
@@ -254,10 +253,9 @@ export default class DocflowPlaceholderEditing extends Plugin {
 			attributes.class = 'placeholder';
 		}
 
-		const view = viewWriter.createContainerElement( 'span', attributes );
 		const innerText = viewWriter.createText( variableLabel );
+		const view = viewWriter.createContainerElement( 'span', attributes, [ innerText ] );
 
-		viewWriter.insert( viewWriter.createPositionAt( view, 0 ), innerText );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_TYPE, TYPE_VARIABLE, view );
 		viewWriter.setCustomProperty( CUSTOM_PROPERTY_NAME, name, view );
 
