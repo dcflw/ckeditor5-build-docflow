@@ -13,7 +13,7 @@ export default class DocfieldImageUpload extends Plugin {
 		super( editor );
 
 		editor.plugins.get( 'FileRepository' ).createUploadAdapter = loader => {
-			let options = editor.config.get( 'docflowImageUpload' );
+			let options = editor.config.get( 'docfieldImageUpload' );
 
 			if ( typeof options !== 'object' ) {
 				options = {};

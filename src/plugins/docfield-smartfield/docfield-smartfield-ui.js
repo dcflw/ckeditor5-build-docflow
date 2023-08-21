@@ -18,7 +18,7 @@ export default class DocfieldSmartfieldUI extends Plugin {
 	init() {
 		const editor = this.editor;
 
-		const config = editor.config.get( 'docflowSmartfield' );
+		const config = editor.config.get( 'docfieldSmartfield' );
 
 		if ( config && config.enabled ) {
 			this.addSmartfieldToolbarButton();
@@ -88,7 +88,7 @@ export default class DocfieldSmartfieldUI extends Plugin {
 	}
 
 	insertNewSmartfield( type ) {
-		const config = this.editor.config.get( 'docflowSmartfield' );
+		const config = this.editor.config.get( 'docfieldSmartfield' );
 		const selectedText = this.getSelectedText().trim();
 		const isValidSmartfieldName = SMARTFIELD_REGEX.test( `{{${ selectedText }}}` );
 

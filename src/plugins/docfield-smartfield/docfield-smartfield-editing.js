@@ -17,7 +17,7 @@ export default class DocfieldSmartfieldEditing extends Plugin {
 	}
 
 	init() {
-		const config = this.editor.config.get( 'docflowSmartfield' );
+		const config = this.editor.config.get( 'docfieldSmartfield' );
 
 		if ( !config || config.enabled === false || !config.renderSmartfield ) {
 			return;
@@ -167,7 +167,7 @@ export default class DocfieldSmartfieldEditing extends Plugin {
 		function createSmartfieldView( modelItem, viewWriter ) {
 			const name = modelItem.getAttribute( 'name' );
 			const type = modelItem.getAttribute( 'type' );
-			const config = editor.config.get( 'docflowSmartfield' );
+			const config = editor.config.get( 'docfieldSmartfield' );
 
 			const smartfieldView = viewWriter.createContainerElement(
 				'span',
@@ -179,7 +179,7 @@ export default class DocfieldSmartfieldEditing extends Plugin {
 			}, function( domElement ) {
 				// This the place where React renders the actual smartfield hosted
 				// by a UIElement in the view. You are using a function (renderer) passed as
-				// editor.config.docflowSmartfield#renderSmartfield.
+				// editor.config.docfieldSmartfield#renderSmartfield.
 				config.renderSmartfield( {
 					name,
 					type,
@@ -214,7 +214,7 @@ export default class DocfieldSmartfieldEditing extends Plugin {
 	}
 
 	_addAutoFormat() {
-		const config = this.editor.config.get( 'docflowSmartfield' );
+		const config = this.editor.config.get( 'docfieldSmartfield' );
 
 		inlineAutoformatEditing( this.editor, this, /(?:^|\s)({{)([^*]+)(}})$/g, ( writer, rangesToFormat ) => {
 			for ( const range of rangesToFormat ) {

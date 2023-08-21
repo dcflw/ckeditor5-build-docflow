@@ -39,7 +39,7 @@ export default class DocfieldLinkUI extends Plugin {
 	}
 
 	addToolbarButton() {
-		this.editor.ui.componentFactory.add( 'docflowLink', locale => {
+		this.editor.ui.componentFactory.add( 'docfieldLink', locale => {
 			const dropdownView = createDropdown( locale );
 
 			dropdownView.buttonView.set( {

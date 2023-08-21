@@ -17,7 +17,7 @@ import './theme/docfield-placeholder.css';
 export const ATTRIBUTE_ID = 'id';
 export const ATTRIBUTE_NAME = 'name';
 export const ATTRIBUTE_PLACEHOLDER_TYPE = 'placeholderType';
-export const CONFIG_NAMESPACE = 'docflowPlaceholder';
+export const CONFIG_NAMESPACE = 'docfieldPlaceholder';
 export const CUSTOM_PROPERTY_ID = 'id';
 export const CUSTOM_PROPERTY_NAME = 'name';
 export const CUSTOM_PROPERTY_TYPE = 'type';

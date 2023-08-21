@@ -11,7 +11,7 @@ import './theme/docfield-link.css';
 export const ATTRIBUTE_ID = 'id';
 export const ATTRIBUTE_NAME = 'name';
 export const ATTRIBUTE_REFERENCE = 'reference';
-export const CONFIG_NAMESPACE = 'docflowLink';
+export const CONFIG_NAMESPACE = 'docfieldLink';
 export const CUSTOM_PROPERTY_ID = 'id';
 export const CUSTOM_PROPERTY_NAME = 'name';
 export const CUSTOM_PROPERTY_REFERENCE = 'reference';
