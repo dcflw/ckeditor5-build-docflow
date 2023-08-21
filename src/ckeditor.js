@@ -14,7 +14,7 @@ import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
 import { RemoveFormat } from '@ckeditor/ckeditor5-remove-format';
 import { Table, TableCellProperties, TableProperties, TableKeyboard, TableToolbar } from '@ckeditor/ckeditor5-table';
 
-import MultirootEditor from "./editors/multiroot-editor";
+import MultirootEditor from './editors/multiroot-editor';
 import DocfieldImageUpload from './plugins/docfield-image-upload/docfield-image-upload';
 import DocfieldLink from './plugins/docfield-link/docfield-link';
 import DocfieldPlaceholder from './plugins/docfield-placeholder/docfield-placeholder';
