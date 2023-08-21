@@ -1,9 +1,6 @@
-import Editor from '@ckeditor/ckeditor5-core/src/editor/editor';
-import DataApiMixin from '@ckeditor/ckeditor5-core/src/editor/utils/dataapimixin';
-import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
-import getDataFromElement from '@ckeditor/ckeditor5-utils/src/dom/getdatafromelement';
-import setDataInElement from '@ckeditor/ckeditor5-utils/src/dom/setdatainelement';
-import mix from '@ckeditor/ckeditor5-utils/src/mix';
+import { Editor, DataApiMixin } from '@ckeditor/ckeditor5-core';
+import { HtmlDataProcessor } from '@ckeditor/ckeditor5-engine';
+import { getDataFromElement, setDataInElement, mix } from '@ckeditor/ckeditor5-utils';
 
 import MultirootEditorUI from './multiroot-editor-ui';
 import MultirootEditorUIView from './multiroot-editor-ui-view';

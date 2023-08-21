@@ -1,4 +1,4 @@
-import Command from '@ckeditor/ckeditor5-core/src/command';
+import { Command } from '@ckeditor/ckeditor5-core';
 
 /** This command will work even when CKEditor is in read-only mode. */
 export class AlwaysEnabledCommand extends Command {

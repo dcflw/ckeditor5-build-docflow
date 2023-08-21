@@ -1,4 +1,4 @@
-# CKEditor 5 build for Docflow
+# CKEditor 5 build for Docfield
 
 Based on the [Classic Editor](https://github.com/ckeditor/ckeditor5-editor-classic).
 
