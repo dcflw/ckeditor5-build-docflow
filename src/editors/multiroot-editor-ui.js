@@ -124,10 +124,10 @@ export default class MultirootEditorUI extends EditorUI {
 		const editingRoot = editingView.document.getRoot( rootName );
 
 		if ( placeholderText ) {
+			editingRoot.placeholder = placeholderText;
 			enablePlaceholder( {
 				view: editingView,
 				element: editingRoot,
-				text: placeholderText,
 				isDirectHost: false
 			} );
 		}

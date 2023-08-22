@@ -1,30 +1,15 @@
-/**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-
-'use strict';
-
-/* eslint-env node */
-
 const path = require( 'path' );
-const webpack = require( 'webpack' );
-const { bundler, styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const {
 	CKEditorTranslationsPlugin
 } = require( '@ckeditor/ckeditor5-dev-translations' );
+const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 
 module.exports = {
-	devtool: 'source-map',
-	performance: { hints: false },
-
-	entry: path.resolve( __dirname, 'src', 'ckeditor.js' ),
-
+	entry: './src/ckeditor.js',
 	output: {
 		// The name under which the editor will be exported.
 		library: 'CKEDITOR',
-
 		path: path.resolve( __dirname, 'build' ),
 		filename: 'ckeditor.js',
 		libraryExport: 'default',
@@ -32,20 +17,9 @@ module.exports = {
 	},
 
 	optimization: {
-		minimizer: [
-			new TerserPlugin( {
-				sourceMap: true,
-				terserOptions: {
-					output: {
-						// Preserve CKEditor 5 license comments.
-						comments: /^!/
-					}
-				},
-				extractComments: false
-			} )
-		]
+		minimize: true,
+		minimizer: [ new TerserPlugin() ]
 	},
-
 	plugins: [
 		new CKEditorTranslationsPlugin( {
 			// UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
@@ -53,13 +27,8 @@ module.exports = {
 			language: 'en',
 			additionalLanguages: [ 'de', 'en', 'nl' ],
 			strict: true
-		} ),
-		new webpack.BannerPlugin( {
-			banner: bundler.getLicenseBanner(),
-			raw: true
 		} )
 	],
-
 	module: {
 		rules: [
 			{
@@ -72,7 +41,10 @@ module.exports = {
 					{
 						loader: 'style-loader',
 						options: {
-							injectType: 'singletonStyleTag'
+							injectType: 'singletonStyleTag',
+							attributes: {
+								'data-cke': true
+							}
 						}
 					},
 					'css-loader',
@@ -88,26 +60,7 @@ module.exports = {
 						}
 					}
 				]
-			},
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: [ '@babel/preset-env' ],
-						plugins: [
-							'@babel/plugin-proposal-object-rest-spread',
-							'@babel/plugin-transform-runtime'
-						]
-					}
-				}
 			}
 		]
-	},
-
-	externals: {
-		react: 'react',
-		'react-dom': 'react-dom'
 	}
 };
