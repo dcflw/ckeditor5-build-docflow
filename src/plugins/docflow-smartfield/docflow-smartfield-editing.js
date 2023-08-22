@@ -10,7 +10,7 @@ export const ATTRIBUTE_NAME = 'name';
 export const ATTRIBUTE_TYPE = 'type';
 export const COMMAND_INSERT_SMARTFIELD = 'insertSmartfield';
 export const COMMAND_DELETE_SMARTFIELD = 'deleteSmartfield';
-export const SMARTFIELD_REGEX = /({{[a-zA-Z\s][\s\w.]*}})/;
+export const SMARTFIELD_REGEX = /({{ *[a-z][a-z0-9_ ]*}})/i;
 
 export default class DocflowSmartfieldEditing extends Plugin {
 	static get requires() {
