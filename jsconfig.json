@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable"],
+    "module": "es6",
+    "target": "es2019",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "build",
+    "declarationMap": true
+  },
+  "include": ["src/**/*"]
+}

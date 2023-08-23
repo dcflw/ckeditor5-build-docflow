@@ -3,11 +3,9 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-/* globals document */
-
 import ClassicEditor from '../src/ckeditor';
-import BaseClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import { describeMemoryUsage, testMemoryUsage } from '@ckeditor/ckeditor5-core/tests/_utils/memory';
+import { BaseClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
+import { describeMemoryUsage, testMemoryUsage } from '@ckeditor/ckeditor5-core';
 
 describe( 'ClassicEditor build', () => {
 	let editor, editorElement;

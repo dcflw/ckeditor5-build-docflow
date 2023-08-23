@@ -1,9 +1,6 @@
-import Editor from '@ckeditor/ckeditor5-core/src/editor/editor';
-import DataApiMixin from '@ckeditor/ckeditor5-core/src/editor/utils/dataapimixin';
-import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
-import getDataFromElement from '@ckeditor/ckeditor5-utils/src/dom/getdatafromelement';
-import setDataInElement from '@ckeditor/ckeditor5-utils/src/dom/setdatainelement';
-import mix from '@ckeditor/ckeditor5-utils/src/mix';
+import { Editor, DataApiMixin } from '@ckeditor/ckeditor5-core';
+import { HtmlDataProcessor } from '@ckeditor/ckeditor5-engine';
+import { getDataFromElement, setDataInElement, mix } from '@ckeditor/ckeditor5-utils';
 
 import MultirootEditorUI from './multiroot-editor-ui';
 import MultirootEditorUIView from './multiroot-editor-ui-view';
@@ -15,10 +12,6 @@ import MultirootEditorUIView from './multiroot-editor-ui-view';
  *
  * This type of an editor is dedicated to integrations which require a customized UI with an open
  * structure, allowing developers to specify the exact location of the interface.
- *
- * @mixes module:core/editor/utils/dataapimixin~DataApiMixin
- * @implements module:core/editor/editorwithui~EditorWithUI
- * @extends module:core/editor/editor~Editor
  */
 class MultirootEditor extends Editor {
 	/**
@@ -105,7 +98,7 @@ class MultirootEditor extends Editor {
    * @param {Object.<String,HTMLElement>} sourceElements The list of DOM elements that will be the source
    * for the created editor (on which the editor will be initialized).
    * @param {module:core/editor/editorconfig~EditorConfig} config The editor configuration.
-   * @returns {Promise} A promise resolved once the editor is ready. The promise returns the created multi-root editor instance.
+   * @returns {Promise<MultirootEditor>} A promise resolved once the editor is ready.
    */
 	static create( sourceElements, config ) {
 		return new Promise( resolve => {

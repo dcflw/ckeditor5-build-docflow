@@ -1,13 +1,10 @@
-import EditorUI from '@ckeditor/ckeditor5-core/src/editor/editorui';
-import enableToolbarKeyboardFocus from '@ckeditor/ckeditor5-ui/src/toolbar/enabletoolbarkeyboardfocus';
-import normalizeToolbarConfig from '@ckeditor/ckeditor5-ui/src/toolbar/normalizetoolbarconfig';
-import { enablePlaceholder } from '@ckeditor/ckeditor5-engine/src/view/placeholder';
+import {
+	normalizeToolbarConfig,
+	EditorUI
+} from '@ckeditor/ckeditor5-ui';
+import { enablePlaceholder } from '@ckeditor/ckeditor5-engine';
 
-/**
- * The multi-root editor UI class.
- *
- * @extends module:core/editor/editorui~EditorUI
- */
+/** The multi-root editor UI class. */
 export default class MultirootEditorUI extends EditorUI {
 	/**
    * Creates an instance of the multi-root editor UI class.
@@ -123,10 +120,10 @@ export default class MultirootEditorUI extends EditorUI {
 		const editingRoot = editingView.document.getRoot( rootName );
 
 		if ( placeholderText ) {
+			editingRoot.placeholder = placeholderText;
 			enablePlaceholder( {
 				view: editingView,
 				element: editingRoot,
-				text: placeholderText,
 				isDirectHost: false
 			} );
 		}
@@ -141,11 +138,6 @@ export default class MultirootEditorUI extends EditorUI {
 
 		// Register each editable UI view in the editor.
 		this.setEditableElement( editable.name, editableElement );
-
-		// Let the global focus tracker know that the editable UI element is focusable and
-		// belongs to the editor. From now on, the focus tracker will sustain the editor focus
-		// as long as the editable is focused (e.g. the user is typing).
-		this.focusTracker.add( editableElement );
 
 		// Let the editable UI element respond to the changes in the global editor focus
 		// tracker. It has been added to the same tracker a few lines above but, in reality, there are
@@ -214,17 +206,11 @@ export default class MultirootEditorUI extends EditorUI {
    * @private
    */
 	initToolbar() {
-		const editor = this.editor;
 		const view = this.view;
 		const toolbar = view.toolbar;
 
 		toolbar.fillFromConfig( this._toolbarConfig.items, this.componentFactory );
 
-		enableToolbarKeyboardFocus( {
-			origin: editor.editing.view,
-			originFocusTracker: this.focusTracker,
-			originKeystrokeHandler: editor.keystrokes,
-			toolbar
-		} );
+		this.addToolbar( toolbar );
 	}
 }
