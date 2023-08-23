@@ -12,10 +12,6 @@ import MultirootEditorUIView from './multiroot-editor-ui-view';
  *
  * This type of an editor is dedicated to integrations which require a customized UI with an open
  * structure, allowing developers to specify the exact location of the interface.
- *
- * @mixes module:core/editor/utils/dataapimixin~DataApiMixin
- * @implements module:core/editor/editorwithui~EditorWithUI
- * @extends module:core/editor/editor~Editor
  */
 class MultirootEditor extends Editor {
 	/**

@@ -3,8 +3,6 @@ import { EditorUIView, InlineEditableUIView, ToolbarView, Template } from '@cked
 /**
  * The multi-root editor UI view. It is a virtual view providing an inline editable, but without
  * any specific arrangement of the components in the DOM.
- *
- * @extends module:ui/editorui/editoruiview~EditorUIView
  */
 export default class MultirootEditorUIView extends EditorUIView {
 	/**

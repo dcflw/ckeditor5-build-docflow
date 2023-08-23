@@ -4,11 +4,7 @@ import {
 } from '@ckeditor/ckeditor5-ui';
 import { enablePlaceholder } from '@ckeditor/ckeditor5-engine';
 
-/**
- * The multi-root editor UI class.
- *
- * @extends module:core/editor/editorui~EditorUI
- */
+/** The multi-root editor UI class. */
 export default class MultirootEditorUI extends EditorUI {
 	/**
    * Creates an instance of the multi-root editor UI class.
