@@ -98,7 +98,7 @@ class MultirootEditor extends Editor {
    * @param {Object.<String,HTMLElement>} sourceElements The list of DOM elements that will be the source
    * for the created editor (on which the editor will be initialized).
    * @param {module:core/editor/editorconfig~EditorConfig} config The editor configuration.
-   * @returns {Promise} A promise resolved once the editor is ready. The promise returns the created multi-root editor instance.
+   * @returns {Promise<MultirootEditor>} A promise resolved once the editor is ready.
    */
 	static create( sourceElements, config ) {
 		return new Promise( resolve => {
