@@ -48,7 +48,7 @@ jobs:
 
             exec.exec(`npm version ${newPackageVersion} --no-git-tag-version --allow-same-version`);
       - name: Build
-        run: NODE_OPTIONS=--openssl-legacy-provider npm run build
+        run: npm run build
 
       - name: Publish
         env:
