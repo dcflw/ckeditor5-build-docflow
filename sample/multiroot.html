@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -11,6 +11,10 @@
 
       .ck.ck-editor__editable.ck-blurred {
         border: 1px solid var(--ck-color-base-border);
+      }
+
+      .comment {
+        background: antiquewhite;
       }
 
       /* sneakily hide the "powered by" logo from editors */
@@ -66,37 +70,59 @@
     </div>
 
     <button id="button-new-editor" type="button">Add new editor</button>
-    <button id="button-new-editor-delayed" type="button">Add new editor (after 3s)</button>
+    <button id="button-new-editor-delayed" type="button">
+      Add new editor (after 3s)
+    </button>
+    <button id="add-comment">Add comment</button>
 
     <script src="../build/ckeditor.js"></script>
     <script>
-      CKEDITOR.MultirootEditor.create(
+      CKEDITOR.MultiRootEditor.create(
         {
           header: document.querySelector("#header"),
           content: document.querySelector("#content"),
           footer: document.querySelector("#footer"),
         },
-        {},
+        {
+          docfieldImageUpload: {
+            directUploadsPath:
+              "http://localhost:3000/rails/active_storage/direct_uploads",
+          },
+          docfieldSmartfield: {
+            enabled: true,
+            renderSmartfield: (props, domElement) => {
+              const smartfield = document.createElement("span");
+              smartfield.innerHTML = props.name;
+              smartfield.style.border = "1px solid red";
+              domElement.appendChild(smartfield);
+            },
+            onInvalidSmartfieldName: (name) => {
+              console.log("Invalid smartfield name: ", name);
+            },
+          },
+        },
       )
-        .then(editor => {
+        .then((editor) => {
           document
             .querySelector("#toolbar")
             .appendChild(editor.ui.view.toolbar.element);
 
           window.editor = editor;
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err, err.stack);
         });
 
       const addNewRoot = () => {
-        const editors = document.querySelector("#editors");
-        const newEditor = document.createElement("div");
+        const initialData = "<p><strong>I am a new editor.</strong> 👷</p>";
 
-        newEditor.innerHTML = "<p><strong>I am a new editor.</strong> 👷</p>";
+        window.editor
+          .addRoot(`node-${Date.now()}`, { data: initialData })
+          .then((root) => {
+            const editableElement = editor.createEditable(root);
 
-        editors.appendChild(newEditor);
-        window.editor.addRoot(`node-${Date.now()}`, newEditor);
+            document.querySelector("#editors").appendChild(editableElement);
+          });
       };
 
       document
@@ -107,6 +133,12 @@
         .addEventListener("click", () => {
           setTimeout(addNewRoot, 3000);
         });
+      document.getElementById("add-comment").addEventListener("click", () => {
+        window.editor.execute("insertComment", {
+          id: "new-comment",
+          parentId: null,
+        });
+      });
     </script>
   </body>
 </html>

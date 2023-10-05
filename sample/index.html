@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -12,6 +12,15 @@
       .ck.ck-editor__editable.ck-blurred {
         border: 1px solid var(--ck-color-base-border);
       }
+
+      .comment {
+        background: antiquewhite;
+      }
+
+      /* sneakily hide the "powered by" logo from editors */
+      [class*="owered-by-balloo"] {
+        clip: rect(0, 0, 0, 0);
+      }
     </style>
   </head>
   <body>
@@ -20,7 +29,7 @@
     <div id="editor">
       <h2>Sample</h2>
 
-      <p> This is a smartfield {{name}}</p>
+      <p>This is a smartfield {{name}}</p>
 
       <p>
         This is an instance of the
@@ -43,6 +52,7 @@
         works fine.
       </p>
     </div>
+    <button id="add-comment">Add comment</button>
 
     <script src="../build/ckeditor.js"></script>
     <script>
@@ -59,20 +69,28 @@
         docfieldSmartfield: {
           enabled: true,
           renderSmartfield: (props, domElement) => {
-            const smartfield = document.createElement('span');
+            const smartfield = document.createElement("span");
             smartfield.innerHTML = props.name;
-            smartfield.style.border = '1px solid red';
+            smartfield.style.border = "1px solid red";
             domElement.appendChild(smartfield);
           },
           onInvalidSmartfieldName: (name) => {
-            console.log('Invalid smartfield name: ', name);
+            console.log("Invalid smartfield name: ", name);
           },
-        }
+        },
       })
-        .then(editor => {
+        .then((editor) => {
           window.editor = editor;
+          document
+            .getElementById("add-comment")
+            .addEventListener("click", () => {
+              editor.execute("insertComment", {
+                id: "new-comment",
+                parentId: null,
+              });
+            });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err.stack);
         });
     </script>

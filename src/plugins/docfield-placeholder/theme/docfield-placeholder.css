@@ -21,10 +21,11 @@
  */
 .ck-body .ck-toolbar {
   border-collapse: collapse;
-	font: normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);
-	color: var(--ck-color-text);
-	text-align: left;
-	white-space: nowrap;
-	cursor: auto;
-	float: none;
+  font: normal normal normal var(--ck-font-size-base) /
+    var(--ck-line-height-base) var(--ck-font-face);
+  color: var(--ck-color-text);
+  text-align: left;
+  white-space: nowrap;
+  cursor: auto;
+  float: none;
 }

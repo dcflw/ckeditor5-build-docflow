@@ -5,12 +5,12 @@
 
 /* eslint-env commonjs */
 
-const ClassicEditor = require( '../../build/ckeditor' );
+const ClassicEditor = require("../../build/ckeditor");
 
-ClassicEditor.create( document.querySelector( '#editor' ) )
-	.then( editor => {
-		window.editor = editor;
-	} )
-	.catch( err => {
-		console.error( err.stack );
-	} );
+ClassicEditor.create(document.querySelector("#editor"))
+  .then((editor) => {
+    window.editor = editor;
+  })
+  .catch((err) => {
+    console.error(err.stack);
+  });
