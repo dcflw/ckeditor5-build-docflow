@@ -41,6 +41,9 @@ devDependencies:
   '@ckeditor/ckeditor5-editor-multi-root':
     specifier: ^40.0.0
     version: 40.0.0
+  '@ckeditor/ckeditor5-engine':
+    specifier: ^40.0.0
+    version: 40.0.0
   '@ckeditor/ckeditor5-essentials':
     specifier: ^40.0.0
     version: 40.0.0

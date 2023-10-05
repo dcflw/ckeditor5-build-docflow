@@ -20,6 +20,7 @@
     "@ckeditor/ckeditor5-dev-utils": "^39.1.0",
     "@ckeditor/ckeditor5-editor-inline": "^40.0.0",
     "@ckeditor/ckeditor5-editor-multi-root": "^40.0.0",
+    "@ckeditor/ckeditor5-engine": "^40.0.0",
     "@ckeditor/ckeditor5-essentials": "^40.0.0",
     "@ckeditor/ckeditor5-font": "^40.0.0",
     "@ckeditor/ckeditor5-image": "^40.0.0",
