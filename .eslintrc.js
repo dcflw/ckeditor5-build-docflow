@@ -3,5 +3,5 @@ module.exports = {
         "browser": true,
         "node": true
     },
-    "extends": "ckeditor5",
+    "extends": ["ckeditor5", "prettier"],
 };
