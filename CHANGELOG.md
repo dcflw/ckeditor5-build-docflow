@@ -18,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - As a result of `addRoot`, you get a promise that resolves to a "root element", an internal CKEditor thing that you can then pass to `editor.createEditable` with an optional placeholder for the new root (`editor.createEditable(rootElement, placeholder)`). `createEditable` then returns the DOM node that you can attach wherever you want.
   - Similarly, with `detachRoot`, when you call it, you get a promise that resolves to a "root element" that you then pass to `editor.detachEditable`, which returns a DOM node for you to detach.
 
-
 ## [2.0.0] - 2023-09-13
 
 ### Changed
