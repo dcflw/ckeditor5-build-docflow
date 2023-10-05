@@ -1,4 +1,3 @@
-import { DecoupledEditor } from '@ckeditor/ckeditor5-editor-decoupled';
 import { InlineEditor } from '@ckeditor/ckeditor5-editor-inline';
 
 import { Alignment } from '@ckeditor/ckeditor5-alignment';
@@ -14,7 +13,7 @@ import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
 import { RemoveFormat } from '@ckeditor/ckeditor5-remove-format';
 import { Table, TableCellProperties, TableProperties, TableKeyboard, TableToolbar } from '@ckeditor/ckeditor5-table';
 
-import MultirootEditor from './editors/multiroot-editor';
+import { MultiRootEditor } from './multi-root-editor';
 import DocfieldImageUpload from './plugins/docfield-image-upload/docfield-image-upload';
 import DocfieldLink from './plugins/docfield-link/docfield-link';
 import DocfieldPlaceholder from './plugins/docfield-placeholder/docfield-placeholder';
@@ -55,9 +54,8 @@ const plugins = [
 	DocfieldComments
 ];
 
-DecoupledEditor.builtinPlugins = plugins;
 InlineEditor.builtinPlugins = plugins;
-MultirootEditor.builtinPlugins = plugins;
+MultiRootEditor.builtinPlugins = plugins;
 
 const config = {
 	// This value must be kept in sync with the language defined in webpack.config.js.
@@ -103,8 +101,7 @@ const config = {
 	}
 };
 
-DecoupledEditor.defaultConfig = config;
 InlineEditor.defaultConfig = config;
-MultirootEditor.defaultConfig = config;
+MultiRootEditor.defaultConfig = config;
 
-export default { DecoupledEditor, InlineEditor, MultirootEditor };
+export default { InlineEditor, MultiRootEditor };
