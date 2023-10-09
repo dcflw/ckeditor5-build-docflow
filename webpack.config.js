@@ -15,7 +15,7 @@ module.exports = {
     libraryExport: "default",
     libraryTarget: "umd",
   },
-
+  devtool: "source-map",
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()],

@@ -15,6 +15,13 @@ export const COMMAND_INSERT_SMARTFIELD = "insertSmartfield";
 export const COMMAND_DELETE_SMARTFIELD = "deleteSmartfield";
 export const SMARTFIELD_REGEX = /({{ *[a-z][a-z0-9_ ]*}})/i;
 
+/** @typedef {import("@ckeditor/ckeditor5-engine").Element} ModelElement */
+/** @typedef {import("@ckeditor/ckeditor5-engine").DowncastWriter} DowncastWriter */
+/** @typedef {import("@ckeditor/ckeditor5-engine").ViewElement} ViewElement */
+/** @typedef {import("@ckeditor/ckeditor5-engine").ViewText} ViewText */
+/** @typedef {import("@ckeditor/ckeditor5-engine").UpcastConversionData<ViewText>} UpcastConversionData_ViewText */
+/** @typedef {import("@ckeditor/ckeditor5-engine").UpcastConversionApi} UpcastConversionApi */
+
 export default class DocfieldSmartfieldEditing extends Plugin {
   static get requires() {
     return [Widget];
@@ -66,55 +73,55 @@ export default class DocfieldSmartfieldEditing extends Plugin {
     const conversion = this.editor.conversion;
     const editor = this.editor;
 
-    // testing liquid vars
     conversion
       .for("upcast")
       .add((dispatcher) => {
-        dispatcher.on("text", (evt, data, { schema, consumable, writer }) => {
-          let position = data.modelCursor;
+        dispatcher.on(
+          "text",
+          /**
+           * @param {any} _evt
+           * @param {UpcastConversionData_ViewText} data
+           * @param {UpcastConversionApi} conversionApi
+           */
+          (_evt, data, { consumable, writer }) => {
+            const position = data.modelCursor;
 
-          // When node is already converted then do nothing.
-          if (!consumable.test(data.viewItem)) {
-            return;
-          }
-
-          if (!schema.checkChild(position, "$text")) {
-            if (!isParagraphable(position, "$text", schema)) {
+            // When node is already converted then do nothing.
+            if (!consumable.test(data.viewItem)) {
               return;
             }
 
-            position = wrapInParagraph(position, writer);
-          }
+            consumable.consume(data.viewItem);
 
-          consumable.consume(data.viewItem);
+            // The following code is the difference from the original text upcast converter.
+            let modelCursor = position;
 
-          // The following code is the difference from the original text upcast converter.
-          let modelCursor = position;
+            const isSmartfield = data.viewItem
+              .getAncestors()
+              .some(
+                (a) =>
+                  a.is("element") && a.hasClass("smartfield__react-wrapper"),
+              );
 
-          const isSmartfield = data.viewItem
-            .getAncestors()
-            .some(
-              (a) => a.is("element") && a.hasClass("smartfield__react-wrapper"),
-            );
+            for (const part of data.viewItem.data.split(SMARTFIELD_REGEX)) {
+              const node =
+                SMARTFIELD_REGEX.test(part) || isSmartfield
+                  ? writer.createElement(TYPE_SMARTFIELD, {
+                      name: part.slice(2, -2),
+                    })
+                  : writer.createText(part);
 
-          for (const part of data.viewItem.data.split(SMARTFIELD_REGEX)) {
-            const node =
-              SMARTFIELD_REGEX.test(part) || isSmartfield
-                ? writer.createElement(TYPE_SMARTFIELD, {
-                    name: part.slice(2, -2),
-                  })
-                : writer.createText(part);
+              writer.insert(node, modelCursor);
 
-            writer.insert(node, modelCursor);
-
-            if (node.offsetSize !== undefined) {
-              modelCursor = modelCursor.getShiftedBy(node.offsetSize);
+              if (node.offsetSize !== undefined) {
+                modelCursor = modelCursor.getShiftedBy(node.offsetSize);
+              }
             }
-          }
 
-          data.modelRange = writer.createRange(position, modelCursor);
-          data.modelCursor = data.modelRange.end;
-        });
+            data.modelRange = writer.createRange(position, modelCursor);
+            data.modelCursor = data.modelRange.end;
+          },
+        );
       })
       .elementToElement({
         view: {
@@ -124,48 +131,18 @@ export default class DocfieldSmartfieldEditing extends Plugin {
         model: TYPE_SMARTFIELD,
       });
 
-    function isParagraphable(position, nodeOrType, schema) {
-      const context = schema.createContext(position);
+    conversion.for("editingDowncast").elementToElement({
+      model: TYPE_SMARTFIELD,
+      view: (modelItem, { writer: viewWriter }) => {
+        const widgetElement = createSmartfieldView(modelItem, viewWriter);
 
-      // When paragraph is allowed in this context...
-      if (!schema.checkChild(context, "paragraph")) {
-        return false;
-      }
-
-      // And a node would be allowed in this paragraph...
-      if (!schema.checkChild(context.push("paragraph"), nodeOrType)) {
-        return false;
-      }
-
-      return true;
-    }
-
-    function wrapInParagraph(position, writer) {
-      const paragraph = writer.createElement("paragraph");
-
-      writer.insert(paragraph, position);
-
-      return writer.createPositionAt(paragraph, 0);
-    }
-    // ----
-
-    conversion
-      .for("editingDowncast")
-      .elementToElement({
-        model: TYPE_SMARTFIELD,
-        view: (modelItem, { writer: viewWriter }) => {
-          const widgetElement = createSmartfieldView(modelItem, viewWriter);
-
-          // Enable widget handling on a placeholder element inside the editing view.
-          // adding `hasSelectionHandle: true` fixes issues in Firefox
-          return toWidget(widgetElement, viewWriter, {
-            hasSelectionHandle: true,
-          });
-        },
-      })
-      .add((dispatcher) =>
-        dispatcher.on("attribute:smartfield", convertTextToSmartfield),
-      );
+        // Enable widget handling on a placeholder element inside the editing view.
+        // adding `hasSelectionHandle: true` fixes issues in Firefox
+        return toWidget(widgetElement, viewWriter, {
+          hasSelectionHandle: true,
+        });
+      },
+    });
 
     conversion.for("dataDowncast").elementToElement({
       model: TYPE_SMARTFIELD,
@@ -182,6 +159,11 @@ export default class DocfieldSmartfieldEditing extends Plugin {
       converterPriority: "high",
     });
 
+    /**
+     * @param {ModelElement} modelItem
+     * @param {DowncastWriter} viewWriter
+     * @returns {ViewElement | null}
+     */
     function createSmartfieldView(modelItem, viewWriter) {
       const name = modelItem.getAttribute("name");
       const type = modelItem.getAttribute("type");
@@ -223,25 +205,6 @@ export default class DocfieldSmartfieldEditing extends Plugin {
 
       return smartfieldView;
     }
-
-    function convertTextToSmartfield(evt, data, conversionApi) {
-      if (data.item && data.item.is("$textProxy")) {
-        const modelElement = data.item;
-        conversionApi.consumable.consume(modelElement, "attribute");
-
-        // Mark element as consumed by conversion.
-        conversionApi.consumable.consume(modelElement, evt.name);
-
-        editor.model.enqueueChange((writer) => {
-          const name = modelElement.data.trim().replace(/ /g, "_");
-          const node = writer.createElement(TYPE_SMARTFIELD, { name });
-          writer.model.insertObject(node);
-          writer.setSelectionFocus(node, "after");
-
-          writer.remove(modelElement);
-        });
-      }
-    }
   }
 
   _addAutoFormat() {
@@ -261,11 +224,32 @@ export default class DocfieldSmartfieldEditing extends Plugin {
             return false;
           }
 
-          writer.setAttribute("smartfield", true, range);
+          // The following code requires reading the source code of `inlineAutoformatEditing` to understand. Sorry.
 
-          // After applying attribute to the text, remove given attribute from the selection.
-          // This way user is able to type a text without attribute used by auto formatter.
-          writer.removeSelectionAttribute("smartfield");
+          // `range` only covers the smart field name, expand it to include {{}}
+          const fullSmartfieldRange = writer.createRange(
+            range.start.getShiftedBy(-2),
+            range.end.getShiftedBy(2),
+          );
+          writer.setSelection(fullSmartfieldRange);
+          const smartfield = writer.createElement(TYPE_SMARTFIELD, {
+            name: name.trim().replace(/ /g, "_"),
+          });
+          writer.model.insertObject(smartfield);
+          writer.setSelection(smartfield, "after");
+
+          // This piece of code is the only bit of logic that we want to opt into
+          //   (see comment below), so it's copy-pasted here from the source of `inlineAutoformatEditing`.
+          this.editor.model.enqueueChange(() => {
+            const deletePlugin = this.editor.plugins.get("Delete");
+
+            deletePlugin.requestUndoOnBackspace();
+          });
+
+          // Even though this range was processed, we return `false` to opt out
+          //   of `inlineAutoformatEditing`'s own processing, which includes removing the `{{}}`,
+          //   because we've already done this ourselves.
+          return false;
         }
       },
     );
