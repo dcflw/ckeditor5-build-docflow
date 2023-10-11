@@ -24,7 +24,7 @@ import {
   TableToolbar,
 } from "@ckeditor/ckeditor5-table";
 
-import { MultiRootEditor } from "./multi-root-editor";
+import MultirootEditor from "./editors/multiroot-editor";
 import DocfieldImageUpload from "./plugins/docfield-image-upload/docfield-image-upload";
 import DocfieldLink from "./plugins/docfield-link/docfield-link";
 import DocfieldPlaceholder from "./plugins/docfield-placeholder/docfield-placeholder";
@@ -66,7 +66,7 @@ const plugins = [
 ];
 
 InlineEditor.builtinPlugins = plugins;
-MultiRootEditor.builtinPlugins = plugins;
+MultirootEditor.builtinPlugins = plugins;
 
 const config = {
   // This value must be kept in sync with the language defined in webpack.config.js.
@@ -113,6 +113,6 @@ const config = {
 };
 
 InlineEditor.defaultConfig = config;
-MultiRootEditor.defaultConfig = config;
+MultirootEditor.defaultConfig = config;
 
-export default { InlineEditor, MultiRootEditor };
+export default { InlineEditor, MultirootEditor };
