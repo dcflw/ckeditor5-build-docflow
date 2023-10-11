@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -29,7 +29,7 @@
     <div id="editor">
       <h2>Sample</h2>
 
-      <p> This is a smartfield {{name}}</p>
+      <p>This is a smartfield {{name}}</p>
 
       <p>
         This is an instance of the
@@ -69,17 +69,17 @@
         docfieldSmartfield: {
           enabled: true,
           renderSmartfield: (props, domElement) => {
-            const smartfield = document.createElement('span');
+            const smartfield = document.createElement("span");
             smartfield.innerHTML = props.name;
-            smartfield.style.border = '1px solid red';
+            smartfield.style.border = "1px solid red";
             domElement.appendChild(smartfield);
           },
           onInvalidSmartfieldName: (name) => {
-            console.log('Invalid smartfield name: ', name);
+            console.log("Invalid smartfield name: ", name);
           },
-        }
+        },
       })
-        .then(editor => {
+        .then((editor) => {
           window.editor = editor;
           document
             .getElementById("add-comment")
@@ -90,7 +90,7 @@
               });
             });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err.stack);
         });
     </script>
