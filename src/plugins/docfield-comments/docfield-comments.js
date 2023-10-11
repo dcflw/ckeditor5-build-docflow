@@ -1,12 +1,12 @@
-import { Plugin } from "@ckeditor/ckeditor5-core";
-import DocfieldCommentsEditing from "./docfield-comments-editing";
+import { Plugin } from '@ckeditor/ckeditor5-core';
+import DocfieldCommentsEditing from './docfield-comments-editing';
 
 export default class DocfieldComments extends Plugin {
-  static get pluginName() {
-    return "DocfieldComments";
-  }
+	static get pluginName() {
+		return 'DocfieldComments';
+	}
 
-  static get requires() {
-    return [DocfieldCommentsEditing];
-  }
+	static get requires() {
+		return [ DocfieldCommentsEditing ];
+	}
 }

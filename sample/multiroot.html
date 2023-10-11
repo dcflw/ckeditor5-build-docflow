@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -77,7 +77,7 @@
 
     <script src="../build/ckeditor.js"></script>
     <script>
-      CKEDITOR.MultiRootEditor.create(
+      CKEDITOR.MultirootEditor.create(
         {
           header: document.querySelector("#header"),
           content: document.querySelector("#content"),
@@ -109,20 +109,18 @@
 
           window.editor = editor;
         })
-        .catch((err) => {
+        .catch(err => {
           console.error(err, err.stack);
         });
 
       const addNewRoot = () => {
-        const initialData = "<p><strong>I am a new editor.</strong> 👷</p>";
+        const editors = document.querySelector("#editors");
+        const newEditor = document.createElement("div");
 
-        window.editor
-          .addRoot(`node-${Date.now()}`, { data: initialData })
-          .then((root) => {
-            const editableElement = editor.createEditable(root);
+        newEditor.innerHTML = "<p><strong>I am a new editor.</strong> 👷</p>";
 
-            document.querySelector("#editors").appendChild(editableElement);
-          });
+        editors.appendChild(newEditor);
+        window.editor.addRoot(`node-${Date.now()}`, newEditor);
       };
 
       document
