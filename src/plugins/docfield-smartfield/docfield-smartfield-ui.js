@@ -11,7 +11,7 @@ import {
   COMMAND_INSERT_SMARTFIELD,
   SMARTFIELD_REGEX,
 } from "./docfield-smartfield-editing";
-import smartFieldRegular from "./theme/icons/smartFieldRegular.svg";
+import boltRegular from "./theme/icons/boltRegular.svg";
 import linkIcon from "./theme/icons/link-icon.svg";
 
 const TYPE = {
@@ -41,7 +41,7 @@ export default class DocfieldSmartfieldUI extends Plugin {
 
       button.set({
         label: "Smart field",
-        icon: smartFieldRegular,
+        icon: boltRegular,
         tooltip: true,
       });
 
