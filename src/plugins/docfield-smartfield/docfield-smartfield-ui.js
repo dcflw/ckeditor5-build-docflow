@@ -11,7 +11,7 @@ import {
   COMMAND_INSERT_SMARTFIELD,
   SMARTFIELD_REGEX,
 } from "./docfield-smartfield-editing";
-import boltRegular from "./theme/icons/boltRegular.svg";
+import boltMedium from "./theme/icons/boltMedium.svg";
 import linkIcon from "./theme/icons/link-icon.svg";
 
 const TYPE = {
@@ -39,9 +39,10 @@ export default class DocfieldSmartfieldUI extends Plugin {
     this.editor.ui.componentFactory.add("insertSmartfield", (locale) => {
       const button = new ButtonView(locale);
 
+      console.log(boltMedium);
       button.set({
         label: "Smart field",
-        icon: boltRegular,
+        icon: boltMedium,
         tooltip: true,
       });
 
