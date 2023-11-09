@@ -39,7 +39,6 @@ export default class DocfieldSmartfieldUI extends Plugin {
     this.editor.ui.componentFactory.add("insertSmartfield", (locale) => {
       const button = new ButtonView(locale);
 
-      console.log(boltMedium);
       button.set({
         label: "Smart field",
         icon: boltMedium,
