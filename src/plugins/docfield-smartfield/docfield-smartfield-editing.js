@@ -15,6 +15,8 @@ export const COMMAND_INSERT_SMARTFIELD = "insertSmartfield";
 export const COMMAND_DELETE_SMARTFIELD = "deleteSmartfield";
 export const SMARTFIELD_REGEX = /({{ *[a-z][a-z0-9_ ]*}})/i;
 
+/** @typedef {import("@ckeditor/ckeditor5-engine").Element} ModelElement */
+
 export default class DocfieldSmartfieldEditing extends Plugin {
   static get requires() {
     return [Widget];
@@ -182,6 +184,9 @@ export default class DocfieldSmartfieldEditing extends Plugin {
       converterPriority: "high",
     });
 
+    /**
+     * @param {ModelElement} modelItem
+     */
     function createSmartfieldView(modelItem, viewWriter) {
       const name = modelItem.getAttribute("name");
       const type = modelItem.getAttribute("type");
@@ -233,7 +238,10 @@ export default class DocfieldSmartfieldEditing extends Plugin {
         conversionApi.consumable.consume(modelElement, evt.name);
 
         editor.model.enqueueChange((writer) => {
-          const name = modelElement.data.trim().replace(/ /g, "_");
+          const name = modelElement.data
+            .trim()
+            .replace(/ /g, "_")
+            .toLowerCase();
           const node = writer.createElement(TYPE_SMARTFIELD, { name });
           writer.model.insertObject(node);
           writer.setSelectionFocus(node, "after");

@@ -108,7 +108,7 @@ export default class DocfieldSmartfieldUI extends Plugin {
       return;
     }
 
-    const name = selectedText.trim().replace(/ /g, "_");
+    const name = selectedText.trim().replace(/ /g, "_").toLowerCase();
 
     this.editor.execute(COMMAND_INSERT_SMARTFIELD, { name, type });
   }

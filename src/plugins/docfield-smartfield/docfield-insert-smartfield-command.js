@@ -1,7 +1,13 @@
 import { Command } from "@ckeditor/ckeditor5-core";
 import { TYPE_SMARTFIELD } from "./docfield-smartfield-editing";
 
+/** @typedef {import("@ckeditor/ckeditor5-engine").Element} ModelElement */
+
 export default class DocfieldInsertSmartfieldCommand extends Command {
+  /**
+   * @param {Object} params
+   * @param {ModelElement} params.modelItem
+   */
   execute(params) {
     const editor = this.editor;
 
