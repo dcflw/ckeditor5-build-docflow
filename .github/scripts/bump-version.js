@@ -1,8 +1,8 @@
 /**
  * @param {Record<string, unknown>} packageJson
- * @param {{ exec: typeof exec; context: typeof context; }} params
+ * @param {{ exec: typeof exec; context: typeof context; fetch: typeof fetch }} params
  */
-async function bumpPackageVersion(packageJson, { exec, context }) {
+async function bumpPackageVersion(packageJson, { exec, context, fetch }) {
   const npmRegistryUrl = "https://registry.npmjs.org";
 
   const currentPackageVersion = await fetch(
