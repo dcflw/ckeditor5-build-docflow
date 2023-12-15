@@ -6,13 +6,13 @@ async function bumpPackageVersion(packageJson, { exec, context }) {
   const npmRegistryUrl = "https://registry.npmjs.org";
 
   const currentPackageVersion = await fetch(
-    `${npmRegistryUrl}/${packageJson.name}`
+    `${npmRegistryUrl}/${packageJson.name}`,
   )
     .then(async (res) => (await res.json()).versions)
     .then((versions) =>
       Object.keys(versions)
         .sort((a, b) => a.localeCompare(b))
-        .pop()
+        .pop(),
     );
 
   if (currentPackageVersion !== undefined) {
@@ -20,7 +20,10 @@ async function bumpPackageVersion(packageJson, { exec, context }) {
     let [major, minor, patch] = currentPackageVersion
       .split(".")
       .map((v) => parseInt(v, 10));
-    if (commitMessage.includes("BREAKING CHANGE") || commitMessage.includes("!:")) {
+    if (
+      commitMessage.includes("BREAKING CHANGE") ||
+      commitMessage.includes("!:")
+    ) {
       major++;
       minor = 0;
       patch = 0;
@@ -33,7 +36,7 @@ async function bumpPackageVersion(packageJson, { exec, context }) {
     const newPackageVersion = `${major}.${minor}.${patch}`;
 
     exec.exec(
-      `npm version ${newPackageVersion} --no-git-tag-version --allow-same-version`
+      `npm version ${newPackageVersion} --no-git-tag-version --allow-same-version`,
     );
   }
 }
