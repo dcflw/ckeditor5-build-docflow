@@ -8,7 +8,12 @@ import {
   Underline,
 } from "@ckeditor/ckeditor5-basic-styles";
 import { Essentials } from "@ckeditor/ckeditor5-essentials";
-import { Font } from "@ckeditor/ckeditor5-font";
+import {
+  FontSize,
+  FontFamily,
+  FontColor,
+  FontBackgroundColor,
+} from "@ckeditor/ckeditor5-font";
 import { Image, ImageStyle, ImageToolbar } from "@ckeditor/ckeditor5-image";
 import { Indent, IndentBlock } from "@ckeditor/ckeditor5-indent";
 import { Link } from "@ckeditor/ckeditor5-link";
@@ -28,7 +33,6 @@ import MultirootEditor from "./editors/multiroot-editor";
 import DocfieldImageUpload from "./plugins/docfield-image-upload/docfield-image-upload";
 import DocfieldLink from "./plugins/docfield-link/docfield-link";
 import DocfieldPlaceholder from "./plugins/docfield-placeholder/docfield-placeholder";
-import DocfieldSanitizePaste from "./plugins/docfield-sanitize-paste/docfield-sanitize-paste";
 import DocfieldComments from "./plugins/docfield-comments/docfield-comments";
 import DocfieldSmartfield from "./plugins/docfield-smartfield/docfield-smartfield";
 import "./ckeditor.css";
@@ -40,9 +44,11 @@ const plugins = [
   DocfieldImageUpload,
   DocfieldPlaceholder,
   DocfieldLink,
-  DocfieldSanitizePaste,
   DocfieldSmartfield,
-  Font,
+  FontSize,
+  FontFamily,
+  FontColor,
+  FontBackgroundColor,
   Indent,
   IndentBlock,
   Image,
