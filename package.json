@@ -1,6 +1,6 @@
 {
   "name": "@docflow/ckeditor5-build-docflow",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Docfield build of CKEditor 5",
   "main": "./build/ckeditor.js",
   "types": "./build/ckeditor.d.ts",
@@ -46,6 +46,8 @@
     "eslint": "^8.55.0",
     "eslint-config-ckeditor5": "^5.2.0",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.0",
     "postcss": "^8.4.32",
     "postcss-loader": "^7.3.3",
     "prettier": "^3.1.1",
@@ -70,6 +72,7 @@
     "lint": "eslint './src/**/*.js' --cache",
     "format": "prettier --write --cache .",
     "format:check": "prettier --check --cache .",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack watch --mode development",
+    "prepare": "husky install"
   }
 }

@@ -57,6 +57,7 @@
     <script src="../build/ckeditor.js"></script>
     <script>
       CKEDITOR.InlineEditor.create(document.querySelector("#editor"), {
+        removePlugins: ["FontColor", "FontBackgroundColor"],
         docfieldImageUpload: {
           directUploadsPath:
             "http://localhost:3000/rails/active_storage/direct_uploads",
