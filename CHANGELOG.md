@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- The custom paste sanitizer was removed, which leads to CKEditor not removing colors from pasted text by default. If you don't want to allow colored text, add plugins `"FontColor"` and `"FontBackgroundColor"` to the `removePlugins` config option. 
+- The custom paste sanitizer was removed, which leads to CKEditor not removing colors from pasted text by default. If you don't want to allow colored text, add plugins `"FontColor"` and `"FontBackgroundColor"` to the `removePlugins` config option.
 
 ## [3.0.0] - 2023-10-05
 
