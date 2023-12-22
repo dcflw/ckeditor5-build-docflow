@@ -14,7 +14,13 @@ import {
   FontColor,
   FontBackgroundColor,
 } from "@ckeditor/ckeditor5-font";
-import { Image, ImageStyle, ImageToolbar } from "@ckeditor/ckeditor5-image";
+import {
+  Image,
+  ImageStyle,
+  ImageToolbar,
+  ImageResizeEditing,
+  ImageResizeHandles,
+} from "@ckeditor/ckeditor5-image";
 import { Indent, IndentBlock } from "@ckeditor/ckeditor5-indent";
 import { Link } from "@ckeditor/ckeditor5-link";
 import { List, ListProperties } from "@ckeditor/ckeditor5-list";
@@ -54,6 +60,8 @@ const plugins = [
   Image,
   ImageStyle,
   ImageToolbar,
+  ImageResizeEditing,
+  ImageResizeHandles,
   Italic,
   Link,
   List,
@@ -100,10 +108,10 @@ const config = {
     ],
   },
   image: {
-    styles: ["alignLeft", "alignRight", "full"],
+    styles: ["alignLeft", "alignRight", "block"],
     toolbar: [
       "imageStyle:alignLeft",
-      "imageStyle:full",
+      "imageStyle:block",
       "imageStyle:alignRight",
     ],
   },
