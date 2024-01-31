@@ -2,7 +2,7 @@ import { Plugin } from "@ckeditor/ckeditor5-core";
 import {
   ButtonView,
   ContextualBalloon,
-  Model,
+  ViewModel,
   addListToDropdown,
   createDropdown,
 } from "@ckeditor/ckeditor5-ui";
@@ -65,7 +65,7 @@ export default class DocfieldSmartfieldUI extends Plugin {
 
       items.add({
         type: "button",
-        model: new Model({
+        model: new ViewModel({
           id: "internal-link",
           withText: true,
           label: "Internal Link",
@@ -73,7 +73,7 @@ export default class DocfieldSmartfieldUI extends Plugin {
       });
       items.add({
         type: "button",
-        model: new Model({
+        model: new ViewModel({
           id: "external-link",
           withText: true,
           label: "External Link",

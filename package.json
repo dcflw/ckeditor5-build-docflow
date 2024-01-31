@@ -68,10 +68,11 @@
     "url": "https://github.com/dcflw/ckeditor5-build-docflow.git"
   },
   "scripts": {
-    "build": "tsc -p ./jsconfig.json & webpack --mode production",
+    "build": "tsc --emitDeclarationOnly --noEmit false -p ./jsconfig.json & webpack --mode production",
     "lint": "eslint './src/**/*.js' --cache",
     "format": "prettier --write --cache .",
     "format:check": "prettier --check --cache .",
+    "typecheck": "tsc --noEmit -p ./jsconfig.json",
     "watch": "webpack watch --mode development",
     "prepare": "husky"
   }
