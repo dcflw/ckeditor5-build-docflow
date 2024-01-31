@@ -7,7 +7,7 @@
     "strict": true,
     "checkJs": true,
     "skipLibCheck": false,
-    "types": ["./globals", "node"]
+    "types": ["./globals", "node"],
   },
-  "exclude": ["node_modules", "**/node_modules/*"]
+  "exclude": ["node_modules", "**/node_modules/*"],
 }
