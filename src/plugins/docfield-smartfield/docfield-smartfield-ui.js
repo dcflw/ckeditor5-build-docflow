@@ -7,6 +7,8 @@ import {
   createDropdown,
 } from "@ckeditor/ckeditor5-ui";
 import { Collection } from "@ckeditor/ckeditor5-utils";
+import { customAlphabet } from "nanoid";
+
 import {
   COMMAND_INSERT_SMARTFIELD,
   SMARTFIELD_REGEX,
@@ -18,6 +20,7 @@ const TYPE = {
   InternalLink: "SmartField::InternalLink",
   String: "SmartField::String",
 };
+export const slug = customAlphabet("1234567890abcdef", 10);
 
 export default class DocfieldSmartfieldUI extends Plugin {
   static get requires() {
@@ -101,16 +104,23 @@ export default class DocfieldSmartfieldUI extends Plugin {
     const selectedText = this.getSelectedText().trim();
     const isValidSmartfieldName = SMARTFIELD_REGEX.test(`{{${selectedText}}}`);
 
-    if (selectedText && !isValidSmartfieldName) {
+    if (type !== TYPE.InternalLink && selectedText && !isValidSmartfieldName) {
       if (config.onInvalidSmartfieldName) {
         config.onInvalidSmartfieldName(selectedText);
       }
       return;
     }
 
-    const name = selectedText.trim().replace(/ /g, "_").toLowerCase();
+    const name =
+      type !== TYPE.InternalLink
+        ? selectedText.trim().replace(/ /g, "_").toLowerCase()
+        : `il_${slug()}`;
 
-    this.editor.execute(COMMAND_INSERT_SMARTFIELD, { name, type });
+    this.editor.execute(COMMAND_INSERT_SMARTFIELD, {
+      name,
+      type,
+      selectedText,
+    });
   }
 
   getSelectedText() {

@@ -11,6 +11,7 @@ import DocfieldDeleteSmartfieldCommand from "./docfield-delete-smartfield-comman
 export const TYPE_SMARTFIELD = "smartfield";
 export const ATTRIBUTE_NAME = "name";
 export const ATTRIBUTE_TYPE = "type";
+export const ATTRIBUTE_SELECTED_TEXT = "selectedText";
 export const COMMAND_INSERT_SMARTFIELD = "insertSmartfield";
 export const COMMAND_DELETE_SMARTFIELD = "deleteSmartfield";
 export const SMARTFIELD_REGEX = /({{ *[a-z][a-z0-9_ ]*}})/i;
@@ -60,7 +61,11 @@ export default class DocfieldSmartfieldEditing extends Plugin {
       isInline: true,
       isObject: true,
       allowAttributesOf: "$text",
-      allowAttributes: [ATTRIBUTE_NAME, ATTRIBUTE_TYPE],
+      allowAttributes: [
+        ATTRIBUTE_NAME,
+        ATTRIBUTE_TYPE,
+        ATTRIBUTE_SELECTED_TEXT,
+      ],
     });
   }
 
@@ -188,8 +193,9 @@ export default class DocfieldSmartfieldEditing extends Plugin {
      * @param {ModelElement} modelItem
      */
     function createSmartfieldView(modelItem, viewWriter) {
-      const name = modelItem.getAttribute("name");
-      const type = modelItem.getAttribute("type");
+      const name = modelItem.getAttribute(ATTRIBUTE_NAME);
+      const type = modelItem.getAttribute(ATTRIBUTE_TYPE);
+      const selectedText = modelItem.getAttribute(ATTRIBUTE_SELECTED_TEXT);
       const config = editor.config.get("docfieldSmartfield");
 
       const smartfieldView = viewWriter.createContainerElement("span", {
@@ -209,6 +215,7 @@ export default class DocfieldSmartfieldEditing extends Plugin {
             {
               name,
               type,
+              selectedText,
               changeSmartfieldName: (name, type) => {
                 editor.execute(COMMAND_INSERT_SMARTFIELD, { name, type });
               },

@@ -75,5 +75,8 @@
     "typecheck": "tsc --noEmit -p ./jsconfig.json",
     "watch": "webpack watch --mode development",
     "prepare": "husky"
+  },
+  "dependencies": {
+    "nanoid": "^5.0.5"
   }
 }
