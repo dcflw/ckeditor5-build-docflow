@@ -5,7 +5,7 @@ import { TYPE_SMARTFIELD } from "./docfield-smartfield-editing";
 
 export default class DocfieldInsertSmartfieldCommand extends Command {
   /**
-   * @param {Object} params
+   * @param {{ name: string; type: string; selectedText?: string }} params
    * @param {ModelElement} params.modelItem
    */
   execute(params) {

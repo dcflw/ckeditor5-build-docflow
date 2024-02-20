@@ -62,16 +62,11 @@
           directUploadsPath:
             "http://localhost:3000/rails/active_storage/direct_uploads",
         },
-        docfieldPlaceholder: {
-          formComponent: null,
-          formComponentProps: {},
-          variableLabels: {},
-        },
         docfieldSmartfield: {
           enabled: true,
           renderSmartfield: (props, domElement) => {
             const smartfield = document.createElement("span");
-            smartfield.innerHTML = props.name;
+            smartfield.innerHTML = props.selectedText || props.name;
             smartfield.style.border = "1px solid red";
             domElement.appendChild(smartfield);
           },

@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [5.0.0] - 2024-02-20
+
+### Removed
+
+Unused plugins `DocfieldLink` and `DocfieldPlaceholder` were removed.
 
 ## [4.0.0] - 2023-12-20
 
@@ -24,5 +28,7 @@ Nothing changed, this release was rolled back.
 - Changed the custom properties of CKEditor's config from `docflow*` to `docfield*`
   Affected properties: `docflowImageUpload`, `docflowPlaceholder`, `docflowSmartfield`
 
-[unreleased]: https://github.com/dcflw/ckeditor5-build-docflow/compare/v2.0.0...HEAD
+[5.0.0]: https://github.com/dcflw/ckeditor5-build-docflow/releases/tag/v5.0.0
+[4.0.0]: https://github.com/dcflw/ckeditor5-build-docflow/releases/tag/v4.0.0
+[3.0.0]: https://github.com/dcflw/ckeditor5-build-docflow/releases/tag/v3.0.0
 [2.0.0]: https://github.com/dcflw/ckeditor5-build-docflow/releases/tag/v2.0.0
