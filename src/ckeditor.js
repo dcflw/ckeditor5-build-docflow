@@ -37,8 +37,6 @@ import {
 
 import MultirootEditor from "./editors/multiroot-editor";
 import DocfieldImageUpload from "./plugins/docfield-image-upload/docfield-image-upload";
-import DocfieldLink from "./plugins/docfield-link/docfield-link";
-import DocfieldPlaceholder from "./plugins/docfield-placeholder/docfield-placeholder";
 import DocfieldComments from "./plugins/docfield-comments/docfield-comments";
 import DocfieldSmartfield from "./plugins/docfield-smartfield/docfield-smartfield";
 import "./ckeditor.css";
@@ -47,10 +45,6 @@ const plugins = [
   Essentials,
   Alignment,
   Bold,
-  DocfieldImageUpload,
-  DocfieldPlaceholder,
-  DocfieldLink,
-  DocfieldSmartfield,
   FontSize,
   FontFamily,
   FontColor,
@@ -76,6 +70,8 @@ const plugins = [
   TableProperties,
   TableToolbar,
   Underline,
+  DocfieldImageUpload,
+  DocfieldSmartfield,
   DocfieldComments,
 ];
 
@@ -98,9 +94,8 @@ const config = {
       "bulletedList",
       "numberedList",
       "insertTable",
-      "insertPlaceholder",
       "insertSmartfield",
-      "docfieldLink",
+      "insertSmartfieldLink",
       "imageUpload",
       "|",
       "undo",
