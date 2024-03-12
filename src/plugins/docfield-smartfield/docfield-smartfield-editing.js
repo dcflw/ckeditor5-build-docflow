@@ -249,7 +249,10 @@ export default class DocfieldSmartfieldEditing extends Plugin {
             .trim()
             .replace(/ /g, "_")
             .toLowerCase();
-          const node = writer.createElement(TYPE_SMARTFIELD, { name });
+          const node = writer.createElement(TYPE_SMARTFIELD, {
+            name,
+            selectedText: modelElement.data.trim(),
+          });
           writer.model.insertObject(node);
           writer.setSelectionFocus(node, "after");
 
