@@ -119,6 +119,12 @@ const config = {
       "tableCellProperties",
     ],
   },
+  list: {
+    properties: {
+      styles: true,
+      startIndex: true,
+    },
+  },
 };
 
 InlineEditor.defaultConfig = config;
