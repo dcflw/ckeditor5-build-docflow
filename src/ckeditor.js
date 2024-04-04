@@ -40,6 +40,7 @@ import DocfieldImageUpload from "./plugins/docfield-image-upload/docfield-image-
 import DocfieldComments from "./plugins/docfield-comments/docfield-comments";
 import DocfieldSmartfield from "./plugins/docfield-smartfield/docfield-smartfield";
 import "./ckeditor.css";
+import { defaultColorsHex } from "./constants";
 
 const plugins = [
   Essentials,
@@ -118,6 +119,20 @@ const config = {
       "tableProperties",
       "tableCellProperties",
     ],
+    tableProperties: {
+      colorPicker: {
+        format: "hex",
+      },
+      backgroundColors: defaultColorsHex,
+      borderColors: defaultColorsHex,
+    },
+    tableCellProperties: {
+      colorPicker: {
+        format: "hex",
+      },
+      backgroundColors: defaultColorsHex,
+      borderColors: defaultColorsHex,
+    },
   },
   list: {
     properties: {
