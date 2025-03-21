@@ -56,46 +56,62 @@ export default class DocfieldSmartfieldUI extends Plugin {
 
   addLinkToolbarButton() {
     this.editor.ui.componentFactory.add("insertSmartfieldLink", (locale) => {
-      const dropdownView = createDropdown(locale);
+      if (this.editor.plugins.has("Link")) {
+        const dropdownView = createDropdown(locale);
 
-      dropdownView.buttonView.set({
-        label: "Link",
-        icon: linkIcon,
-        tooltip: true,
-      });
+        dropdownView.buttonView.set({
+          label: "Link",
+          icon: linkIcon,
+          tooltip: true,
+        });
 
-      const items = new Collection();
+        const items = new Collection();
 
-      items.add({
-        type: "button",
-        model: new ViewModel({
-          id: "internal-link",
-          withText: true,
+        items.add({
+          type: "button",
+          model: new ViewModel({
+            id: "internal-link",
+            withText: true,
+            label: "Internal Link",
+          }),
+        });
+        items.add({
+          type: "button",
+          model: new ViewModel({
+            id: "external-link",
+            withText: true,
+            label: "External Link",
+          }),
+        });
+
+        addListToDropdown(dropdownView, items);
+
+        this.listenTo(dropdownView, "execute", (evt) => {
+          const { id } = evt.source;
+          if (id === "internal-link") {
+            this.insertNewSmartfield(TYPE.InternalLink);
+          } else if (id === "external-link") {
+            const externalLinkPlugin = this.editor.plugins.get("LinkUI");
+            externalLinkPlugin._showUI(true);
+          }
+        });
+
+        return dropdownView;
+      } else {
+        const button = new ButtonView(locale);
+
+        button.set({
           label: "Internal Link",
-        }),
-      });
-      items.add({
-        type: "button",
-        model: new ViewModel({
-          id: "external-link",
-          withText: true,
-          label: "External Link",
-        }),
-      });
+          icon: linkIcon,
+          tooltip: true,
+        });
 
-      addListToDropdown(dropdownView, items);
+        this.listenTo(button, "execute", () =>
+          this.insertNewSmartfield(TYPE.InternalLink),
+        );
 
-      this.listenTo(dropdownView, "execute", (evt) => {
-        const { id } = evt.source;
-        if (id === "internal-link") {
-          this.insertNewSmartfield(TYPE.InternalLink);
-        } else if (id === "external-link") {
-          const externalLinkPlugin = this.editor.plugins.get("LinkUI");
-          externalLinkPlugin._showUI(true);
-        }
-      });
-
-      return dropdownView;
+        return button;
+      }
     });
   }
 
