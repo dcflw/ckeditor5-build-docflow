@@ -22,7 +22,13 @@ export default class DocfieldCommentsInsertExistingCommand extends AlwaysEnabled
         endPosition.offset = endOffset;
 
         const range = writer.createRange(startPosition, endPosition);
-        const markerName = getMarkerName(id, leafId, parentId, comment.solved);
+        const markerName = getMarkerName(
+          id,
+          leafId,
+          parentId,
+          comment.solved,
+          comment.type,
+        );
         const currentMarkers = Array.from(model.markers) || [];
 
         if (currentMarkers.every((marker) => marker.name !== markerName)) {

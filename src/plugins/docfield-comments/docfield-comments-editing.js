@@ -13,6 +13,7 @@ import {
   MARKER_NAME,
   MODEL_NAME,
   GROUP_NAME,
+  TYPE_ATTRIBUTE,
 } from "./constants";
 import { getDataFromMarkerName } from "./helper";
 
@@ -87,7 +88,7 @@ export default class DocfieldCommentsEditing extends Plugin {
           return;
         }
 
-        const { commentId, resolved, parentId } = getDataFromMarkerName(
+        const { commentId, resolved, parentId, type } = getDataFromMarkerName(
           data.markerName,
         );
         const elements = Array.from(
@@ -125,6 +126,7 @@ export default class DocfieldCommentsEditing extends Plugin {
             [ID_ATTRIBUTE]: commentId,
             [RESOLVED_ATTRIBUTE]: resolved,
             [PARENT_ATTRIBUTE]: parentId,
+            [TYPE_ATTRIBUTE]: type,
           },
           classes: ["comment", ...classNames],
         };
