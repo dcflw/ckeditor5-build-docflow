@@ -27,6 +27,7 @@ export default class DocfieldImageUploadAdapter {
    * @property {string} pathImages
    * @property {string} resourceName
    * @property {string} templateId
+   * @property {string} csrfToken
    */
 
   /**
@@ -124,11 +125,13 @@ export default class DocfieldImageUploadAdapter {
     };
     const url = this.options.pathApiImages || "/api/v1/images";
     const resourceName = this.options.resourceName || "image";
+    const csrfToken = this.options.csrfToken;
     const config = {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        ...(csrfToken ? { "X-CSRF-Token": csrfToken } : {}),
       },
       body: JSON.stringify(data),
     };
