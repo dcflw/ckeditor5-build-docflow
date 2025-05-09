@@ -4,7 +4,7 @@ import cuid from "cuid";
 import { getMarkerName } from "./helper";
 
 export default class DocfieldCommentsInsertCommand extends AlwaysEnabledCommand {
-  execute({ id, parentId }) {
+  execute({ id, parentId, type }) {
     const model = this.editor.model;
     const selection = model.document.selection;
 
@@ -56,7 +56,7 @@ export default class DocfieldCommentsInsertCommand extends AlwaysEnabledCommand 
             );
           }
 
-          const markerName = getMarkerName(id, cuid(), parentId, false);
+          const markerName = getMarkerName(id, cuid(), parentId, false, type);
           const currentMarkers = Array.from(model.markers) || [];
 
           if (currentMarkers.every((marker) => marker.name !== markerName)) {
