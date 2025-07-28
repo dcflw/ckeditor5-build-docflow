@@ -7,6 +7,7 @@ import {
 import inlineAutoformatEditing from "@ckeditor/ckeditor5-autoformat/src/inlineautoformatediting";
 import DocfieldInsertSmartfieldCommand from "./docfield-insert-smartfield-command";
 import DocfieldDeleteSmartfieldCommand from "./docfield-delete-smartfield-command";
+import DocfieldUpdateSmartfieldCommand from "./docfield-update-smartfield-command";
 
 export const TYPE_SMARTFIELD = "smartfield";
 export const ATTRIBUTE_NAME = "name";
@@ -14,6 +15,7 @@ export const ATTRIBUTE_TYPE = "type";
 export const ATTRIBUTE_SELECTED_TEXT = "selectedText";
 export const COMMAND_INSERT_SMARTFIELD = "insertSmartfield";
 export const COMMAND_DELETE_SMARTFIELD = "deleteSmartfield";
+export const COMMAND_UPDATE_SMARTFIELD = "updateSmartfield";
 export const SMARTFIELD_REGEX = /({{ *[a-z][a-z0-9_ ]*}})/i;
 
 /** @typedef {import("@ckeditor/ckeditor5-engine").Element} ModelElement */
@@ -42,6 +44,11 @@ export default class DocfieldSmartfieldEditing extends Plugin {
     this.editor.commands.add(
       COMMAND_DELETE_SMARTFIELD,
       new DocfieldDeleteSmartfieldCommand(this.editor),
+    );
+
+    this.editor.commands.add(
+      COMMAND_UPDATE_SMARTFIELD,
+      new DocfieldUpdateSmartfieldCommand(this.editor),
     );
 
     this.editor.editing.mapper.on(
@@ -217,7 +224,11 @@ export default class DocfieldSmartfieldEditing extends Plugin {
               type,
               selectedText,
               changeSmartfieldName: (name, type) => {
-                editor.execute(COMMAND_INSERT_SMARTFIELD, { name, type });
+                editor.execute(COMMAND_UPDATE_SMARTFIELD, {
+                  name,
+                  type,
+                  modelItem,
+                });
               },
               removeSmartfield: () => {
                 editor.execute(COMMAND_DELETE_SMARTFIELD, { modelItem });
